@@ -1,0 +1,18 @@
+{
+  "name": "stc",
+  "version": "1.0.0",
+  "private": true,
+  "description": "СТК — вёрстка на Bootstrap 5 + SCSS",
+  "scripts": {
+    "build:css": "sass --load-path=node_modules scss/main.scss css/style.css --no-source-map --quiet-deps --silence-deprecation=import",
+    "watch:css": "sass --load-path=node_modules scss/main.scss css/style.css --no-source-map --quiet-deps --silence-deprecation=import --watch",
+    "start": "npx serve -l 5500 ."
+  },
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.3.8"
+  },
+  "devDependencies": {
+    "sass": "^1.104.1"
+  }
+}

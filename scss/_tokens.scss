@@ -1,0 +1,15 @@
+// Design tokens that don't map onto a Bootstrap Sass variable — exposed as
+// CSS custom properties so component partials can reference them directly.
+
+:root {
+  @each $name, $value in $stc-colors {
+    --color-#{$name}: #{$value};
+  }
+}
+
+// Bootstrap's reboot doesn't fully unstyle plain (non-.btn) buttons, which
+// matters for icon-only buttons that intentionally skip the .btn class.
+button {
+  font: inherit;
+  cursor: pointer;
+}

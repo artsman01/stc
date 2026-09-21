@@ -1,0 +1,76 @@
+// Single source of truth for the design system (Figma «СТК») + Bootstrap
+// variable overrides. Keep this file ABOVE the bootstrap import in main.scss.
+@use "sass:map";
+@use "sass:math";
+
+@function rem($px) {
+  @return math.div($px, 16) * 1rem;
+}
+
+// Colors — names mirror the Figma variables (brand/primary → brand-primary).
+// Every entry becomes a CSS custom property --color-<name> in _tokens.scss.
+// (Not called $colors: Bootstrap owns that name and would emit --bs-* from it.)
+$stc-colors: (
+  "brand-primary": #38afed,
+  "brand-secondary": #373f51,
+  "brand-tertiary": #ffa503,
+
+  "text-heading": #1e222c,
+  "text-primary": #292d37,
+  "text-secondary": #6f7582,
+  "text-muted": #9b9fa8,
+  "text-button": #ffffff,
+  "text-on-img": rgba(255, 255, 255, 0.72),
+
+  "bg-primary": #ffffff,
+  "bg-secondary": #eef2f5,
+  "bg-light": #fafbfd,
+  "bg-dark": #1e222c,
+  "bg-dark-secondary": #292d37,
+
+  "border-default": #dce2f1,
+  "border-light": #f1f4fa,
+  "border-dark": #252a35,
+  "border-dark-light": rgba(255, 255, 255, 0.16),
+  "border-on-img": rgba(255, 255, 255, 0.04),
+
+  "surface-default": rgba(30, 34, 44, 0.16), // #1e222c at 16%
+  "surface-popup": rgba(0, 0, 0, 0.5),
+);
+
+@function stc-color($name) {
+  @return map.get($stc-colors, $name);
+}
+
+// Bootstrap switches
+$enable-dark-mode: false;
+$enable-negative-margins: true;
+// RFS would rescale headings on its own; the design sets exact desktop and
+// mobile sizes (see _typography.scss), so it stays off.
+$enable-rfs: false;
+
+// Colors → Bootstrap
+$primary: stc-color("brand-primary");
+$secondary: stc-color("brand-secondary");
+
+$body-color: stc-color("text-primary");
+$body-bg: stc-color("bg-primary");
+$body-secondary-color: stc-color("text-secondary");
+$body-tertiary-color: stc-color("text-muted");
+$body-secondary-bg: stc-color("bg-secondary");
+$body-tertiary-bg: stc-color("bg-light");
+$headings-color: stc-color("text-heading");
+$border-color: stc-color("border-default");
+
+// Typography — body/text is 14px / 20px. Heading sizes live in _typography.scss
+// because they differ between desktop and mobile.
+$font-family-sans-serif: "Wix Madefor Display", sans-serif;
+$font-size-base: rem(14);
+$line-height-base: 1.4286; // 20 / 14
+$headings-font-weight: 700;
+
+$btn-font-weight: 500;
+
+// The design puts white text (text/button) on brand-primary, which is ~2.6:1.
+// Bootstrap's default threshold (4.5) would flip that text to black.
+$min-contrast-ratio: 2;

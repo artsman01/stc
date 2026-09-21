@@ -1,0 +1,69 @@
+@use "sass:list";
+
+// Type scale from Figma «СТК» (Typography Desktop / Typography Mobile).
+// Each style is a size/line-height pair. Only display and h1–h6 change on
+// mobile; lead / text / meta / caption are identical everywhere.
+//
+// Sizes are exposed as CSS custom properties (--h1-size, --h1-lh, …) so the
+// mobile scale is a pure variable swap: no selector needs to be repeated.
+
+$type-desktop: (
+  "display": (48, 56),
+  "h1": (40, 48),
+  "h2": (28, 36),
+  "h3": (24, 32),
+  "h4": (18, 28),
+  "h5": (16, 24),
+  "h6": (14, 22),
+  "lead": (16, 24),
+  "text": (14, 20),
+  "meta": (12, 18),
+  "caption": (10, 16),
+);
+
+$type-mobile: (
+  "display": (28, 36),
+  "h1": (24, 32),
+  "h2": (22, 28),
+  "h3": (20, 26),
+  "h4": (16, 22),
+  "h5": (14, 20),
+  "h6": (12, 20),
+);
+
+@mixin type-vars($scale) {
+  @each $name, $pair in $scale {
+    --#{$name}-size: #{rem(list.nth($pair, 1))};
+    --#{$name}-lh: #{rem(list.nth($pair, 2))};
+  }
+}
+
+:root {
+  @include type-vars($type-desktop);
+}
+
+// MOBILE SCALE — not attached yet: the breakpoints are decided while the home
+// page is laid out. When they are, add:
+//   @media (max-width: …) { :root { @include type-vars($type-mobile); } }
+
+@each $name in ("h1", "h2", "h3", "h4", "h5", "h6") {
+  #{$name}, .#{$name} {
+    font-size: var(--#{$name}-size);
+    line-height: var(--#{$name}-lh);
+  }
+}
+
+// Text styles that have no Bootstrap counterpart. Weights come from Bootstrap
+// utilities: .fw-normal (400), .fw-medium (500), .fw-semibold (600 — the
+// "bold" of body styles in Figma).
+@each $name in ("display", "lead", "meta", "caption") {
+  .text-#{$name} {
+    font-size: var(--#{$name}-size);
+    line-height: var(--#{$name}-lh);
+  }
+}
+
+.text-display {
+  font-weight: 700;
+  color: var(--color-text-heading);
+}
