@@ -14,15 +14,11 @@ button {
   cursor: pointer;
 }
 
-// Mobile Safari zooms the whole page in when a form control's font-size is
-// under 16px, no matter what the viewport meta says — the site's own 14px
-// body text is below that, so form controls get bumped up on small screens
-// only (the viewport meta below handles the other kind of zoom: pinching and
-// double-tapping the page itself).
-@include media-breakpoint-down(md) {
-  input,
-  select,
-  textarea {
-    font-size: 16px;
-  }
+// Bootstrap doesn't put a transition on a link's hover color by default —
+// every other hover color change on the site already fades (.header__link,
+// .tab), so plain links (the CTA phone number, the consent checkboxes' text
+// links, …) get the same instead of a one-off transition wherever a link
+// happens to appear.
+a {
+  transition: color 0.15s ease;
 }

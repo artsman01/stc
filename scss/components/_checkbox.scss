@@ -22,6 +22,9 @@
   background-position: center;
   background-size: 16px;
   appearance: none;
+  // The label around it is already cursor:pointer, but a checkbox input has
+  // its own UA-default cursor that would otherwise win over that on hover.
+  cursor: pointer;
 }
 
 .checkbox-field__input:checked {

@@ -12460,13 +12460,10 @@ button {
   cursor: pointer;
 }
 
-@media (max-width: 767.98px) {
-  input,
-  select,
-  textarea {
-    font-size: 16px;
-  }
+a {
+  transition: color 0.15s ease;
 }
+
 :root {
   --display-size: 3rem;
   --display-lh: 3.5rem;
@@ -13113,6 +13110,7 @@ textarea.input-field {
   background-position: center;
   background-size: 16px;
   appearance: none;
+  cursor: pointer;
 }
 
 .checkbox-field__input:checked {
