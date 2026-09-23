@@ -1,0 +1,44 @@
+// Round 40px icon button (search, comparison, burger…). Works on <button> and <a>.
+// Colors can be overridden from a parent through --icon-btn-* / --badge-*
+// (the header does this to switch between its transparent and solid looks).
+
+.icon-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--icon-btn-bg, var(--color-text-primary));
+  color: var(--icon-btn-color, var(--color-text-button));
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.icon-btn:hover,
+.icon-btn:focus-visible {
+  background: var(--icon-btn-bg-hover, var(--color-brand-secondary));
+  color: var(--icon-btn-color, var(--color-text-button));
+}
+
+// Counter that sits on the button's top-right corner.
+.icon-btn__badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--badge-bg, var(--color-text-button));
+  color: var(--badge-color, var(--color-text-primary));
+  transition: background-color 0.2s ease, color 0.2s ease;
+  font-size: var(--caption-size);
+  font-weight: 500;
+  line-height: var(--caption-lh);
+}

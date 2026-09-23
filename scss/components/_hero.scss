@@ -1,0 +1,86 @@
+// Home hero: full-bleed photo, the header lying over it, text block centered
+// vertically. Heights come from the artboards: 800px tablet/desktop, 624px mobile.
+
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 624px;
+  padding: 32px 16px;
+  overflow: hidden;
+  background: var(--color-bg-dark);
+}
+
+@include media-breakpoint-up(md) {
+  .hero {
+    min-height: 800px;
+    padding: 64px 48px;
+  }
+}
+
+.hero__bg {
+  position: absolute;
+  inset: 0;
+}
+
+// Light tint over the photo (surface/default in Figma).
+.hero__bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-surface-default);
+}
+
+.hero__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  // Anchored to the bottom so the floor stays in frame when the photo is cropped.
+  object-position: 50% 100%;
+}
+
+// Decorative diagonal lines, one 1600×800 tile pinned to the bottom center.
+// Drawn above the photo and never blocks clicks.
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("../assets/hero/pattern.svg") 50% 100% / 1600px 800px no-repeat;
+  pointer-events: none;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.hero__text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@include media-breakpoint-up(md) {
+  .hero__content {
+    gap: 32px;
+  }
+
+  .hero__text {
+    gap: 24px;
+  }
+}
+
+.hero__title {
+  max-width: 752px;
+}
+
+.hero__subtitle {
+  max-width: 476px;
+  color: var(--color-text-on-img);
+}

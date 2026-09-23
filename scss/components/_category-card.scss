@@ -1,0 +1,98 @@
+// Square product-category tile (home catalog teaser today, the full catalog
+// page later). The photo lives in its own absolutely-positioned layer, kept
+// separate from the title/button sitting above it.
+//
+// Hover reveals a "Перейти" button under the title — in the Figma file this
+// is only drawn on one sample card per group (the "hover" example the client
+// pointed at), every card behaves the same, so every card renders the button,
+// just hidden until hover/focus.
+
+.category-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+@include media-breakpoint-up(md) {
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+// One extra step the Figma anchors don't cover: at xl (1200–1399px) 4 cards
+// in a row get cramped, so it's 3 there and 4 only from xxl (1400px) up.
+@include media-breakpoint-up(xl) {
+  .category-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@include media-breakpoint-up(xxl) {
+  .category-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.category-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  aspect-ratio: 1 / 1;
+  padding: 24px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--color-bg-secondary);
+  color: inherit;
+}
+
+.category-card__bg {
+  position: absolute;
+  // Overscanned a little past the card's edge so the hover zoom doesn't
+  // show soft/transparent pixels at the border.
+  inset: -6px;
+  z-index: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  transition: transform 0.25s ease;
+}
+
+.category-card__title {
+  position: relative;
+  z-index: 1;
+  max-width: 256px;
+  // Figma's exact value (#1a1d21) is a shade darker than --color-text-heading
+  // (#1e222c) — close enough to be the same ink, normalized to the token
+  // rather than adding a one-off color nothing else on the site uses.
+  color: var(--color-text-heading);
+}
+
+.category-card__cta {
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.category-card:focus-within .category-card__cta {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+// Hover only where a pointer can actually hover, so a tap on a phone doesn't
+// leave the card stuck showing its button.
+@media (hover: hover) {
+  .category-card:hover .category-card__bg {
+    transform: scale(1.06);
+  }
+
+  .category-card:hover .category-card__cta {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+}

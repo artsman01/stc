@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>СТК</title>
+  <title>СТК — Современные технологии контроля</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -11,12 +11,188 @@
 </head>
 <body>
 
-  <!-- header -->
+  <section class="hero">
+    <div class="hero__bg">
+      <picture>
+        <source media="(min-width: 1200px)" srcset="assets/hero/hero-desktop.jpg">
+        <img class="hero__img" src="assets/hero/hero-compact.jpg" alt="">
+      </picture>
+    </div>
 
-  <main>
-  </main>
+    <header class="header header--overlay">
+      <div class="header__start">
+        <a class="header__logo" href="index.html" aria-label="СТК — Современные технологии контроля">
+          <span class="header__logo-mark" aria-hidden="true"></span>
+          <span class="header__logo-text" aria-hidden="true"></span>
+        </a>
+        <a class="header__link d-none d-xl-flex align-items-center gap-2" href="catalog.html">
+          <svg class="icon"><use href="assets/icons/sprite.svg#menu"></use></svg>
+          <span>Каталог</span>
+        </a>
+      </div>
 
-  <!-- footer -->
+      <nav class="d-none d-xl-flex align-items-center gap-5" aria-label="Основное меню">
+        <a class="header__link" href="#">Компания</a>
+        <a class="header__link" href="#">База знаний</a>
+        <a class="header__link" href="#">Контакты</a>
+      </nav>
+
+      <div class="header__end">
+        <a class="header__link header__phone d-none d-md-flex align-items-center gap-2" href="tel:88002506846">
+          <svg class="icon"><use href="assets/icons/sprite.svg#phone"></use></svg>
+          <span>8 (800) 250-68-46</span>
+        </a>
+        <div class="header__actions">
+          <button class="icon-btn" type="button" aria-label="Поиск">
+            <svg class="icon"><use href="assets/icons/sprite.svg#search"></use></svg>
+          </button>
+          <a class="icon-btn" href="#" aria-label="Сравнение: 3 товара">
+            <svg class="icon"><use href="assets/icons/sprite.svg#comparison"></use></svg>
+            <span class="icon-btn__badge">3</span>
+          </a>
+          <button class="icon-btn d-xl-none" type="button" aria-label="Меню">
+            <svg class="icon"><use href="assets/icons/sprite.svg#hamburger"></use></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="hero__content">
+      <div class="hero__text">
+        <h1 class="hero__title text-display text-white m-0">Профессиональное оборудование для контроля, испытаний и анализа материалов</h1>
+        <p class="hero__subtitle text-lead fw-medium m-0">Поставляем профессиональные приборы и комплексные решения для неразрушающего контроля, механических испытаний и анализа металлов</p>
+      </div>
+      <a class="btn btn-primary btn-lg" href="catalog.html">Перейти в каталог</a>
+    </div>
+  </section>
+
+  <div class="spacer spacer--overlap">
+    <div class="spacer__cap"></div>
+  </div>
+
+  <section class="home-catalog" id="catalog">
+    <div class="home-catalog__head">
+      <h1 class="home-catalog__title m-0">Каталог оборудования</h1>
+      <p class="home-catalog__description text-lead text-body-tertiary m-0">Оборудование для различных методов контроля, испытаний и анализа материалов</p>
+      <div class="home-catalog__tabs tabs" role="tablist" aria-label="Категории каталога">
+        <button class="tab tab--active" type="button" role="tab" aria-selected="true">Все</button>
+        <button class="tab" type="button" role="tab" aria-selected="false">Неразрушающий контроль</button>
+        <button class="tab" type="button" role="tab" aria-selected="false">Механические испытания</button>
+        <button class="tab" type="button" role="tab" aria-selected="false">Анализ металлов</button>
+      </div>
+    </div>
+    <hr class="home-catalog__separator">
+    <div class="home-catalog__group-head">
+      <h2 class="m-0">Неразрушающий контроль</h2>
+      <p class="m-0 text-body-secondary">Выявление трещин, дефектов и повреждений материалов без разрушения изделия</p>
+    </div>
+    <div class="category-grid">
+          <a class="category-card" href="catalog.html">
+            <span class="category-card__bg" style="background-image: url('assets/catalog/visual-control.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Визуальный и измерительный контроль</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+          <a class="category-card" href="catalog.html">
+            <span class="category-card__bg" style="background-image: url('assets/catalog/ultrasonic-control.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Ультразвуковой контроль</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+          <a class="category-card" href="catalog.html">
+            <span class="category-card__bg" style="background-image: url('assets/catalog/radiographic-control.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Радиографический контроль</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+          <a class="category-card" href="catalog.html">
+            <span class="category-card__bg" style="background-image: url('assets/catalog/magnetic-control.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Магнитный контроль</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+          <a class="category-card" href="catalog.html">
+            <span class="category-card__bg" style="background-image: url('assets/catalog/eddy-current-control.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Вихретоковый контроль</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+          <a class="category-card" href="catalog.html">
+            <span class="category-card__bg" style="background-image: url('assets/catalog/penetrant-control.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Капиллярный контроль</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+          <a class="category-card" href="catalog.html">
+            <span class="category-card__bg" style="background-image: url('assets/catalog/leak-testing.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Течеискание</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+          <a class="category-card" href="catalog.html">
+            <span class="category-card__bg" style="background-image: url('assets/catalog/acoustic-emission-control.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Акустико-эмиссионный контроль</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+          <a class="category-card" href="catalog.html">
+            <span class="category-card__bg" style="background-image: url('assets/catalog/thermal-control.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Тепловой контроль</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+          <a class="category-card" href="catalog.html">
+            <span class="category-card__bg" style="background-image: url('assets/catalog/optical-control.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Оптический контроль</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+    </div>
+    <hr class="home-catalog__separator">
+    <div class="home-catalog__group-head">
+      <h2 class="m-0">Механические испытания</h2>
+      <p class="m-0 text-body-secondary">Оценка прочности, твердости и эксплуатационных свойств материалов с помощью профессионального испытательного оборудования</p>
+    </div>
+    <div class="category-grid">
+          <a class="category-card" href="catalog.html">
+            <span class="category-card__bg" style="background-image: url('assets/catalog/charpy-testing.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Испытания металлов по Шарпи</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+          <a class="category-card" href="catalog.html">
+            <span class="category-card__bg" style="background-image: url('assets/catalog/electromechanical-machines.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Электромеханические машины</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+          <a class="category-card" href="catalog.html">
+            <span class="category-card__bg" style="background-image: url('assets/catalog/hydraulic-machines.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Гидравлические машины</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+          <a class="category-card" href="catalog.html">
+            <span class="category-card__bg" style="background-image: url('assets/catalog/bend-testing.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Испытания на изгиб и перегиб</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+          <a class="category-card" href="catalog.html">
+            <span class="category-card__bg" style="background-image: url('assets/catalog/special-equipment.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Специальное оборудование</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+    </div>
+    <hr class="home-catalog__separator">
+    <div class="home-catalog__group-head">
+      <h2 class="m-0">Анализ металлов</h2>
+      <p class="m-0 text-body-secondary">Определение состава и характеристик сплавов для контроля качества и идентификации материалов</p>
+    </div>
+    <div class="category-grid">
+          <a class="category-card" href="catalog.html">
+            <span class="category-card__bg" style="background-image: url('assets/catalog/oes-spark-spectrometers.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Искровые оптико-эмиссионные спектрометры</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+          <a class="category-card" href="catalog.html">
+            <span class="category-card__bg" style="background-image: url('assets/catalog/oes-spectrometers.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Оптико-эмиссионные спектрометры</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+          <a class="category-card" href="catalog.html">
+            <span class="category-card__bg" style="background-image: url('assets/catalog/portable-metal-analyzers.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Портативные анализаторы металлов</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+    </div>
+  </section>
 
   <script src="js/main.js"></script>
 </body>

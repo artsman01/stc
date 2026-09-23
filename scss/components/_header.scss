@@ -1,0 +1,159 @@
+// Site header. Two looks:
+//   solid    — white bar, dark text, brand-blue logo (the Figma component default)
+//   overlay  — transparent on top of a photo, white text and logo; while the
+//              pointer is over the header (or a control has keyboard focus)
+//              it turns solid, exactly like the "hover" frame in Figma.
+// Three layouts, matching the Figma artboards:
+//   mobile  (<768)   logo · search · comparison · burger
+//   tablet  (768–1199) logo · phone · search · comparison · burger
+//   desktop (≥1200)  logo + catalog · nav · phone · search · comparison
+// Which parts show at which size is done with Bootstrap d-* utilities in the
+// markup; this file only holds the layout and sizes utilities can't express.
+
+// Colors are custom properties, so the two looks only differ in these values
+// (icon buttons and the badge read the --icon-btn-* / --badge-* ones).
+@mixin header-solid {
+  --header-bg: var(--color-bg-primary);
+  --header-color: var(--color-text-primary);
+  --header-border: var(--color-border-light);
+  --header-logo: var(--color-brand-primary);
+  --icon-btn-bg: var(--color-bg-secondary);
+  --icon-btn-bg-hover: var(--color-border-default);
+  --icon-btn-color: var(--color-text-primary);
+  --badge-bg: var(--color-brand-secondary);
+  --badge-color: var(--color-text-button);
+}
+
+.header {
+  @include header-solid;
+
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--header-border);
+  background: var(--header-bg);
+  color: var(--header-color);
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+@include media-breakpoint-up(md) {
+  .header {
+    padding: 16px 48px;
+  }
+}
+
+// Lies over the top of the section below it (the hero photo shows through).
+.header--overlay {
+  --header-bg: transparent;
+  --header-color: var(--color-text-button);
+  --header-border: var(--color-border-on-img);
+  --header-logo: var(--color-text-button);
+  --icon-btn-bg: var(--color-text-primary);
+  --icon-btn-color: var(--color-text-button);
+  --badge-bg: var(--color-text-button);
+  --badge-color: var(--color-text-primary);
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+}
+
+.header--overlay:has(:focus-visible) {
+  @include header-solid;
+}
+
+// Hover only on devices that really hover, so a tap on a phone doesn't leave
+// the header stuck in the solid state.
+@media (hover: hover) {
+  .header--overlay:hover {
+    @include header-solid;
+  }
+}
+
+// Start and end take equal shares so the nav in the middle is truly centered.
+.header__start,
+.header__end {
+  display: flex;
+  align-items: center;
+  flex: 1 1 0;
+  gap: 48px;
+  min-width: 0;
+}
+
+.header__end {
+  justify-content: flex-end;
+}
+
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header__logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+// The mark and the wordmark are painted with a mask so their color follows
+// --header-logo (white on the photo, brand blue on the solid bar). Same
+// vector at two sizes (3:2 and 3:1).
+.header__logo-mark,
+.header__logo-text {
+  display: block;
+  flex-shrink: 0;
+  background-color: var(--header-logo);
+  transition: background-color 0.2s ease;
+  -webkit-mask: no-repeat center / contain;
+  mask: no-repeat center / contain;
+}
+
+.header__logo-mark {
+  width: 48px;
+  height: 32px;
+  -webkit-mask-image: url("../assets/logo.svg");
+  mask-image: url("../assets/logo.svg");
+}
+
+.header__logo-text {
+  width: 72px;
+  height: 24px;
+  -webkit-mask-image: url("../assets/logo-text.svg");
+  mask-image: url("../assets/logo-text.svg");
+}
+
+@include media-breakpoint-up(md) {
+  .header__logo {
+    gap: 16px;
+  }
+
+  .header__logo-mark {
+    width: 63px;
+    height: 42px;
+  }
+
+  .header__logo-text {
+    width: 96px;
+    height: 32px;
+  }
+}
+
+.header__link {
+  color: inherit;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+
+.header__link:hover {
+  color: var(--color-brand-primary);
+}
+
+.header__phone {
+  font-weight: 600;
+}

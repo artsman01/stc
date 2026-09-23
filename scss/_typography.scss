@@ -42,9 +42,13 @@ $type-mobile: (
   @include type-vars($type-desktop);
 }
 
-// MOBILE SCALE — not attached yet: the breakpoints are decided while the home
-// page is laid out. When they are, add:
-//   @media (max-width: …) { :root { @include type-vars($type-mobile); } }
+// Mobile scale: the Figma mobile artboard is 393px, the tablet one (768px)
+// still uses the desktop sizes, so the switch happens below Bootstrap's md.
+@include media-breakpoint-down(md) {
+  :root {
+    @include type-vars($type-mobile);
+  }
+}
 
 @each $name in ("h1", "h2", "h3", "h4", "h5", "h6") {
   #{$name}, .#{$name} {

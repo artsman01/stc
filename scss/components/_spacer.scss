@@ -1,0 +1,32 @@
+// Vertical gap between sections. Two looks:
+//   .spacer            plain strip, background matches whichever side is
+//                       needed (set case by case as sections are built).
+//   .spacer--overlap    the strip's own background matches the section
+//                       ABOVE it (here: the dark hero); a white block the
+//                       full height of the strip sits inside it with
+//                       rounded top corners. Since the cap matches the strip
+//                       everywhere except those two 16px corners, the effect
+//                       reads as the section below curving up and
+//                       overlapping the hero, rather than a hard edge.
+//
+// Height: 16px on mobile, 32px from tablet up (Figma "Spacer" instances).
+
+.spacer {
+  height: 16px;
+}
+
+@include media-breakpoint-up(md) {
+  .spacer {
+    height: 32px;
+  }
+}
+
+.spacer--overlap {
+  background: var(--color-bg-dark);
+}
+
+.spacer__cap {
+  height: 100%;
+  background: var(--color-bg-primary);
+  border-radius: 16px 16px 0 0;
+}

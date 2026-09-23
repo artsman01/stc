@@ -1,0 +1,36 @@
+// Pill filter tabs above the catalog (Все / Неразрушающий контроль / …).
+// Purely presentational for now — nothing is wired to actually filter the
+// grid below yet, see README "Что решено, а что нет".
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 50rem;
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+  font-weight: 600;
+  white-space: nowrap;
+  transition: opacity 0.15s ease;
+}
+
+// Inactive tabs just fade a bit on hover (background and text together,
+// via opacity) rather than swapping to a different background color.
+.tab:not(.tab--active):hover {
+  opacity: 0.6;
+}
+
+.tab--active {
+  background: var(--color-brand-secondary);
+  color: var(--color-text-button);
+}

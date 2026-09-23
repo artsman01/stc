@@ -1,0 +1,77 @@
+// Home page catalog teaser: intro (title + description + filter tabs),
+// three groups — each a heading/subtitle pair followed by a CategoryCard
+// grid — separated by hairlines.
+//
+// Gaps come straight off the Figma frame and don't reduce to one spacing
+// scale (16→24 on the intro, 24→32 between top-level blocks), so they're
+// written out here rather than through a shared token.
+
+.home-catalog {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 16px;
+}
+
+@include media-breakpoint-up(md) {
+  .home-catalog {
+    gap: 32px;
+    padding: 32px 48px;
+  }
+}
+
+// Title, description and tabs stack in that order up to xl; from xl the
+// description moves beside the title+tabs column instead (Figma has no
+// layout for the range in between, so it just reflows).
+.home-catalog__head {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "title"
+    "description"
+    "tabs";
+  gap: 16px;
+}
+
+@include media-breakpoint-up(md) {
+  .home-catalog__head {
+    gap: 24px;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .home-catalog__head {
+    grid-template-columns: 1fr 396px;
+    grid-template-areas:
+      "title description"
+      "tabs  description";
+    align-items: start;
+    column-gap: 32px;
+  }
+}
+
+.home-catalog__title {
+  grid-area: title;
+}
+
+.home-catalog__description {
+  grid-area: description;
+  max-width: 396px;
+}
+
+.home-catalog__tabs {
+  grid-area: tabs;
+}
+
+.home-catalog__separator {
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--color-border-light);
+  opacity: 1;
+}
+
+.home-catalog__group-head {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

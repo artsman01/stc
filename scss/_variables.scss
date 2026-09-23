@@ -69,7 +69,18 @@ $font-size-base: rem(14);
 $line-height-base: 1.4286; // 20 / 14
 $headings-font-weight: 700;
 
-$btn-font-weight: 500;
+$link-decoration: none;
+$link-hover-decoration: none;
+
+// Buttons are pills; the main (large) one is 48px high, 14px/20px semibold.
+// Padding is 1px short of the Figma 13/32 because Bootstrap adds a 1px border.
+$btn-font-weight: 600;
+$btn-border-radius: 50rem;
+$btn-border-radius-sm: 50rem;
+$btn-border-radius-lg: 50rem;
+$btn-padding-y-lg: 0.8125rem;
+$btn-padding-x-lg: 1.9375rem;
+$btn-font-size-lg: $font-size-base;
 
 // The design puts white text (text/button) on brand-primary, which is ~2.6:1.
 // Bootstrap's default threshold (4.5) would flip that text to black.
