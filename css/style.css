@@ -12447,7 +12447,7 @@ textarea.form-control-lg {
   --color-bg-dark: #1e222c;
   --color-bg-dark-secondary: #292d37;
   --color-border-default: #dce2f1;
-  --color-border-light: #f1f4fa;
+  --color-border-light: #eff0f3;
   --color-border-dark: #252a35;
   --color-border-dark-light: rgba(255, 255, 255, 0.16);
   --color-border-on-img: rgba(255, 255, 255, 0.04);
@@ -12784,15 +12784,19 @@ h6, .h6 {
   font-weight: 600;
 }
 
-html {
-  scroll-padding-top: 64px;
+:root {
+  --header-h: 64px;
 }
 
 @media (min-width: 768px) {
-  html {
-    scroll-padding-top: 74px;
+  :root {
+    --header-h: 74px;
   }
 }
+html {
+  scroll-padding-top: calc(var(--header-h) + 16px);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
@@ -13047,6 +13051,17 @@ html {
   grid-area: tabs;
 }
 
+.home-catalog__group {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .home-catalog__group {
+    gap: 32px;
+  }
+}
 .home-catalog__separator {
   margin: 0;
   border: 0;
@@ -13167,7 +13182,7 @@ textarea.input-field {
 .cta__pattern {
   position: absolute;
   inset: 0;
-  background: url("../assets/cta/pattern.svg") 50% 50%/1600px 668px no-repeat;
+  background: url("../assets/cta/pattern.svg") center/100% 100% no-repeat;
   pointer-events: none;
 }
 
@@ -13286,6 +13301,7 @@ textarea.input-field {
   margin: 0;
   border: 0;
   border-top: 1px solid var(--color-border-light);
+  opacity: 1;
 }
 
 .industries__content-row {
@@ -13302,6 +13318,10 @@ textarea.input-field {
 .industries__nav {
   display: flex;
   gap: 8px;
+}
+
+.industries__content-row .industries__nav {
+  margin-left: auto;
 }
 
 .industries__slider {
@@ -13336,7 +13356,7 @@ textarea.input-field {
 }
 @media (min-width: 1200px) {
   .industry-card {
-    width: 370px;
+    padding: 24px;
   }
 }
 .industry-card__info {
@@ -13361,6 +13381,7 @@ textarea.input-field {
   margin: 0;
   border: 0;
   border-top: 1px solid var(--color-border-default);
+  opacity: 1;
 }
 
 .industry-card__description {

@@ -84,10 +84,42 @@
   document.querySelectorAll('input[type="tel"]').forEach(initPhoneMask);
 })();
 
-// Industries slider: cards are a fixed width per breakpoint (CSS, see
-// .industry-card), so slidesPerView stays "auto" and Swiper just shows
-// however many fit — matching the Figma anchors, where the last visible
-// card is always cropped mid-way rather than the row filling exactly.
+// Catalog tabs filter which .home-catalog__group is shown — "all" (the
+// default) shows every group, any other tab shows only the group with the
+// matching data-category and hides the rest (separator included, since each
+// group carries its own — see the CSS comment on .home-catalog__group).
+(function () {
+  function initCatalogTabs(section) {
+    var tabs = section.querySelectorAll('.home-catalog__tabs .tab');
+    var groups = section.querySelectorAll('.home-catalog__group');
+    if (!tabs.length || !groups.length) return;
+
+    function apply(category) {
+      groups.forEach(function (group) {
+        group.hidden = category !== 'all' && group.dataset.category !== category;
+      });
+      tabs.forEach(function (tab) {
+        tab.classList.toggle('tab--active', tab.dataset.category === category);
+      });
+    }
+
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        apply(tab.dataset.category);
+      });
+    });
+  }
+
+  document.querySelectorAll('.home-catalog').forEach(initCatalogTabs);
+})();
+
+// Industries slider: below xl, cards are a fixed width per breakpoint (CSS,
+// see .industry-card) and slidesPerView stays "auto" — Swiper just shows
+// however many fit, matching the Figma anchors, where the last visible card
+// is always cropped mid-way rather than the row filling exactly. From xl,
+// slidesPerView switches to a plain 4: Swiper then sizes the 4 slides itself
+// to fill the row exactly, so they stretch on a wide desktop instead of
+// staying pinned to Figma's 370px with extra empty space next to them.
 //
 // The nav buttons exist twice in the markup (beside the description on
 // desktop/tablet, below the slider on mobile — only one copy is ever
@@ -103,12 +135,16 @@
       slidesPerView: 'auto',
       spaceBetween: 8,
       speed: 450,
-      loop: true,
+      // Not looping (unlike Domarti's .material-slider): reaching either
+      // end disables that arrow instead of wrapping around.
       wrapperClass: 'industries__track',
       slideClass: 'industry-card',
       navigation: {
         nextEl: '.industries__nav-next',
         prevEl: '.industries__nav-prev',
+      },
+      breakpoints: {
+        1200: { slidesPerView: 4, spaceBetween: 8 },
       },
     });
   }

@@ -50,12 +50,14 @@
   background: var(--color-surface-default);
 }
 
-// One fixed-size tile, same idea as .hero's pattern: it's cropped by
-// whichever box is smaller, never scaled to fit.
+// Unlike .hero's pattern (fixed tile, cropped), this one stretches to fill
+// the box in both directions — the card's real height depends on the form's
+// actual content and doesn't reliably match Figma's 668px, so a fixed-size
+// tile left visible gaps above/below where the box came out taller.
 .cta__pattern {
   position: absolute;
   inset: 0;
-  background: url("../assets/cta/pattern.svg") 50% 50% / 1600px 668px no-repeat;
+  background: url("../assets/cta/pattern.svg") center / 100% 100% no-repeat;
   pointer-events: none;
 }
 

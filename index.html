@@ -76,14 +76,16 @@
       <h1 class="home-catalog__title m-0">Каталог оборудования</h1>
       <p class="home-catalog__description text-lead text-body-tertiary m-0">Оборудование для различных методов контроля, испытаний и анализа материалов</p>
       <nav class="home-catalog__tabs tabs" aria-label="Категории каталога">
-        <a class="tab tab--active" href="#catalog">Все</a>
-        <a class="tab" href="#nondestructive-testing">Неразрушающий контроль</a>
-        <a class="tab" href="#mechanical-testing">Механические испытания</a>
-        <a class="tab" href="#metal-analysis">Анализ металлов</a>
+        <button class="tab tab--active" type="button" data-category="all">Все</button>
+        <button class="tab" type="button" data-category="nondestructive-testing">Неразрушающий контроль</button>
+        <button class="tab" type="button" data-category="mechanical-testing">Механические испытания</button>
+        <button class="tab" type="button" data-category="metal-analysis">Анализ металлов</button>
       </nav>
     </div>
+
+    <div class="home-catalog__group" data-category="nondestructive-testing">
     <hr class="home-catalog__separator">
-    <div class="home-catalog__group-head" id="nondestructive-testing">
+    <div class="home-catalog__group-head">
       <h2 class="m-0">Неразрушающий контроль</h2>
       <p class="m-0 text-body-secondary">Выявление трещин, дефектов и повреждений материалов без разрушения изделия</p>
     </div>
@@ -139,8 +141,11 @@
             <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
           </a>
     </div>
+    </div>
+
+    <div class="home-catalog__group" data-category="mechanical-testing">
     <hr class="home-catalog__separator">
-    <div class="home-catalog__group-head" id="mechanical-testing">
+    <div class="home-catalog__group-head">
       <h2 class="m-0">Механические испытания</h2>
       <p class="m-0 text-body-secondary">Оценка прочности, твердости и эксплуатационных свойств материалов с помощью профессионального испытательного оборудования</p>
     </div>
@@ -171,8 +176,11 @@
             <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
           </a>
     </div>
+    </div>
+
+    <div class="home-catalog__group" data-category="metal-analysis">
     <hr class="home-catalog__separator">
-    <div class="home-catalog__group-head" id="metal-analysis">
+    <div class="home-catalog__group-head">
       <h2 class="m-0">Анализ металлов</h2>
       <p class="m-0 text-body-secondary">Определение состава и характеристик сплавов для контроля качества и идентификации материалов</p>
     </div>
@@ -192,6 +200,7 @@
             <span class="category-card__title text-lead fw-semibold">Портативные анализаторы металлов</span>
             <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
           </a>
+    </div>
     </div>
   </section>
 

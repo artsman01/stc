@@ -173,17 +173,24 @@
   font-weight: 600;
 }
 
-// Anchor jumps (the catalog tabs) land right under the fixed/stuck header
-// instead of behind it. Heights match the header's own two sizes (padding +
-// tallest content) — update both if the header's own dimensions change.
-html {
-  scroll-padding-top: 64px;
+// The header's own rendered height at its two sizes (padding + tallest
+// content) — update both if the header's own dimensions change.
+:root {
+  --header-h: 64px;
 }
 
 @include media-breakpoint-up(md) {
-  html {
-    scroll-padding-top: 74px;
+  :root {
+    --header-h: 74px;
   }
+}
+
+// Anchor jumps land this far below the fixed/stuck header instead of flush
+// against it — a plain --header-h offset left the target's heading touching
+// the header with no breathing room, which read as the header still
+// covering it.
+html {
+  scroll-padding-top: calc(var(--header-h) + 16px);
 }
 
 // Smooth-scrolls anchor jumps; skipped for people who asked for less motion.

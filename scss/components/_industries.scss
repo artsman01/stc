@@ -42,6 +42,9 @@
   margin: 0;
   border: 0;
   border-top: 1px solid var(--color-border-light);
+  // Bootstrap's hr defaults to opacity: 0.25, which faded an already-subtle
+  // border color to almost nothing.
+  opacity: 1;
 }
 
 .industries__content-row {
@@ -60,9 +63,18 @@
   gap: 8px;
 }
 
+// Pins the desktop/tablet copy to the row's right edge regardless of how
+// much room the description actually uses. Scoped to that copy only — the
+// standalone mobile one (below the slider, not inside this row) stays put
+// at the left, where it belongs.
+.industries__content-row .industries__nav {
+  margin-left: auto;
+}
+
 // The slider itself is just a viewport the same width as everything else
-// in the section — the last card crops mid-way rather than bleeding into
-// the page's outer gutter (that's the Figma anchors' own "peek" look).
+// in the section — below xl the last card crops mid-way rather than
+// bleeding into the page's outer gutter (the Figma anchors' own "peek"
+// look; from xl there's no peek at all, see js/main.js).
 .industries__slider {
   width: 100%;
   overflow: hidden;

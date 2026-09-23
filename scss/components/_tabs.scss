@@ -1,6 +1,6 @@
 // Pill filter tabs above the catalog (Все / Неразрушающий контроль / …).
-// Purely presentational for now — nothing is wired to actually filter the
-// grid below yet, see README "Что решено, а что нет".
+// Plain <button>s, not links — clicking one filters .home-catalog__group
+// elements in place (js/main.js) rather than navigating anywhere.
 
 .tabs {
   display: flex;

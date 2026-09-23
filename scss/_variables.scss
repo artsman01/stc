@@ -29,7 +29,9 @@ $stc-colors: (
   "bg-dark-secondary": #292d37,
 
   "border-default": #dce2f1,
-  "border-light": #f1f4fa,
+  // Figma has this at #f1f4fa; bumped a touch more contrasty (2026-09-25,
+  // client request) since separators on plain white were reading too faint.
+  "border-light": #eff0f3,
   "border-dark": #252a35,
   "border-dark-light": rgba(255, 255, 255, 0.16),
   "border-on-img": rgba(255, 255, 255, 0.04),

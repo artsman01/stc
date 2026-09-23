@@ -63,6 +63,23 @@
   grid-area: tabs;
 }
 
+// One group = its own separator, heading and card grid — kept together so
+// js/main.js can show/hide a whole category by toggling one element's
+// [hidden] instead of three separate siblings. Same gap as .home-catalog's
+// own (see the file-level comment): nesting one level doesn't change the
+// visual rhythm between separator → heading → grid.
+.home-catalog__group {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@include media-breakpoint-up(md) {
+  .home-catalog__group {
+    gap: 32px;
+  }
+}
+
 .home-catalog__separator {
   margin: 0;
   border: 0;

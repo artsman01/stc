@@ -1,7 +1,12 @@
-// One Swiper slide in .industries__track. Square, fixed width per
-// breakpoint (296 → 332 → 370) rather than fluid — slidesPerView stays
-// "auto" in JS and just shows however many fit, matching the Figma anchors.
-
+// One Swiper slide in .industries__track.
+//
+// Below xl: fixed width per breakpoint (296 → 332), slidesPerView stays
+// "auto" in JS and just shows however many fit, matching the Figma anchors'
+// peek. From xl: JS switches to a numeric slidesPerView (4), so Swiper
+// itself sets each slide's width via inline style to fill the row exactly —
+// the width set here doesn't apply there at all, cards stretch instead of
+// staying pinned to Figma's 370px (client request, so a wider desktop shows
+// 4 wider cards rather than a fixed 370px + more empty gutter).
 .industry-card {
   display: flex;
   flex-direction: column;
@@ -23,7 +28,7 @@
 
 @include media-breakpoint-up(xl) {
   .industry-card {
-    width: 370px;
+    padding: 24px;
   }
 }
 
@@ -53,6 +58,9 @@
   margin: 0;
   border: 0;
   border-top: 1px solid var(--color-border-default);
+  // Same fix as .industries__separator: Bootstrap's hr defaults to
+  // opacity: 0.25.
+  opacity: 1;
 }
 
 // Description has no color override: the body default (--color-text-primary)
