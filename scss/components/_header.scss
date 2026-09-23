@@ -74,6 +74,21 @@
   }
 }
 
+// .header--overlay is positioned relative to .hero, not the viewport — past
+// ~1 header-height of scrolling it would scroll away with the hero and leave
+// the rest of the page with no header at all. js/main.js adds this class at
+// that point instead, switching it to a plain fixed, solid bar that stays
+// put. The swap happens right where the header already sits at the top of
+// the viewport, so nothing jumps; only the colors crossfade in over the
+// transition already set on .header.
+.header--stuck {
+  @include header-solid;
+
+  position: fixed;
+  // Clears both the hero's own z-index:3 and anything the page scrolls past.
+  z-index: 50;
+}
+
 // Start and end take equal shares so the nav in the middle is truly centered.
 .header__start,
 .header__end {
@@ -156,4 +171,24 @@
 
 .header__phone {
   font-weight: 600;
+}
+
+// Anchor jumps (the catalog tabs) land right under the fixed/stuck header
+// instead of behind it. Heights match the header's own two sizes (padding +
+// tallest content) — update both if the header's own dimensions change.
+html {
+  scroll-padding-top: 64px;
+}
+
+@include media-breakpoint-up(md) {
+  html {
+    scroll-padding-top: 74px;
+  }
+}
+
+// Smooth-scrolls anchor jumps; skipped for people who asked for less motion.
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }

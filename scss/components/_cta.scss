@@ -1,0 +1,128 @@
+// "Не нашли то, что искали?" lead-capture block.
+//
+// Desktop/tablet: a white card floats over a full-bleed photo (same
+// photo+tint+pattern technique as .hero). Mobile: the Figma file swaps to a
+// genuinely different layout — the photo becomes a flat block on top and the
+// form turns into a plain flush white section below it, no floating card, no
+// corner marks. Both are one shared markup order (bg, then card); only the
+// positioning/sizing changes per breakpoint, so nothing is duplicated in the
+// DOM for a single real <form>.
+
+.cta {
+  position: relative;
+  border-bottom: 1px solid var(--color-border-default);
+}
+
+@include media-breakpoint-up(md) {
+  .cta {
+    padding: 64px 48px;
+    border-bottom: 0;
+  }
+}
+
+.cta__bg {
+  position: relative;
+  aspect-ratio: 393 / 294;
+  overflow: hidden;
+}
+
+@include media-breakpoint-up(md) {
+  .cta__bg {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+  }
+}
+
+.cta__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// Same darkening token as .hero__bg — tints the photo so the diagonal
+// pattern and (from md) the floating card read clearly over it.
+.cta__bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-surface-default);
+}
+
+// One fixed-size tile, same idea as .hero's pattern: it's cropped by
+// whichever box is smaller, never scaled to fit.
+.cta__pattern {
+  position: absolute;
+  inset: 0;
+  background: url("../assets/cta/pattern.svg") 50% 50% / 1600px 668px no-repeat;
+  pointer-events: none;
+}
+
+.cta__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 32px 16px;
+  background: var(--color-bg-primary);
+}
+
+@include media-breakpoint-up(md) {
+  .cta__card {
+    gap: 24px;
+    max-width: 678px;
+    padding: 48px;
+    border-radius: 8px;
+  }
+}
+
+.cta__title {
+  // Figma uses text/primary here, not the heading color the rest of the
+  // site's h1/h2 default to.
+  color: var(--color-text-primary);
+}
+
+.cta__description {
+  max-width: 456px;
+}
+
+// Decorative corner brackets on the floating card — only make sense once
+// there's a card to bracket, so they're md-and-up only.
+.cta__corner {
+  display: none;
+}
+
+@include media-breakpoint-up(md) {
+  .cta__corner {
+    position: absolute;
+    display: block;
+    width: 16px;
+    height: 16px;
+    border: 0 solid var(--color-border-default);
+  }
+
+  .cta__corner--tl {
+    top: 24px;
+    left: 24px;
+    border-width: 1px 0 0 1px;
+  }
+
+  .cta__corner--tr {
+    top: 24px;
+    right: 24px;
+    border-width: 1px 1px 0 0;
+  }
+
+  .cta__corner--bl {
+    bottom: 24px;
+    left: 24px;
+    border-width: 0 0 1px 1px;
+  }
+
+  .cta__corner--br {
+    bottom: 24px;
+    right: 24px;
+    border-width: 0 1px 1px 0;
+  }
+}

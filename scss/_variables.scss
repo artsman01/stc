@@ -69,6 +69,11 @@ $font-size-base: rem(14);
 $line-height-base: 1.4286; // 20 / 14
 $headings-font-weight: 700;
 
+// Plain links (a phone number, "see policy" text inside a checkbox label…)
+// read as regular dark text, not the brand blue, and only pick up color on
+// hover — same convention as Domarti.
+$link-color: $body-color;
+$link-hover-color: $primary;
 $link-decoration: none;
 $link-hover-decoration: none;
 

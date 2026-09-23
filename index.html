@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>СТК — Современные технологии контроля</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -74,15 +74,15 @@
     <div class="home-catalog__head">
       <h1 class="home-catalog__title m-0">Каталог оборудования</h1>
       <p class="home-catalog__description text-lead text-body-tertiary m-0">Оборудование для различных методов контроля, испытаний и анализа материалов</p>
-      <div class="home-catalog__tabs tabs" role="tablist" aria-label="Категории каталога">
-        <button class="tab tab--active" type="button" role="tab" aria-selected="true">Все</button>
-        <button class="tab" type="button" role="tab" aria-selected="false">Неразрушающий контроль</button>
-        <button class="tab" type="button" role="tab" aria-selected="false">Механические испытания</button>
-        <button class="tab" type="button" role="tab" aria-selected="false">Анализ металлов</button>
-      </div>
+      <nav class="home-catalog__tabs tabs" aria-label="Категории каталога">
+        <a class="tab tab--active" href="#catalog">Все</a>
+        <a class="tab" href="#nondestructive-testing">Неразрушающий контроль</a>
+        <a class="tab" href="#mechanical-testing">Механические испытания</a>
+        <a class="tab" href="#metal-analysis">Анализ металлов</a>
+      </nav>
     </div>
     <hr class="home-catalog__separator">
-    <div class="home-catalog__group-head">
+    <div class="home-catalog__group-head" id="nondestructive-testing">
       <h2 class="m-0">Неразрушающий контроль</h2>
       <p class="m-0 text-body-secondary">Выявление трещин, дефектов и повреждений материалов без разрушения изделия</p>
     </div>
@@ -139,7 +139,7 @@
           </a>
     </div>
     <hr class="home-catalog__separator">
-    <div class="home-catalog__group-head">
+    <div class="home-catalog__group-head" id="mechanical-testing">
       <h2 class="m-0">Механические испытания</h2>
       <p class="m-0 text-body-secondary">Оценка прочности, твердости и эксплуатационных свойств материалов с помощью профессионального испытательного оборудования</p>
     </div>
@@ -171,7 +171,7 @@
           </a>
     </div>
     <hr class="home-catalog__separator">
-    <div class="home-catalog__group-head">
+    <div class="home-catalog__group-head" id="metal-analysis">
       <h2 class="m-0">Анализ металлов</h2>
       <p class="m-0 text-body-secondary">Определение состава и характеристик сплавов для контроля качества и идентификации материалов</p>
     </div>
@@ -192,6 +192,54 @@
             <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
           </a>
     </div>
+  </section>
+
+  <div class="spacer"></div>
+
+  <section class="cta">
+    <div class="cta__bg">
+      <img class="cta__img" src="assets/cta/cta-home-1-bg.jpg" alt="">
+      <div class="cta__pattern"></div>
+    </div>
+
+    <form class="cta__card">
+      <div class="cta__corner cta__corner--tl"></div>
+      <div class="cta__corner cta__corner--tr"></div>
+      <div class="cta__corner cta__corner--bl"></div>
+      <div class="cta__corner cta__corner--br"></div>
+
+      <div class="d-flex flex-column gap-3">
+        <h2 class="cta__title h1 m-0">Не нашли то, что искали?</h2>
+        <p class="cta__description text-lead fw-medium text-body-secondary m-0">Оставьте заявку, чтобы мы смогли вам помочь подобрать оборудование под вашу отрасль и задачи</p>
+        <p class="fw-semibold text-body-tertiary m-0">или позвоните нам: <a href="tel:88002506846">8 (800) 250-68-46</a></p>
+      </div>
+
+      <div class="d-flex flex-column gap-3 w-100">
+        <div class="d-flex flex-column gap-2 w-100">
+          <div class="d-flex flex-column flex-md-row gap-2 w-100">
+            <label class="visually-hidden" for="cta-phone">Ваш телефон</label>
+            <input class="input-field flex-md-fill" type="tel" name="phone" id="cta-phone" placeholder="Ваш телефон" autocomplete="tel">
+            <label class="visually-hidden" for="cta-email">Ваш email</label>
+            <input class="input-field flex-md-fill" type="email" name="email" id="cta-email" placeholder="Ваш email" autocomplete="email">
+          </div>
+          <label class="visually-hidden" for="cta-message">Укажите подробнее, что вас интересует</label>
+          <textarea class="input-field" name="message" id="cta-message" rows="3" placeholder="Укажите подробнее, что вас интересует"></textarea>
+        </div>
+
+        <div class="d-flex flex-column gap-2 w-100">
+          <label class="checkbox-field">
+            <input class="checkbox-field__input" type="checkbox" name="consent-required" checked required>
+            <span class="checkbox-field__text text-meta fw-medium text-body-secondary">Я согласен с условиями <a href="#">Политики обработки персональных данных</a></span>
+          </label>
+          <label class="checkbox-field">
+            <input class="checkbox-field__input" type="checkbox" name="consent-marketing">
+            <span class="checkbox-field__text text-meta fw-medium text-body-secondary">Я подтверждаю ознакомление и даю <a href="#">Согласие</a> на обработку моих персональных данных в порядке и на условиях, указанных в <a href="#">Политике обработки персональных данных</a></span>
+          </label>
+        </div>
+
+        <button class="btn btn-primary btn-lg w-100" type="submit">Отправить заявку</button>
+      </div>
+    </form>
   </section>
 
   <script src="js/main.js"></script>

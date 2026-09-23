@@ -1,0 +1,38 @@
+// Custom 20×20 checkbox for form consent lines (CTA today). A real
+// <input type="checkbox">, just repainted, so keyboard and screen-reader
+// behaviour stays native — nothing here is decorative-only markup.
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+}
+
+.checkbox-field__input {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--color-border-default);
+  border-radius: 4px;
+  background-color: var(--color-bg-primary);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px;
+  appearance: none;
+}
+
+.checkbox-field__input:checked {
+  background-image: url("../assets/icons/check.svg");
+}
+
+.checkbox-field__input:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 2px;
+}
+
+.checkbox-field__text a {
+  font-weight: inherit;
+}
