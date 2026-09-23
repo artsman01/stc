@@ -84,6 +84,38 @@
   document.querySelectorAll('input[type="tel"]').forEach(initPhoneMask);
 })();
 
+// Industries slider: cards are a fixed width per breakpoint (CSS, see
+// .industry-card), so slidesPerView stays "auto" and Swiper just shows
+// however many fit — matching the Figma anchors, where the last visible
+// card is always cropped mid-way rather than the row filling exactly.
+//
+// The nav buttons exist twice in the markup (beside the description on
+// desktop/tablet, below the slider on mobile — only one copy is ever
+// visible, see the CSS comment on .industries__nav) and share the same
+// classes; passing Swiper a selector string instead of an element wires
+// up every match, so both copies drive the same slider in sync.
+(function () {
+  function initIndustries(section) {
+    var swiperEl = section.querySelector('.industries__slider');
+    if (!swiperEl) return;
+
+    new Swiper(swiperEl, {
+      slidesPerView: 'auto',
+      spaceBetween: 8,
+      speed: 450,
+      loop: true,
+      wrapperClass: 'industries__track',
+      slideClass: 'industry-card',
+      navigation: {
+        nextEl: '.industries__nav-next',
+        prevEl: '.industries__nav-prev',
+      },
+    });
+  }
+
+  document.querySelectorAll('.industries').forEach(initIndustries);
+})();
+
 // .header--overlay scrolls away with the hero it's laid over (see the CSS
 // comment on .header--stuck) — past a few pixels of scroll it needs to
 // become a plain fixed bar instead, so the rest of the page keeps a header.

@@ -13229,3 +13229,148 @@ textarea.input-field {
     border-width: 0 1px 1px 0;
   }
 }
+.slider-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--color-border-default);
+  border-radius: 50%;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  transition: background-color 0.15s ease;
+}
+
+.slider-nav-btn:hover {
+  background: var(--color-bg-secondary);
+}
+
+.slider-nav-btn.swiper-button-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.industries {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 16px;
+  background: var(--color-bg-primary);
+}
+
+@media (min-width: 768px) {
+  .industries {
+    gap: 48px;
+    padding: 32px 48px;
+  }
+}
+.industries__header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .industries__header {
+    gap: 24px;
+  }
+}
+.industries__title {
+  color: var(--color-text-primary);
+}
+
+.industries__separator {
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--color-border-light);
+}
+
+.industries__content-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.industries__description {
+  flex: 1 1 0;
+  max-width: 528px;
+}
+
+.industries__nav {
+  display: flex;
+  gap: 8px;
+}
+
+.industries__slider {
+  width: 100%;
+  overflow: hidden;
+}
+
+.industries__track {
+  display: flex;
+  transition-property: transform;
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
+}
+
+.industry-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-shrink: 0;
+  width: 296px;
+  aspect-ratio: 1/1;
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--color-bg-secondary);
+}
+
+@media (min-width: 768px) {
+  .industry-card {
+    width: 332px;
+    padding: 24px;
+  }
+}
+@media (min-width: 1200px) {
+  .industry-card {
+    width: 370px;
+  }
+}
+.industry-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.industry-card__name {
+  margin: 0;
+  font-weight: 700;
+  color: var(--color-text-heading);
+}
+
+@media (min-width: 768px) {
+  .industry-card__name {
+    font-size: var(--lead-size);
+    line-height: var(--lead-lh);
+  }
+}
+.industry-card__separator {
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--color-border-default);
+}
+
+.industry-card__description {
+  margin: 0;
+}
+
+.industry-card__img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 322/116;
+  object-fit: cover;
+  opacity: 0.48;
+}

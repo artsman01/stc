@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/vendor/swiper/swiper-bundle.min.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -242,6 +243,105 @@
     </form>
   </section>
 
+  <div class="spacer"></div>
+
+  <section class="industries">
+    <div class="industries__header">
+      <h2 class="industries__title h1 m-0">Работаем в контексте отрасли</h2>
+      <hr class="industries__separator d-none d-md-block">
+      <div class="industries__content-row">
+        <p class="industries__description text-lead text-body-tertiary m-0">Один и тот же метод меняется вместе с объектом, нормативами, средой и требованиями к отчётности</p>
+    <div class="industries__nav d-none d-md-flex">
+      <button class="slider-nav-btn industries__nav-prev" type="button" aria-label="Предыдущие отрасли">
+        <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-left"></use></svg>
+      </button>
+      <button class="slider-nav-btn industries__nav-next" type="button" aria-label="Следующие отрасли">
+        <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+      </button>
+    </div>
+      </div>
+    </div>
+
+    <div class="industries__slider swiper">
+      <div class="industries__track swiper-wrapper">
+        <div class="industry-card swiper-slide">
+          <div class="industry-card__info">
+            <p class="industry-card__name m-0">Энергетика</p>
+            <hr class="industry-card__separator">
+            <p class="industry-card__description m-0">Контроль оборудования, трубопроводов и металлоконструкций для обеспечения надежности и безопасной эксплуатации объектов</p>
+          </div>
+          <img class="industry-card__img" src="assets/industries/energy.png" alt="">
+        </div>
+        <div class="industry-card swiper-slide">
+          <div class="industry-card__info">
+            <p class="industry-card__name m-0">Нефтегаз</p>
+            <hr class="industry-card__separator">
+            <p class="industry-card__description m-0">Диагностика трубопроводов, резервуаров и сварных соединений для контроля состояния промышленных объектов</p>
+          </div>
+          <img class="industry-card__img" src="assets/industries/oil-gas.png" alt="">
+        </div>
+        <div class="industry-card swiper-slide">
+          <div class="industry-card__info">
+            <p class="industry-card__name m-0">Металлургия</p>
+            <hr class="industry-card__separator">
+            <p class="industry-card__description m-0">Анализ состава металлов, контроль качества продукции и испытания материалов на всех этапах производства</p>
+          </div>
+          <img class="industry-card__img" src="assets/industries/metallurgy.png" alt="">
+        </div>
+        <div class="industry-card swiper-slide">
+          <div class="industry-card__info">
+            <p class="industry-card__name m-0">Машиностроение</p>
+            <hr class="industry-card__separator">
+            <p class="industry-card__description m-0">Проверка деталей и узлов, контроль сварных соединений и оценка характеристик материалов</p>
+          </div>
+          <img class="industry-card__img" src="assets/industries/machinery.png" alt="">
+        </div>
+        <div class="industry-card swiper-slide">
+          <div class="industry-card__info">
+            <p class="industry-card__name m-0">Строительство</p>
+            <hr class="industry-card__separator">
+            <p class="industry-card__description m-0">Контроль качества металлоконструкций, сварных соединений и строительных материалов на объектах</p>
+          </div>
+          <img class="industry-card__img" src="assets/industries/construction.png" alt="">
+        </div>
+        <div class="industry-card swiper-slide">
+          <div class="industry-card__info">
+            <p class="industry-card__name m-0">Ремонт и восстановление</p>
+            <hr class="industry-card__separator">
+            <p class="industry-card__description m-0">Оценка состояния оборудования, выявление дефектов и контроль качества восстановительных работ</p>
+          </div>
+          <img class="industry-card__img" src="assets/industries/repair.png" alt="">
+        </div>
+        <div class="industry-card swiper-slide">
+          <div class="industry-card__info">
+            <p class="industry-card__name m-0">Переработка лома</p>
+            <hr class="industry-card__separator">
+            <p class="industry-card__description m-0">Идентификация сплавов, сортировка металлов и оперативный анализ состава материалов</p>
+          </div>
+          <img class="industry-card__img" src="assets/industries/scrap-recycling.png" alt="">
+        </div>
+        <div class="industry-card swiper-slide">
+          <div class="industry-card__info">
+            <p class="industry-card__name m-0">Лаборатории</p>
+            <hr class="industry-card__separator">
+            <p class="industry-card__description m-0">Профессиональное оборудование для испытаний, анализа материалов и проведения исследовательских работ</p>
+          </div>
+          <img class="industry-card__img" src="assets/industries/laboratories.png" alt="">
+        </div>
+      </div>
+    </div>
+
+    <div class="industries__nav d-flex d-md-none">
+      <button class="slider-nav-btn industries__nav-prev" type="button" aria-label="Предыдущие отрасли">
+        <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-left"></use></svg>
+      </button>
+      <button class="slider-nav-btn industries__nav-next" type="button" aria-label="Следующие отрасли">
+        <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+      </button>
+    </div>
+  </section>
+
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,70 @@
+// One Swiper slide in .industries__track. Square, fixed width per
+// breakpoint (296 → 332 → 370) rather than fluid — slidesPerView stays
+// "auto" in JS and just shows however many fit, matching the Figma anchors.
+
+.industry-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-shrink: 0;
+  width: 296px;
+  aspect-ratio: 1 / 1;
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--color-bg-secondary);
+}
+
+@include media-breakpoint-up(md) {
+  .industry-card {
+    width: 332px;
+    padding: 24px;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .industry-card {
+    width: 370px;
+  }
+}
+
+.industry-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.industry-card__name {
+  margin: 0;
+  font-weight: 700;
+  // Figma's #1a1d21 is a shade darker than --color-text-heading (#1e222c) —
+  // same call as .category-card__title: close enough to normalize to the
+  // token rather than add a one-off color.
+  color: var(--color-text-heading);
+}
+
+@include media-breakpoint-up(md) {
+  .industry-card__name {
+    font-size: var(--lead-size);
+    line-height: var(--lead-lh);
+  }
+}
+
+.industry-card__separator {
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--color-border-default);
+}
+
+// Description has no color override: the body default (--color-text-primary)
+// already matches the Figma value here.
+.industry-card__description {
+  margin: 0;
+}
+
+.industry-card__img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 322 / 116;
+  object-fit: cover;
+  opacity: 0.48;
+}

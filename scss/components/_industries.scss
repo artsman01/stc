@@ -1,0 +1,79 @@
+// "Работаем в контексте отрасли" — a Swiper row of fixed-size cards.
+//
+// The nav buttons move from beside the description (desktop/tablet) to
+// below the slider entirely (mobile) — a real DOM relocation, not just a
+// reflow, so it's two small button copies rather than one repositioned
+// element; both carry the same .industries__nav-prev/-next classes and
+// Swiper is wired to both via a CSS-selector string (see js/main.js), so
+// only the one actually visible per breakpoint is ever reachable.
+
+.industries {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 16px;
+  background: var(--color-bg-primary);
+}
+
+@include media-breakpoint-up(md) {
+  .industries {
+    gap: 48px;
+    padding: 32px 48px;
+  }
+}
+
+.industries__header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@include media-breakpoint-up(md) {
+  .industries__header {
+    gap: 24px;
+  }
+}
+
+.industries__title {
+  color: var(--color-text-primary);
+}
+
+.industries__separator {
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--color-border-light);
+}
+
+.industries__content-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.industries__description {
+  flex: 1 1 0;
+  max-width: 528px;
+}
+
+.industries__nav {
+  display: flex;
+  gap: 8px;
+}
+
+// The slider itself is just a viewport the same width as everything else
+// in the section — the last card crops mid-way rather than bleeding into
+// the page's outer gutter (that's the Figma anchors' own "peek" look).
+.industries__slider {
+  width: 100%;
+  overflow: hidden;
+}
+
+// Swiper's bundled CSS only targets the default .swiper-wrapper class —
+// since this uses a custom wrapperClass, the flex layout is declared here
+// instead (same reasoning as Domarti's .material-slider__track).
+.industries__track {
+  display: flex;
+  transition-property: transform;
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
+}

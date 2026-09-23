@@ -1,0 +1,28 @@
+// Round 40px prev/next button for Swiper sliders (Industries today, more
+// sliders will reuse it). Swiper toggles .swiper-button-disabled itself at
+// the ends of a non-looping track; kept here in case a future slider turns
+// looping off.
+
+.slider-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--color-border-default);
+  border-radius: 50%;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  transition: background-color 0.15s ease;
+}
+
+.slider-nav-btn:hover {
+  background: var(--color-bg-secondary);
+}
+
+.slider-nav-btn.swiper-button-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
