@@ -223,12 +223,19 @@
   var ticking = false;
 
   function apply() {
+    ticking = false;
+    // Пока поиск заблокировал скролл через body{position:fixed}, window.scrollY
+    // молча обнуляется браузером (document.scrollHeight схлопывается) — без
+    // этой проверки шапка на миг теряла .header--stuck в фоне (невидимо, пока
+    // поиск открыт поверх неё), а сразу после закрытия и мгновенного
+    // восстановления scrollY получала её обратно — этот один кадр без класса
+    // читался как «шапка исчезла и появилась снова».
+    if (document.body.style.position === 'fixed') return;
     var shouldStick = window.scrollY > STUCK_AT;
     if (shouldStick !== stuck) {
       stuck = shouldStick;
       header.classList.toggle('header--stuck', stuck);
     }
-    ticking = false;
   }
 
   function onScroll() {

@@ -6,8 +6,16 @@
 //
 // Оверлей открывается поверх всего, включая шапку (top:0) — выше её
 // z-index (50), чтобы затемнение и белая панель перекрывали и шапку тоже.
+//
+// display:none/flex раньше скрывало панель — заменено на opacity+visibility,
+// чтобы .search-panel могла плавно выезжать сверху вниз (display не умеет
+// анимироваться). visibility:hidden (с задержкой на открытии, без задержки
+// на закрытии) убирает панель из хит-теста/доступности после угасания, не
+// прерывая саму transform-анимацию, как это сделал бы мгновенный display:none.
 .search-overlay {
-  display: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
   position: fixed;
   top: 0;
   left: 0;
@@ -16,15 +24,15 @@
   z-index: 60;
   overflow-y: auto;
   background: var(--color-surface-popup);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0s linear 0.2s;
 }
 
-// align-items: flex-start — без него flex-стретч растягивает белую панель
-// (align-items по умолчанию stretch) на всю высоту оверлея, и затемнение
-// за ней просто не видно; нужна только естественная высота её контента.
 .search-overlay.is-open {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.2s ease, visibility 0s linear 0s;
 }
 
 .search-panel {
@@ -33,6 +41,19 @@
   display: flex;
   justify-content: center;
   background: var(--color-bg-primary);
+  transform: translateY(-24px);
+  transition: transform 0.2s ease;
+}
+
+.search-overlay.is-open .search-panel {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .search-overlay,
+  .search-panel {
+    transition: none;
+  }
 }
 
 .search-panel__inner {
