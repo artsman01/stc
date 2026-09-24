@@ -386,7 +386,11 @@
     document.body.style.top = '';
     document.body.style.left = '';
     document.body.style.right = '';
-    window.scrollTo(0, scrollY);
+    // behavior:'instant' — без этого глобальный html{scroll-behavior:smooth}
+    // анимирует возврат к scrollY, и виден прыжок вверх (после снятия
+    // position:fixed страница на миг оказывается в 0) с последующей плавной
+    // прокруткой обратно вместо мгновенного восстановления.
+    window.scrollTo({ top: scrollY, left: 0, behavior: 'instant' });
   }
 
   openBtn.addEventListener('click', open);
