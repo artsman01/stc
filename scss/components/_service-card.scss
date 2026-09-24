@@ -1,0 +1,51 @@
+// One numbered card in .services__grid. Plain grid item — CSS Grid's own
+// default align-items: stretch already keeps both cards in a row the same
+// height (no separate fix needed, unlike the Swiper-driven sliders).
+
+.service-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--color-bg-secondary);
+}
+
+@include media-breakpoint-up(md) {
+  .service-card {
+    padding: 24px;
+  }
+}
+
+.service-card__badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-brand-primary);
+  color: var(--color-text-button);
+  font-weight: 600;
+}
+
+.service-card__name {
+  margin: 0;
+  font-weight: 700;
+  // Figma's #1a1d21 normalized to the token, same call as the other cards.
+  color: var(--color-text-heading);
+}
+
+@include media-breakpoint-up(md) {
+  .service-card__name {
+    font-size: var(--lead-size);
+    line-height: var(--lead-lh);
+  }
+}
+
+// Description has no color override: the body default (--color-text-primary)
+// already matches the Figma value here.
+.service-card__description {
+  margin: 0;
+}

@@ -1,0 +1,84 @@
+// One Swiper slide in .solutions__track: a photo (fixed 2:1) over a white
+// info block — unlike .industry-card, height isn't square, it just follows
+// the description's real line count, so cards in one row can differ by a
+// few px; not worth forcing equal heights for that.
+//
+// Width: fixed per breakpoint below xl (296 → 332), matching .industry-card;
+// from xl Swiper switches to a numeric slidesPerView and sizes each slide
+// itself to stretch the row (see js/main.js) — same client request as
+// Industries, so the same approach is reused rather than capped at 370px.
+
+.solution-card {
+  display: block;
+  flex-shrink: 0;
+  width: 296px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--color-bg-primary);
+  // .solutions sets color: text-button (white) for its own dark-background
+  // title/description — reset it back to the normal body color here, or
+  // this white card's own text (the description, which has no color of its
+  // own below) would inherit white-on-white and vanish.
+  color: var(--color-text-primary);
+}
+
+@include media-breakpoint-up(md) {
+  .solution-card {
+    width: 332px;
+  }
+}
+
+.solution-card__img-wrap {
+  position: relative;
+  aspect-ratio: 2 / 1;
+}
+
+.solution-card__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// Same darkening token used on every other photo on the site (hero, CTA,
+// Industries) — keeps the crop reading consistent against the white card
+// below it.
+.solution-card__img-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-surface-default);
+}
+
+.solution-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+}
+
+.solution-card__name {
+  margin: 0;
+  font-weight: 700;
+  // Figma's #1a1d21 is a shade darker than --color-text-heading (#1e222c) —
+  // same call as .category-card__title / .industry-card__name.
+  color: var(--color-text-heading);
+}
+
+@include media-breakpoint-up(md) {
+  .solution-card__name {
+    font-size: var(--lead-size);
+    line-height: var(--lead-lh);
+  }
+}
+
+.solution-card__separator {
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--color-border-light);
+  opacity: 1;
+}
+
+.solution-card__description {
+  margin: 0;
+}

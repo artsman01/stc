@@ -152,6 +152,34 @@
   document.querySelectorAll('.industries').forEach(initIndustries);
 })();
 
+// Solutions slider: same wiring as Industries just above (fixed-width
+// peeking cards below xl, Swiper stretches 4 across from xl, not looping,
+// nav buttons duplicated for mobile and matched by selector string) — see
+// that comment for the reasoning, not repeated here.
+(function () {
+  function initSolutions(section) {
+    var swiperEl = section.querySelector('.solutions__slider');
+    if (!swiperEl) return;
+
+    new Swiper(swiperEl, {
+      slidesPerView: 'auto',
+      spaceBetween: 8,
+      speed: 450,
+      wrapperClass: 'solutions__track',
+      slideClass: 'solution-card',
+      navigation: {
+        nextEl: '.solutions__nav-next',
+        prevEl: '.solutions__nav-prev',
+      },
+      breakpoints: {
+        1200: { slidesPerView: 4, spaceBetween: 8 },
+      },
+    });
+  }
+
+  document.querySelectorAll('.solutions').forEach(initSolutions);
+})();
+
 // .header--overlay scrolls away with the hero it's laid over (see the CSS
 // comment on .header--stuck) — past a few pixels of scroll it needs to
 // become a plain fixed bar instead, so the rest of the page keeps a header.

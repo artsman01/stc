@@ -1,7 +1,6 @@
-// Round 40px prev/next button for Swiper sliders (Industries today, more
-// sliders will reuse it). Swiper toggles .swiper-button-disabled itself at
-// the ends of a non-looping track; kept here in case a future slider turns
-// looping off.
+// Round 40px prev/next button for Swiper sliders (Industries, Solutions,
+// more to come). Swiper toggles .swiper-button-disabled itself at the ends
+// of a non-looping track.
 
 .slider-nav-btn {
   display: flex;
@@ -15,7 +14,7 @@
   border-radius: 50%;
   background: var(--color-bg-primary);
   color: var(--color-text-primary);
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .slider-nav-btn:hover {
@@ -25,4 +24,20 @@
 .slider-nav-btn.swiper-button-disabled {
   opacity: 0.4;
   pointer-events: none;
+}
+
+// Variant for sliders on a dark section (Solutions): filled circle, no
+// border, instead of the light variant's white-with-border look.
+.slider-nav-btn--dark {
+  border: 0;
+  background: var(--color-bg-dark-secondary);
+  color: var(--color-text-button);
+}
+
+// A brightened dark background still reads dark, so a white icon stayed
+// low-contrast on hover — go all the way to a white circle instead, with
+// the icon switching to the same dark text color the light variant uses.
+.slider-nav-btn--dark:hover {
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
 }
