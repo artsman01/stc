@@ -68,6 +68,17 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  // The photo is a wide landscape crop with the worker on its left third —
+  // on the square mobile crop, default center cropping cuts him off. From
+  // md the box is wide again (photo's own aspect ratio), so the default
+  // centered position already reads fine there.
+  object-position: left center;
+}
+
+@include media-breakpoint-up(md) {
+  .about__img {
+    object-position: center;
+  }
 }
 
 // Same darkening token as .hero__bg / .cta__bg.
@@ -150,6 +161,17 @@
     padding: 48px;
     border-bottom: 0;
     border-radius: 8px;
+  }
+}
+
+// Tablet only (md up to just before xl): once the viewport is wide enough
+// that the 678px cap leaves the card short of the full row width, pin it to
+// the right instead of leaving it flush left with empty space trailing —
+// xl has its own alignment (margin-left: auto on the row) so this doesn't
+// need to reach that far.
+@include media-breakpoint-between(md, xl) {
+  .about__card {
+    align-self: flex-end;
   }
 }
 

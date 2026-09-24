@@ -240,3 +240,185 @@
   apply();
   window.addEventListener('scroll', onScroll, { passive: true });
 })();
+
+// AboutBullets: cards must be equal height within a row/grid but are
+// explicitly NOT square and must never crop their content (client
+// reverted an earlier square-everywhere version for exactly that reason) —
+// so height has to come from whichever card's real content is tallest,
+// not from CSS. align-items: stretch is the obvious tool, but a card here
+// holds both an image block and a text block together, which is exactly
+// the combination that silently defeats stretch in Chrome (see Solutions
+// above) — same JS fallback reused here. Below md the layout is a single
+// column (no "row" to match heights within), so it's left at its natural
+// per-card height there instead of being forced equal.
+(function () {
+  var MD = 768;
+
+  function equalizeHeights(cards) {
+    if (!cards.length) return;
+    cards.forEach(function (c) {
+      c.style.height = '';
+    });
+    if (window.innerWidth < MD) return;
+    var max = 0;
+    cards.forEach(function (c) {
+      var h = c.getBoundingClientRect().height;
+      if (h > max) max = h;
+    });
+    cards.forEach(function (c) {
+      c.style.height = max + 'px';
+    });
+  }
+
+  function initAboutBullets(section) {
+    var cards = section.querySelectorAll('.about-bullet');
+    var resizeTimer;
+    equalizeHeights(cards);
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        equalizeHeights(cards);
+      }, 150);
+    });
+  }
+
+  document.querySelectorAll('.about-bullets').forEach(initAboutBullets);
+})();
+
+// Footer category accordions — CSS alone keeps everything open above md
+// (see _footer.scss), so the click handler doesn't need to check viewport
+// width at all: toggling .is-open above md just has no visual effect.
+(function () {
+  document.querySelectorAll('.footer__col-toggle').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var col = btn.closest('.footer__col');
+      var expanded = col.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    });
+  });
+})();
+
+// Search overlay — opens from the header's search icon-btn, sits right
+// below the header (see .search-overlay's top: var(--header-h) — the
+// header itself stays visible/clickable, only the page below it dims).
+// There's no real product search backend yet (the catalog page only has
+// category cards, not individual products), so results are a small fixed
+// mock list — enough to show the real interaction (typing, clearing,
+// clicking a tag, hover, Escape/backdrop close), not a real filtered search.
+(function () {
+  var overlay = document.getElementById('search-overlay');
+  var openBtn = document.querySelector('.icon-btn[aria-label="Поиск"]');
+  if (!overlay || !openBtn) return;
+
+  var panel = overlay.querySelector('.search-panel');
+  var input = overlay.querySelector('.search-panel__input');
+  var clearBtn = overlay.querySelector('.search-panel__clear');
+  var closeBtn = overlay.querySelector('.search-panel__close');
+  var tags = overlay.querySelectorAll('.search-panel__tag');
+  var countEl = overlay.querySelector('.search-panel__count');
+  var resultsEl = overlay.querySelector('.search-panel__results');
+
+  var MOCK_RESULTS = [
+    { title: 'Ультразвуковой дефектоскоп на фазированных решетках УСД-60ФР', type: 'Товар', img: 'assets/search/product-1.png' },
+    { title: 'Ультразвуковой дефектоскоп УСД-50 IPS', type: 'Товар', img: 'assets/search/product-1.png' },
+    { title: 'Ультразвуковой дефектоскоп на фазированных решетках УСД-60ФР', type: 'Товар', img: 'assets/search/product-1.png' },
+    { title: 'Ультразвуковой дефектоскоп УСД-60', type: 'Товар', img: 'assets/search/product-1.png' },
+    { title: 'Ультразвуковой контроль', type: 'Категория', img: 'assets/search/product-2.png' },
+    { title: 'Ультразвуковой дефектоскоп на фазированных решетках УСД-60ФР', type: 'Товар', img: 'assets/search/product-1.png' },
+    { title: 'Ультразвуковой дефектоскоп УСД-60', type: 'Товар', img: 'assets/search/product-1.png' },
+    { title: 'Ультразвуковой дефектоскоп на фазированных решетках УСД-60ФР', type: 'Товар', img: 'assets/search/product-1.png' },
+    { title: 'Ультразвуковой дефектоскоп УСД-60', type: 'Товар', img: 'assets/search/product-1.png' },
+    { title: 'Ультразвуковой дефектоскоп на фазированных решетках УСД-60ФР', type: 'Товар', img: 'assets/search/product-1.png' },
+  ];
+
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function renderResults(query) {
+    if (!query) {
+      resultsEl.innerHTML = '';
+      countEl.hidden = true;
+      return;
+    }
+    countEl.hidden = false;
+    countEl.textContent = 'Найдено: ' + MOCK_RESULTS.length;
+    resultsEl.innerHTML = MOCK_RESULTS.map(function (item) {
+      return (
+        '<a class="search-result" href="catalog.html">' +
+        '<img class="search-result__img" src="' + item.img + '" alt="" loading="lazy">' +
+        '<span class="search-result__text">' +
+        '<span class="search-result__title">' + escapeHtml(item.title) + '</span>' +
+        '<span class="search-result__type">' + escapeHtml(item.type) + '</span>' +
+        '</span>' +
+        '</a>'
+      );
+    }).join('');
+  }
+
+  function updateClearBtn() {
+    clearBtn.hidden = !input.value;
+  }
+
+  // Блокируем скролл через position:fixed на body (а не overflow:hidden на
+  // html) — html держит overflow-y:auto + scrollbar-gutter:stable
+  // постоянно (см. _header.scss), так что место под скроллбар зарезервировано
+  // всегда; overflow:hidden на html эту резервацию сбрасывает (проверено
+  // через CDP), и контент/шапка дёргались вправо на ширину скроллбара.
+  function open() {
+    var scrollY = window.scrollY;
+    overlay.classList.add('is-open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.position = 'fixed';
+    document.body.style.top = -scrollY + 'px';
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    input.focus();
+  }
+
+  function close() {
+    var scrollY = -parseInt(document.body.style.top || '0', 10);
+    overlay.classList.remove('is-open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    window.scrollTo(0, scrollY);
+  }
+
+  openBtn.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+
+  // Клик именно по затемнённому фону (не по самой белой панели) закрывает.
+  overlay.addEventListener('click', function (e) {
+    if (!panel.contains(e.target)) close();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && overlay.classList.contains('is-open')) close();
+  });
+
+  input.addEventListener('input', function () {
+    updateClearBtn();
+    renderResults(input.value.trim());
+  });
+
+  clearBtn.addEventListener('click', function () {
+    input.value = '';
+    updateClearBtn();
+    renderResults('');
+    input.focus();
+  });
+
+  tags.forEach(function (tag) {
+    tag.addEventListener('click', function () {
+      input.value = tag.textContent.trim();
+      updateClearBtn();
+      renderResults(input.value);
+      input.focus();
+    });
+  });
+})();

@@ -1,0 +1,221 @@
+// "Клиенты и партнёры" — бесконечная лента логотипов. В Figma на desktop
+// все 6 логотипов статично умещаются в ряд без скролла, а на tablet/mobile
+// ряд шире контейнера (логотипы там расположены с отрицательным/выходящим
+// за край смещением — зафиксированный кадр прокрутки). Но по просьбе
+// заказчика сама лента крутится на ВСЕХ брейкпоинтах — это буквально
+// "карусель логотипов", а не просто адаптивный перенос. Крутится через
+// чистый CSS keyframe-marquee, а не Swiper: тут не нужны ни стрелки, ни
+// свайп, ни какое-либо взаимодействие пользователя — просто нескончаемая
+// прокрутка, а lightweight transform-анимация на CSS для этого проще и
+// дешевле по производительности, чем настраивать под это Swiper autoplay.
+
+.logos {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  padding: 32px 16px;
+  background: var(--color-bg-primary);
+}
+
+@include media-breakpoint-up(md) {
+  .logos {
+    padding: 32px 48px;
+    gap: 64px;
+  }
+}
+
+// Ширина — 100% секции, не фиксированные 1600px (реальный размер ассета):
+// с фиксированной шириной на широких экранах (>1600px) паттерн не
+// дотягивал до края секции, из-за чего рядом с ним потребовался отдельный
+// border-top у .wiki как разделитель — но эта явная линия накладывалась на
+// собственную линию паттерна и давала две разные границы вместо одной.
+// Растянутый на 100% ширины паттерн сам всегда доходит до края, отдельная
+// граница больше не нужна (см. _wiki.scss). Высота остаётся фиксированной
+// 800px и прижатой к нижнему краю секции — окружности паттерна расходятся
+// именно от низа (см. сам SVG: центр обеих окружностей — это нижняя
+// граница вьюбокса), так что по вертикали растягивать/центрировать не
+// нужно, иначе на узких экранах обрежется как раз "источник" дуг снизу.
+//
+// z-index здесь НЕ ставим (было z-index: -1 — не сработало: .logos не
+// формирует свой stacking context просто от position: relative без
+// собственного z-index, так что отрицательный z-index ребёнка "убегает" в
+// ближайший АНЦЕСТОРНЫЙ контекст выше по дереву и рискует провалиться под
+// фон совсем других секций страницы, а не только .logos). Вместо этого
+// паттерн просто идёт первым в DOM с z-index: auto, а .logos__header и
+// .logos__logo-container ниже получают явные position: relative; z-index: 1
+// — тот же приём, что и с .about__mission, гарантированно поверх.
+.logos__pattern {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 800px;
+  background: url("../assets/logos/pattern.svg") center / 100% 100% no-repeat;
+  pointer-events: none;
+}
+
+.logos__header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.logos__title {
+  color: var(--color-text-primary);
+}
+
+.logos__description {
+  max-width: 564px;
+  color: var(--color-text-secondary);
+}
+
+// Высота — из Figma ("Logo Container": 136 mobile / 168 tablet / 600
+// desktop). На десктопе это не высота самой ленты логотипов (она остаётся
+// ~72px), а размер декоративной зоны под паттерн — лента просто
+// центрируется в ней по вертикали (justify-content: center).
+.logos__logo-container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 136px;
+}
+
+@include media-breakpoint-up(md) {
+  .logos__logo-container {
+    height: 168px;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .logos__logo-container {
+    height: 600px;
+  }
+}
+
+.logos__track-wrap {
+  width: 100%;
+  overflow: hidden;
+  // Мягкое растворение по краям — без него лента логотипов обрывается
+  // резким краем ровно на границе секции, что для бесконечной прокрутки
+  // выглядит менее убедительно, чем плавное исчезновение.
+  mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent);
+}
+
+// Дублирован в разметке ровно вдвое (см. index.html) — анимация сдвигает
+// на -50% своей собственной ширины, что равно ширине одного (не
+// продублированного) набора логотипов, и цикл получается бесшовным.
+.logos__track {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  width: max-content;
+  animation: logos-scroll 32s linear infinite;
+}
+
+@include media-breakpoint-up(md) {
+  .logos__track {
+    gap: 48px;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .logos__track {
+    gap: 96px;
+  }
+}
+
+// Пауза на hover — приятная деталь, даёт разглядеть конкретный логотип, не
+// дожидаясь, пока лента унесёт его дальше.
+.logos__track-wrap:hover .logos__track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logos__track {
+    animation: none;
+  }
+}
+
+@keyframes logos-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.logos__item {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+// Высота — из Figma, но на мобилке уменьшена в полтора раза против макета
+// (просьба заказчика — в Figma лента логотипов не масштабируется под
+// ширину экрана вообще, но на узком экране макетный размер выглядел
+// слишком крупным). Ширина не задаётся явно — учитывается по собственной
+// пропорции SVG, чтобы не исказить логотип (у исходников viewBox не всегда
+// точно совпадает с заявленными в макете px).
+.logos__item img {
+  display: block;
+  width: auto;
+}
+
+.logos__item--gazprom img {
+  height: 48px;
+}
+
+.logos__item--liangong img {
+  height: 43px;
+}
+
+.logos__item--elcometer img {
+  height: 21px;
+}
+
+.logos__item--arun img {
+  height: 43px;
+}
+
+.logos__item--rzd img {
+  height: 32px;
+}
+
+.logos__item--tyazhmash img {
+  height: 32px;
+}
+
+@include media-breakpoint-up(md) {
+  .logos__item--gazprom img {
+    height: 72px;
+  }
+
+  .logos__item--liangong img {
+    height: 64px;
+  }
+
+  .logos__item--elcometer img {
+    height: 32px;
+  }
+
+  .logos__item--arun img {
+    height: 64px;
+  }
+
+  .logos__item--rzd img {
+    height: 48px;
+  }
+
+  .logos__item--tyazhmash img {
+    height: 48px;
+  }
+}

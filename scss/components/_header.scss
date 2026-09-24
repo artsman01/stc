@@ -189,8 +189,16 @@
 // against it — a plain --header-h offset left the target's heading touching
 // the header with no breathing room, which read as the header still
 // covering it.
+// scrollbar-gutter:stable держит место под скроллбар всегда — без этого
+// временная блокировка скролла при открытии поиска убирает скроллбар и весь
+// контент/шапка сдвигаются вправо на его ширину (заметный прыжок). Свойство
+// работает только если overflow-y не "visible" — явно ставим auto (html и
+// так фактический скролл-контейнер страницы), поэтому блокировка скролла в
+// JS тоже должна идти через html, а не body (см. initSearch в main.js).
 html {
   scroll-padding-top: calc(var(--header-h) + 16px);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
 }
 
 // Smooth-scrolls anchor jumps; skipped for people who asked for less motion.

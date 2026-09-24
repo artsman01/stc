@@ -1,0 +1,106 @@
+// "AboutBullets" — 4 short feature bullets (line-art illustration + name +
+// description) directly under .about, no spacer between them: the client
+// called this out explicitly as a visual continuation of .about, not a new
+// section.
+//
+// Cards are NOT forced square (that was tried and reverted — the client
+// didn't want text truncated or the image shrunk to make a square work at
+// every width; cards should just grow taller on narrower layouts instead).
+// Height is natural (content: title + description + image, no aspect-ratio
+// on the card itself), and equal height per row/grid is enforced in JS
+// (equalizeAboutBullets() in js/main.js — same technique as the Solutions
+// slider) rather than CSS align-items: stretch, since we already hit a real
+// Chrome bug where stretch silently fails once a flex item holds both an
+// image block and a text block together, which is exactly this card's
+// content.
+
+.about-bullets {
+  display: flex;
+  padding: 16px;
+  background: var(--color-bg-primary);
+}
+
+@include media-breakpoint-up(md) {
+  .about-bullets {
+    padding: 32px 48px;
+  }
+}
+
+.about-bullets__row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+// Tablet: 2x2 grid — Figma's tablet frame isn't just a narrower version of
+// the desktop row, it genuinely wraps to two rows here. Kept all the way
+// through xl (up to xxl, 1400px) — a single row of 4 in the 1200–1399
+// range left cards too narrow/cramped (client request), so the switch to
+// one row happens later than the usual xl-everywhere convention.
+@include media-breakpoint-up(md) {
+  .about-bullets__row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+// Wide desktop only: back to a single row of 4.
+@include media-breakpoint-up(xxl) {
+  .about-bullets__row {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+.about-bullet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 24px;
+  background: var(--color-bg-secondary);
+  border-radius: 8px;
+}
+
+@include media-breakpoint-up(xxl) {
+  .about-bullet {
+    flex: 1 1 0;
+  }
+}
+
+.about-bullet__content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.about-bullet__name {
+  // Figma's #1a1d21 is a shade darker than --color-text-heading (#1e222c) —
+  // same call as .category-card__title / .industry-card__name.
+  color: var(--color-text-heading);
+}
+
+.about-bullet__description {
+  color: var(--color-text-primary);
+}
+
+// Fixed 322:148 ratio (Figma's own image box), same technique as
+// .solution-card__img-wrap — a real image at its own proportions, never
+// shrunk or cropped to fit a constraint.
+.about-bullet__img-wrap {
+  position: relative;
+  aspect-ratio: 322 / 148;
+  opacity: 0.64;
+}
+
+// object-fit: contain, not cover — these are transparent-background PNG
+// illustrations (verified: corner pixel is rgba(0,0,0,0)), so showing the
+// whole image never produces visible letterboxing, and nothing gets cropped.
+.about-bullet__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}

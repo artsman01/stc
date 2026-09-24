@@ -1,0 +1,30 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="1600" height="800" viewBox="0 0 1600 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Pattern" clip-path="url(#clip0_141_15990)">
+<circle id="Ellipse 1" cx="800" cy="800" r="599.5" stroke="#F1F4FA"/>
+<circle id="Ellipse 2" cx="800" cy="800" r="399.5" stroke="#F1F4FA"/>
+<line id="Line 13" x1="800.5" y1="-2.18557e-08" x2="800.5" y2="1545" stroke="url(#paint0_linear_141_15990)"/>
+<line id="Line 14" x1="1600" y1="799.5" y2="799.5" stroke="#F1F4FA"/>
+<line id="Line 11" x1="1609.35" y1="-9.64645" x2="-9.64646" y2="1609.35" stroke="url(#paint1_linear_141_15990)"/>
+<line id="Line 12" y1="-0.5" x2="2289.61" y2="-0.5" transform="matrix(0.707107 0.707107 0.707107 -0.707107 -9 -10)" stroke="url(#paint2_linear_141_15990)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_141_15990" x1="799.5" y1="2.18557e-08" x2="799.5" y2="1545" gradientUnits="userSpaceOnUse">
+<stop stop-color="#E5E9F2" stop-opacity="0"/>
+<stop offset="0.25" stop-color="#F1F4FA"/>
+<stop offset="1" stop-color="#E5E9F2" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint1_linear_141_15990" x1="1608.65" y1="-10.3536" x2="-10.3536" y2="1608.65" gradientUnits="userSpaceOnUse">
+<stop stop-color="#E5E9F2" stop-opacity="0"/>
+<stop offset="0.5" stop-color="#F1F4FA"/>
+<stop offset="1" stop-color="#E5E9F2" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint2_linear_141_15990" x1="0" y1="0.5" x2="2289.61" y2="0.5" gradientUnits="userSpaceOnUse">
+<stop stop-color="#E5E9F2" stop-opacity="0"/>
+<stop offset="0.5" stop-color="#F1F4FA"/>
+<stop offset="1" stop-color="#E5E9F2" stop-opacity="0"/>
+</linearGradient>
+<clipPath id="clip0_141_15990">
+<rect width="1600" height="800" fill="white"/>
+</clipPath>
+</defs>
+</svg>

@@ -1,0 +1,335 @@
+// Подвал — три полосы (бренд, ссылки, реквизиты), с одним и тем же
+// вертикальным разделителем по центру на всех трёх полосах и на любом
+// брейкпоинте (tablet/desktop). Реализовано через CSS Grid с одинаковым
+// паддингом 48px у каждой колонки (без отдельного grid-gap — сама
+// удвоенная соседняя padding и даёт нужный воздух), а не буквальным
+// повтором Figma-вложенности («половина» → 2 колонки внутри) — с равным
+// паддингом визуальный результат тот же, а разметка сильно проще.
+//
+// На мобилке три категории (НК/Механика/Анализ) — раскрывающийся аккордеон
+// (см. .footer__col-toggle ниже), «Контактная информация» — всегда
+// открыта. У «Контактной информации» в Figma другое место в DOM-порядке
+// на мобилке (последняя) против desktop/tablet (первая) — решено через
+// CSS `order`, а не дублированием разметки.
+
+.footer {
+  background: var(--color-bg-footer);
+}
+
+// padding/width/border — на .footer__brand (обычный div), не на .footer__logo
+// (сам <a>): иначе кликабельная зона ссылки растягивалась бы на весь
+// левый блок бренд-строки вместо только самого логотипа.
+.footer__brand {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 24px 16px;
+}
+
+@include media-breakpoint-up(md) {
+  .footer__brand {
+    width: 50%;
+    padding: 48px;
+    border-right: 1px solid var(--color-border-default);
+  }
+}
+
+.footer__logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+// Тот же mask-приём, что у .header__logo-mark/.header__logo-text, просто
+// крупнее — переиспользуем те же assets/logo.svg и logo-text.svg.
+.footer__logo-mark,
+.footer__logo-text {
+  display: block;
+  flex-shrink: 0;
+  background-color: var(--color-brand-primary);
+  -webkit-mask: no-repeat center / contain;
+  mask: no-repeat center / contain;
+}
+
+.footer__logo-mark {
+  width: 84px;
+  height: 56px;
+  -webkit-mask-image: url("../assets/logo.svg");
+  mask-image: url("../assets/logo.svg");
+}
+
+.footer__logo-text {
+  width: 120px;
+  height: 40px;
+  -webkit-mask-image: url("../assets/logo-text.svg");
+  mask-image: url("../assets/logo-text.svg");
+}
+
+@include media-breakpoint-up(md) {
+  .footer__logo-mark {
+    width: 96px;
+    height: 64px;
+  }
+
+  .footer__logo-text {
+    width: 144px;
+    height: 48px;
+  }
+}
+
+.footer__links,
+.footer__legal {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+@include media-breakpoint-up(md) {
+  .footer__links,
+  .footer__legal {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .footer__links,
+  .footer__legal {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.footer__links {
+  border-top: 1px solid var(--color-border-default);
+  border-bottom: 1px solid var(--color-border-default);
+}
+
+.footer__col {
+  padding: 24px 16px;
+}
+
+// Мобилка: всё в одну колонку, поэтому разделители — горизонтальные, между
+// каждой соседней парой .footer__col (в обеих полосах — и ссылки, и
+// реквизиты). `+` не матчит первый .footer__col в контейнере — там граница
+// не нужна, сверху уже есть .footer__links{border-top}. От md эта система
+// сменяется на явные модификаторы (--contact/--nk/--meh/--analysis) ниже,
+// так что ограничиваем правило только мобилкой.
+@include media-breakpoint-down(md) {
+  .footer__col + .footer__col {
+    border-top: 1px solid var(--color-border-default);
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .footer__col {
+    padding: 48px;
+  }
+}
+
+// .footer__legal: DOM-порядок колонок совпадает с визуальным (никакого
+// order тут нет), так что nth-child честно отражает позицию в сетке.
+@include media-breakpoint-up(md) {
+  // 2 колонки в ряду (tablet): разделитель между ними — на левой из пары.
+  .footer__legal .footer__col:nth-child(odd) {
+    border-right: 1px solid var(--color-border-default);
+  }
+
+  // Вторая строка сетки (tablet) — раздели строки тоже видна.
+  .footer__legal .footer__col:nth-child(n + 3) {
+    border-top: 1px solid var(--color-border-default);
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  // 4 колонки в один ряд (desktop): единственный разделитель — по центру,
+  // между 2-й и 3-й колонкой. Сбрасываем tablet-правила.
+  .footer__legal .footer__col:nth-child(odd) {
+    border-right: none;
+  }
+
+  .footer__legal .footer__col:nth-child(n + 3) {
+    border-top: none;
+  }
+
+  .footer__legal .footer__col:nth-child(2) {
+    border-right: 1px solid var(--color-border-default);
+  }
+}
+
+// .footer__links: «Контактная информация» физически последняя в DOM
+// (визуально первая через order: -1 у .footer__col--contact ниже) —
+// nth-child считает позицию В DOM, не видит order, поэтому тут разделители
+// нельзя вешать по nth-child (пробовали — граница уезжала не на ту пару).
+// Вместо этого — явные модификаторы по ВИЗУАЛЬНОЙ роли колонки, которая
+// одинакова что на md (2×2: Контакты+НК / МехИсп+Анализ), что на xl
+// (1×4: Контакты, НК, МехИсп, Анализ).
+@include media-breakpoint-up(md) {
+  .footer__col--contact,
+  .footer__col--meh {
+    border-right: 1px solid var(--color-border-default);
+  }
+
+  .footer__col--meh,
+  .footer__col--analysis {
+    border-top: 1px solid var(--color-border-default);
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .footer__col--contact,
+  .footer__col--meh {
+    border-right: none;
+  }
+
+  .footer__col--meh,
+  .footer__col--analysis {
+    border-top: none;
+  }
+
+  // Один ряд из 4 — единственный разделитель по центру, между НК (визуально
+  // 2-я) и Механическими испытаниями (визуально 3-я).
+  .footer__col--nk {
+    border-right: 1px solid var(--color-border-default);
+  }
+}
+
+.footer__col-title {
+  margin: 0;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+// padding-top, не margin-top: этот список — прямой ребёнок
+// .footer__col-collapse в трёх аккордеонах (см. ниже), а margin там не
+// схлопывается вместе с grid-template-rows: 0fr в свёрнутом состоянии —
+// они остаются видимым «хвостом» пустого пространства снизу под кнопкой
+// заголовка (сама .footer__col-collapse не садится до реального нуля),
+// из-за чего текст в свёрнутом виде читался прижатым к верху, а не по
+// центру. padding, в отличие от margin, обрезается вместе с overflow:
+// hidden на схлопывающемся элементе как положено.
+.footer__col-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 16px 0 0;
+  list-style: none;
+  color: var(--color-text-primary);
+}
+
+.footer__col-list a {
+  color: inherit;
+  transition: color 0.15s ease;
+}
+
+.footer__col-list a:hover {
+  color: var(--color-brand-primary);
+}
+
+// «Контактная информация» на мобилке идёт последней в DOM (после трёх
+// аккордеонов — так в Figma), но первой на tablet/desktop.
+@include media-breakpoint-up(md) {
+  .footer__col--contact {
+    order: -1;
+  }
+}
+
+// Кнопка-заголовок аккордеона — на md+ выглядит и ведёт себя как обычный
+// статичный текст (шеврон скрыт, курсор обычный); интерактивной становится
+// только ниже md. CSS сама решает, работает ли клик визуально — JS вешает
+// обработчик безусловно, выше md переключение класса просто ничего не меняет.
+.footer__col-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  color: inherit;
+  cursor: default;
+}
+
+.footer__col-chevron {
+  display: none;
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+  transition: transform 0.2s ease;
+}
+
+// grid-template-rows: 0fr/1fr — стандартный приём для плавной анимации
+// высоты без JS-измерения scrollHeight. Требует ДВОЙНОЙ вложенности:
+// overflow:hidden обязателен на прямом ребёнке грида, но этот ребёнок сам
+// не должен иметь padding/margin — иначе трек не сжимается ниже
+// min-content ребёнка (тот же класс "протекающего" отступа, что и margin
+// не будет schlopyvat'sya: сначала пробовали padding прямо на
+// .footer__col-list, но список — прямой grid-item, и его собственный
+// padding остаётся частью intrinsic-размера даже при 0fr и overflow:
+// hidden). Поэтому список со своими отступами живёт ВНУТРИ отдельного
+// .footer__col-collapse-inner, у которого нет собственных отступов —
+// только он получает overflow:hidden/min-height:0.
+.footer__col-collapse {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.2s ease;
+}
+
+.footer__col-collapse-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+@include media-breakpoint-down(md) {
+  .footer__col-toggle {
+    cursor: pointer;
+  }
+
+  .footer__col-chevron {
+    display: block;
+  }
+
+  .footer__col--accordion .footer__col-collapse {
+    grid-template-rows: 0fr;
+  }
+
+  .footer__col--accordion.is-open .footer__col-collapse {
+    grid-template-rows: 1fr;
+  }
+
+  .footer__col--accordion.is-open .footer__col-chevron {
+    transform: rotate(180deg);
+  }
+}
+
+.footer__col-legal {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.footer__col-legal--dark {
+  color: var(--color-text-heading);
+}
+
+// Без явного color здесь: он и так наследуется от .footer__col-legal
+// (text-secondary) — явный color:inherit тут раньше по ошибке ПЕРЕБИВАЛ
+// его через более высокую специфичность (a.class > .class), из-за чего
+// ссылки «Политика…» рендерились обычным text-primary вместо
+// приглушённого text-secondary, как соседний обычный текст.
+a.footer__col-legal {
+  display: block;
+  transition: color 0.15s ease;
+}
+
+a.footer__col-legal:hover {
+  color: var(--color-brand-primary);
+}
+
+// «Artsman» — единственная ссылка тут, что сидит внутри предложения
+// («Разработка сайта — Artsman»), а не отдельной строкой — display:block
+// оторвал бы её на новую строку. Специфичность (2 класса + элемент) выше,
+// чем у a.footer__col-legal (1 класс + элемент), так что переопределяет
+// надёжно, а не полагается на порядок объявления в файле.
+a.footer__col-legal.footer__col-legal--inline {
+  display: inline;
+}

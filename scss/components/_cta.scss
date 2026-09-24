@@ -41,6 +41,21 @@
   object-fit: cover;
 }
 
+// Второй CTA: кейс на фото сидит в правой половине кадра — на мобильном
+// кропе (узкая полоса сверху, аспект 393/294) центр по умолчанию обрезал
+// его правый край. Сдвигаем видимую область полностью вправо, тогда кейс
+// читается целиком и визуально держится по центру кадра. Только мобилка
+// (от md фон full-bleed на всю секцию, там кейс и так помещается целиком).
+.cta--2 .cta__img {
+  object-position: right center;
+}
+
+@include media-breakpoint-up(md) {
+  .cta--2 .cta__img {
+    object-position: center;
+  }
+}
+
 // Same darkening token as .hero__bg — tints the photo so the diagonal
 // pattern and (from md) the floating card read clearly over it.
 .cta__bg::after {

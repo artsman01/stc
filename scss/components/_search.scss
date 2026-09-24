@@ -1,0 +1,194 @@
+// Поисковая панель — раскрывается по клику на иконку поиска в шапке
+// (см. initSearch в js/main.js). Одна и та же разметка отвечает и за
+// "чистый" вид (Figma «Search»: поле + теги-подсказки), и за вид с
+// результатами («Search Results»: появляется счётчик и список) — просто
+// оба блока изначально пустые/скрытые и заполняются JS при вводе текста.
+//
+// Оверлей открывается поверх всего, включая шапку (top:0) — выше её
+// z-index (50), чтобы затемнение и белая панель перекрывали и шапку тоже.
+.search-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  overflow-y: auto;
+  background: var(--color-surface-popup);
+}
+
+// align-items: flex-start — без него flex-стретч растягивает белую панель
+// (align-items по умолчанию stretch) на всю высоту оверлея, и затемнение
+// за ней просто не видно; нужна только естественная высота её контента.
+.search-overlay.is-open {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.search-panel {
+  width: 100%;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  background: var(--color-bg-primary);
+}
+
+.search-panel__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 678px;
+}
+
+.search-panel__row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.search-panel__input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1 1 0;
+  min-width: 0;
+  height: 48px;
+  padding: 0 16px;
+  background: var(--color-bg-secondary);
+  border-radius: 8px;
+}
+
+.search-panel__search-icon {
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+}
+
+// Обычный текстовый input без рамки/фона — их уже даёт .search-panel__input-wrap.
+.search-panel__input {
+  flex: 1 1 0;
+  min-width: 0;
+  border: 0;
+  background: none;
+  padding: 0;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-text-primary);
+}
+
+.search-panel__input:focus {
+  outline: none;
+}
+
+.search-panel__input::placeholder {
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+// Крестик очистки текста — только внутри поля, появляется вместе с текстом
+// (toggled через [hidden] в JS), отдельно от крестика закрытия всей панели.
+.search-panel__clear {
+  display: flex;
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-text-secondary);
+}
+
+.search-panel__close {
+  display: flex;
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-text-primary);
+}
+
+.search-panel__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.search-panel__tag {
+  height: 32px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--color-bg-secondary);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  transition: opacity 0.15s ease;
+}
+
+// Плавное приглушение непрозрачности, как у .tab в каталоге — не смена фона.
+.search-panel__tag:hover {
+  opacity: 0.6;
+}
+
+.search-panel__count {
+  margin: 0;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--color-text-primary);
+}
+
+.search-panel__results {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.search-result {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px;
+  border-radius: 4px;
+  color: inherit;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+// Тот же hex, что и --color-bg-footer (#eff0f3) — переиспользуем вместо
+// нового одноразового значения (тот же принцип, что уже применялся для
+// .wiki-card:hover).
+.search-result:hover {
+  background: var(--color-bg-footer);
+}
+
+.search-result__img {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--color-border-default);
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.search-result__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.search-result__title {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-text-primary);
+}
+
+.search-result__type {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--color-text-secondary);
+}

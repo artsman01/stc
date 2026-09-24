@@ -1,0 +1,112 @@
+// "База инженерных знаний" (Figma-слой называется "Wiki") — не слайдер,
+// обычная статичная сетка из 4 карточек статей.
+//
+// Кнопка "База знаний" продублирована в разметке (тот же приём, что у
+// .about__mission): одна копия — в шапке рядом с описанием, видна только
+// от xl; вторая — под сеткой карточек, видна до xl. В Figma это буквально
+// разные родители на desktop и на tablet/mobile, а не одна и та же кнопка
+// с переставленным CSS-position.
+
+// Явный border-top пробовали как разделитель после Logos (нет .spacer
+// между ними), но он накладывался на собственную линию декоративного
+// паттерна Logos, которая на широких экранах обрывалась раньше края
+// (паттерн был фиксированной 1600px ширины) — получались две разные линии
+// рядом. Вместо этого паттерн Logos теперь растянут на всю ширину секции
+// (см. .logos__pattern), а свой border-top здесь просто убран.
+.wiki {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 32px 16px;
+  background: var(--color-bg-primary);
+}
+
+@include media-breakpoint-up(md) {
+  .wiki {
+    padding: 32px 48px;
+    gap: 48px;
+  }
+}
+
+.wiki__header {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.wiki__title {
+  color: var(--color-text-primary);
+}
+
+.wiki__content-row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@include media-breakpoint-up(xl) {
+  .wiki__content-row {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  // Описание ограничено max-width: 528px и само по себе не тянется до
+  // конца строки, так что без этого кнопка просто шла сразу за текстом,
+  // а не у правого края.
+  .wiki__content-row .wiki__btn {
+    margin-left: auto;
+  }
+}
+
+.wiki__description {
+  max-width: 528px;
+  color: var(--color-text-secondary);
+}
+
+// Outline-кнопка — единственное место на сайте, где она нужна (обычные
+// CTA — заливка .btn-primary), поэтому не выносили в общий Bootstrap
+// $theme-colors override, просто стиль на месте.
+.wiki__btn {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--color-border-default);
+  border-radius: 50rem;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+// Заливка полностью в фирменный синий; текст/иконка белые через
+// currentColor (.icon{color:inherit}) — отдельно перекрашивать svg не
+// нужно, обычного color на кнопке достаточно.
+.wiki__btn:hover {
+  background: var(--color-brand-primary);
+  border-color: var(--color-brand-primary);
+  color: var(--color-text-button);
+}
+
+.wiki__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+@include media-breakpoint-up(md) {
+  .wiki__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .wiki__grid {
+    display: flex;
+    flex-direction: row;
+  }
+}

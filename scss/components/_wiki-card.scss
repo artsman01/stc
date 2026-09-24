@@ -1,0 +1,77 @@
+// Одна карточка статьи в .wiki__grid. Высота в Figma одинакова у всех
+// карточек в ряду (218px на tablet и desktop) не через flex-stretch и не
+// через JS, а просто потому что оба текстовых блока (заголовок, описание)
+// жёстко ограничены двумя строками — при фиксированном числе строк высота
+// контента сама по себе постоянна. min-height: 218px (не height) — подстра
+// ховка на случай, если у реального заголовка окажется всего одна строка
+// вместо двух (короче — соседи в ряду не "провиснут" ниже общего уровня),
+// без обращения к align-items: stretch, которое мы уже ловили ломающимся в
+// Chrome именно на карточках с картинкой+текстом вместе (см. Solutions) —
+// здесь картинки нет, но лишняя осторожность не помешает.
+.wiki-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px;
+  background: var(--color-bg-secondary);
+  border-radius: 8px;
+  transition: background-color 0.15s ease;
+  // Карточка сама по себе <a> (вся кликабельна) — сбрасываем унаследованный
+  // цвет/подчёркивание ссылки, у каждого текстового блока уже свой явный
+  // цвет ниже.
+  color: inherit;
+  text-decoration: none;
+}
+
+// #eff0f3 — тот же hex, что и --color-border-light, переиспользуем токен
+// вместо нового одноразового значения.
+.wiki-card:hover {
+  background: var(--color-border-light);
+}
+
+@include media-breakpoint-up(md) {
+  .wiki-card {
+    min-height: 218px;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .wiki-card {
+    flex: 1 1 0;
+  }
+}
+
+.wiki-card__tag {
+  font-weight: 600;
+  color: var(--color-brand-primary);
+}
+
+// h4 (18/28 desktop → 16/22 mobile по общей шкале типографики) — line-clamp
+// на 2 строки держит высоту предсказуемой при любой длине реального
+// заголовка (см. комментарий у .wiki-card).
+.wiki-card__name {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  color: var(--color-text-heading);
+  transition: color 0.15s ease;
+}
+
+.wiki-card:hover .wiki-card__name {
+  color: var(--color-text-secondary);
+}
+
+.wiki-card__description {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  color: var(--color-text-primary);
+}
+
+.wiki-card__date {
+  color: var(--color-text-secondary);
+}
