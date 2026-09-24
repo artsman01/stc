@@ -71,11 +71,11 @@
 
 // Same reasoning as .industries__track: custom wrapperClass means Swiper's
 // bundled CSS doesn't style it, so the flex layout is declared here.
-// align-items: stretch is explicit (not just relying on the flex default of
-// "normal", which computes to the same thing on paper) — .solution-card's
-// height is content-driven (see that file's comment), so without a real
-// stretch a shorter description left its card visibly shorter than its
-// neighbours in the same row.
+// align-items: stretch is kept for browsers where it actually applies, but
+// Chrome has a layout bug where it silently no-ops once a card's image
+// block and text block both have real content (each stretches fine alone —
+// only the combination breaks), so equal heights are enforced for real in
+// JS — see the equalizeHeights() call in initSolutions (js/main.js).
 .solutions__track {
   display: flex;
   align-items: stretch;

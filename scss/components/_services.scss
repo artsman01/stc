@@ -5,12 +5,10 @@
 // is available — same call as every other two-column intro on the page).
 
 .services {
-  position: relative;
   display: flex;
   flex-direction: column;
   gap: 32px;
   padding: 16px;
-  overflow: hidden; // clips .services__pattern
   background: var(--color-bg-primary);
 }
 
@@ -28,10 +26,18 @@
   }
 }
 
+.services__intro {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 // Faint decorative compass of gradient lines behind the intro text — desktop
 // only in Figma (there's no room for it once the intro stacks above the
-// grid). Position is an approximation of the Figma anchor, not pixel-exact:
-// it's purely decorative, centered behind the intro column.
+// grid). Stretched to fill .services__intro's own box (not the Figma
+// original's fixed 748×748 square) so it scales with the column instead of
+// floating at one fixed size regardless of how much room it has.
 .services__pattern {
   display: none;
 }
@@ -40,21 +46,10 @@
   .services__pattern {
     display: block;
     position: absolute;
-    top: 50%;
-    left: 0;
-    width: 748px;
-    height: 748px;
-    transform: translate(-25%, -50%);
-    background: url("../assets/services/pattern.svg") center / contain no-repeat;
+    inset: 0;
+    background: url("../assets/services/pattern.svg") center / 100% 100% no-repeat;
     pointer-events: none;
   }
-}
-
-.services__intro {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
 }
 
 @include media-breakpoint-up(md) {

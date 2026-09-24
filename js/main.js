@@ -157,6 +157,27 @@
 // nav buttons duplicated for mobile and matched by selector string) — see
 // that comment for the reasoning, not repeated here.
 (function () {
+  // Cards must always be equal height. align-items: stretch on the track
+  // (see _solutions.scss) handles most cases, but a Chrome layout quirk
+  // silently defeats it once a card's image block and text block both have
+  // real content at the same time (each stretches fine alone — verified by
+  // isolating them — only the combination breaks). JS is the reliable
+  // fallback: measure natural heights and lock every card to the tallest.
+  function equalizeHeights(cards) {
+    if (!cards.length) return;
+    cards.forEach(function (c) {
+      c.style.height = '';
+    });
+    var max = 0;
+    cards.forEach(function (c) {
+      var h = c.getBoundingClientRect().height;
+      if (h > max) max = h;
+    });
+    cards.forEach(function (c) {
+      c.style.height = max + 'px';
+    });
+  }
+
   function initSolutions(section) {
     var swiperEl = section.querySelector('.solutions__slider');
     if (!swiperEl) return;
@@ -174,6 +195,16 @@
       breakpoints: {
         1200: { slidesPerView: 4, spaceBetween: 8 },
       },
+    });
+
+    var cards = section.querySelectorAll('.solution-card');
+    var resizeTimer;
+    equalizeHeights(cards);
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        equalizeHeights(cards);
+      }, 150);
     });
   }
 

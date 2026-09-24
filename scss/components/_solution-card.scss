@@ -1,7 +1,7 @@
-// One Swiper slide in .solutions__track: a photo (fixed 2:1) over a white
-// info block — unlike .industry-card, height isn't square, it just follows
-// the description's real line count, so cards in one row can differ by a
-// few px; not worth forcing equal heights for that.
+// One Swiper slide in .solutions__track: a photo over a white info block.
+// Cards must always be equal height across the row — .solutions__track has
+// align-items: stretch for that — so the shortest cards' info blocks end up
+// with extra space below the description, which is fine.
 //
 // Width: fixed per breakpoint below xl (296 → 332), matching .industry-card;
 // from xl Swiper switches to a numeric slidesPerView and sizes each slide
@@ -28,13 +28,23 @@
   }
 }
 
+// 2:1 ratio via the old padding-top hack instead of the aspect-ratio
+// property: aspect-ratio on this descendant makes Chrome silently stop
+// stretching the .solution-card flex item to match the row's tallest card —
+// a genuine browser quirk (verified by removing aspect-ratio and watching
+// stretch start working again). padding-top sizing predates aspect-ratio,
+// gives the same responsive ratio at any width (including the dynamic
+// widths Swiper sets from xl), and doesn't trigger the bug.
 .solution-card__img-wrap {
   position: relative;
-  aspect-ratio: 2 / 1;
+  height: 0;
+  padding-top: 50%;
 }
 
 .solution-card__img {
   display: block;
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;

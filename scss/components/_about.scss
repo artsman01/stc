@@ -1,0 +1,230 @@
+// "Экспертиза в области контроля..." — full-bleed photo with a floating
+// white card. Figma has genuinely three different layouts here, not two:
+//
+// - mobile: flat stack — square photo block (mission line overlaid inside
+//   it) then a plain flush card below, no corner marks.
+// - tablet (md–lg): the card takes nearly the full width, so there's no
+//   room beside it for the mission line — Figma stacks it below the card
+//   instead (48px gap), making the section noticeably taller than desktop.
+// - desktop (xl+): card floats right with room to spare, so the mission
+//   line sits beside it at the bottom-left instead of below it.
+//
+// .about__mission is duplicated in the DOM (same trick as the slider nav
+// arrows elsewhere on the site) rather than fought with CSS: one copy lives
+// inside .about__bg for the mobile overlay, one is a sibling after
+// .about__card for the tablet/desktop position — only one is ever visible
+// at a time (d-md-none / d-none d-md-block).
+.about {
+  position: relative;
+}
+
+@include media-breakpoint-up(md) {
+  .about {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    padding: 64px 48px;
+  }
+}
+
+// Row layout via margin-left: auto on the card (below), not
+// justify-content: flex-end + absolute mission — at the narrow end of this
+// range (viewport ~1200–1260px) a fixed-width card plus a fixed-width,
+// absolutely-positioned mission text don't both fit and would overlap.
+// Flex items instead just get less room and the mission text wraps an
+// extra line, which never breaks.
+@include media-breakpoint-up(xl) {
+  .about {
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+  }
+}
+
+.about__bg {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  aspect-ratio: 1 / 1;
+  padding: 16px;
+  overflow: hidden;
+}
+
+@include media-breakpoint-up(md) {
+  .about__bg {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+    padding: 0;
+    pointer-events: none;
+  }
+}
+
+.about__img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// Same darkening token as .hero__bg / .cta__bg.
+.about__bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-surface-default);
+}
+
+// Fixed 1600×752 (Figma's real asset size), centered — unlike .cta__pattern
+// this one isn't stretched to a box, it's just centered behind the card and
+// clipped by .about's overflow, so it stays at native size at any width. The
+// asset itself is a single faint horizontal line (4% white opacity) through
+// the middle, not the gradient "compass" used in Services. Figma doesn't
+// show it on the mobile frame at all (a small square crop of a huge
+// centered line reads as empty space), so it's md-and-up only.
+.about__pattern {
+  display: none;
+}
+
+@include media-breakpoint-up(md) {
+  .about__pattern {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1600px;
+    height: 752px;
+    transform: translate(-50%, -50%);
+    background: url("../assets/home-about/pattern.svg") center / 100% 100% no-repeat;
+  }
+}
+
+// z-index lifts the mobile copy above .about__bg::after (the darkening
+// tint): ::after is always painted as the last child, i.e. on top of this
+// text otherwise, even though the tint is only 16% opaque — that top layer
+// still blocked text selection (couldn't be copied). The tablet/desktop
+// copy lives outside .about__bg entirely (see the file-level comment) so
+// it was never affected, but pointer-events: auto is kept on both copies
+// as a cheap guarantee either stays selectable regardless.
+.about__mission {
+  position: relative;
+  z-index: 1;
+  max-width: 486px;
+  pointer-events: auto;
+}
+
+// Tablet: plain flow, stacked below the card by .about's own gap: 48px —
+// no absolute positioning needed, and none would be safe here since the
+// card takes nearly the full width (see the file-level comment above).
+//
+// Desktop: still plain flow (not absolute) — order: -1 puts it first
+// visually despite coming after the card in the DOM, and align-self:
+// flex-end drops it to the bottom of the row while the card stays
+// vertically centered. .about's own padding already supplies the
+// left/bottom offsets Figma specifies (48px / 64px).
+@include media-breakpoint-up(xl) {
+  .about__mission {
+    order: -1;
+    align-self: flex-end;
+  }
+}
+
+.about__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 32px 16px;
+  background: var(--color-bg-primary);
+  border-bottom: 1px solid var(--color-border-default);
+}
+
+@include media-breakpoint-up(md) {
+  .about__card {
+    width: 100%;
+    max-width: 678px;
+    gap: 24px;
+    padding: 48px;
+    border-bottom: 0;
+    border-radius: 8px;
+  }
+}
+
+// margin-left: auto (not justify-content: flex-end on .about) pushes just
+// the card to the right, leaving .about__mission — order: -1'd ahead of it
+// — the rest of the row on the left. flex-shrink: 0 keeps the card at its
+// full width if space gets tight rather than letting it get squeezed.
+@include media-breakpoint-up(xl) {
+  .about__card {
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+}
+
+.about__title {
+  color: var(--color-text-primary);
+}
+
+.about__description {
+  color: var(--color-text-primary);
+}
+
+// Figma has an empty paragraph between the two real ones as a spacer — same
+// visual result with an explicit margin instead of a blank <p>.
+.about__description p:first-child {
+  margin-bottom: 16px;
+}
+
+.about__description p:last-child {
+  margin-bottom: 0;
+}
+
+.about__btn {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+// Decorative corner brackets — only make sense once there's a floating card
+// to bracket, same as .cta__corner.
+.about__corner {
+  display: none;
+}
+
+@include media-breakpoint-up(md) {
+  .about__corner {
+    position: absolute;
+    display: block;
+    width: 16px;
+    height: 16px;
+    border: 0 solid var(--color-border-default);
+  }
+
+  .about__corner--tl {
+    top: 24px;
+    left: 24px;
+    border-width: 1px 0 0 1px;
+  }
+
+  .about__corner--tr {
+    top: 24px;
+    right: 24px;
+    border-width: 1px 1px 0 0;
+  }
+
+  .about__corner--bl {
+    bottom: 24px;
+    left: 24px;
+    border-width: 0 0 1px 1px;
+  }
+
+  .about__corner--br {
+    bottom: 24px;
+    right: 24px;
+    border-width: 0 1px 1px 0;
+  }
+}
