@@ -12672,6 +12672,11 @@ h6, .h6 {
 
 @media (min-width: 768px) {
   .header {
+    padding: 11px 48px;
+  }
+}
+@media (min-width: 1200px) {
+  .header {
     padding: 16px 48px;
   }
 }
@@ -12827,7 +12832,7 @@ h6, .h6 {
   --header-h: 64px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   :root {
     --header-h: 74px;
   }
@@ -15028,7 +15033,7 @@ a.footer__col-legal.footer__col-legal--inline {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  min-height: 72px;
+  min-height: 64px;
   padding: 16px;
   flex-shrink: 0;
 }
@@ -15116,7 +15121,7 @@ a.footer__col-legal.footer__col-legal--inline {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  min-height: 72px;
+  min-height: 64px;
   padding: 16px;
 }
 

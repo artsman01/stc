@@ -38,7 +38,17 @@
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
+// Вертикальный паддинг на планшете подобран точно под высоту 64px (как на
+// мобилке): здесь самый высокий ребёнок шапки — лого-марка 42px (см.
+// .header__logo-mark ниже), 42 + 11 + 11 = 64. Десктоп (xl+) держит
+// прежние 16px/74px — см. отдельный override ниже.
 @include media-breakpoint-up(md) {
+  .header {
+    padding: 11px 48px;
+  }
+}
+
+@include media-breakpoint-up(xl) {
   .header {
     padding: 16px 48px;
   }
@@ -187,13 +197,15 @@
   font-weight: 600;
 }
 
-// The header's own rendered height at its two sizes (padding + tallest
-// content) — update both if the header's own dimensions change.
+// The header's own rendered height at its three sizes (padding + tallest
+// content) — update if the header's own dimensions change. Mobile AND
+// tablet are both 64px now (tablet padding tuned to match, see above);
+// only xl+ (desktop) steps up to 74px.
 :root {
   --header-h: 64px;
 }
 
-@include media-breakpoint-up(md) {
+@include media-breakpoint-up(xl) {
   :root {
     --header-h: 74px;
   }
