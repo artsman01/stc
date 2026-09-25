@@ -1,0 +1,405 @@
+// Выпадающее меню каталога (Figma 74:13004) — открывается КЛИКОМ на пункт
+// «Каталог» в шапке (не наведением — сам триггер обычная ссылка на
+// catalog.html, но раз стал интерактивным тумблером, клик по нему теперь
+// открывает/закрывает меню вместо немедленной навигации). Только десктоп
+// (xl+): на планшете/мобилке каталог переедет в гамбургерное меню отдельной
+// задачей, поэтому здесь нет брейкпоинтов вообще — сам триггер
+// `.header__link[href="catalog.html"]` уже скрыт до xl (d-none d-xl-flex).
+//
+// В отличие от поиска, оверлей НЕ перекрывает шапку (top:var(--header-h)) —
+// триггер открытия живёт внутри шапки. Тот же приём с
+// opacity+visibility+transform, что и в поиске, чтобы сайдбар мог плавно
+// выезжать слева, без display:none.
+// overflow у самого .catalog-menu убран (был overflow-y:auto) — весь оверлей
+// больше не скроллится целиком. Вместо этого сайдбар и панель — каждый свой
+// собственный скролл-контейнер (max-height:100% от этой фиксированной
+// высоты = высота экрана минус шапка, overflow-y:auto), чтобы длинный грид
+// товаров скроллился в рамках ТОЛЬКО правой панели, а сайдбар оставался на
+// месте, не уезжая вместе с ней.
+.catalog-menu {
+  display: flex;
+  align-items: flex-start;
+  position: fixed;
+  top: var(--header-h);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  background: var(--color-surface-popup);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+}
+
+.catalog-menu.is-open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.2s ease, visibility 0s linear 0s;
+}
+
+.catalog-menu__sidebar {
+  flex-shrink: 0;
+  width: 393px;
+  // height (не max-height) — сайдбар всегда ровно во весь доступный рост,
+  // и когда контента меньше (белая колонка тянется до низа экрана, как и
+  // раньше), и когда больше (обрезается + внутренний скролл, а не вылезает
+  // за пределы .catalog-menu).
+  height: 100%;
+  // overflow-y:auto (без scrollbar-gutter) — реальный список НК/МИ/АМ
+  // практически никогда не превышает высоту экрана, так что резервировать
+  // место под скроллбар тут постоянно смысла нет: это просто давало лишний
+  // пустой отступ справа от каждой строки всё время. В .catalog-menu__content
+  // резерв оставлен — там демонстрировали реальный сценарий с 24 карточками,
+  // где скролл действительно нужен и прыжок был заметен.
+  overflow-y: auto;
+  // overflow-x:hidden явно — иначе браузер сам считает его auto (правило
+  // CSS: если overflow-y не visible, overflow-x без явного значения тоже
+  // computed как auto, не visible), и любое горизонтальное переполнение
+  // хоть на 1px (не воспроизвелось в headless Chrome, но заметно на
+  // реальном Mac — заказчик прислал скриншот с горизонтальным скроллом в
+  // сайдбаре) сразу же рисует лишний горизонтальный скроллбар.
+  overflow-x: hidden;
+  // Без @include thin-scrollbar — по просьбе вернули обычный браузерный
+  // трек (та же логика, что и в поиске): сайдбар почти никогда реально не
+  // скроллится, так что «прыжок» ширины при появлении скролла — не
+  // практическая проблема (в отличие от .catalog-menu__content ниже, где
+  // это демонстрировали на реальном 24-карточечном сценарии).
+  background: var(--color-bg-primary);
+  transform: translateX(-24px);
+  transition: transform 0.2s ease;
+}
+
+.catalog-menu.is-open .catalog-menu__sidebar {
+  transform: translateX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .catalog-menu,
+  .catalog-menu__sidebar {
+    transition: none;
+  }
+}
+
+// Фон снова отдельным слоем (::before) — тот же приём и та же причина, что
+// у .icon-btn: opacity на hover должна притухать только фон, а текст/иконку
+// не трогать вообще (ни цветом, ни прозрачностью), поэтому просто opacity
+// на самом .catalog-menu__group-toggle не подходит — задела бы всё дерево.
+// span/.icon получают position:relative, чтобы красились ПОСЛЕ ::before
+// (позиционированные элементы стекуются после обычных, независимо от
+// порядка в DOM — тот же нюанс, что уже ловили на .icon-btn).
+.catalog-menu__group-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 16px;
+  border: 0;
+  background: none;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-text-primary);
+  text-align: left;
+}
+
+.catalog-menu__group-toggle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-bg-secondary);
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.catalog-menu__group-toggle:hover::before {
+  opacity: 0.7;
+}
+
+// У раскрытой группы фон и так уже тёмный (brand-secondary) — тот же
+// opacity:.7, что у свёрнутой, слишком заметно "срывал" его в светлую
+// сторону; здесь hover должен быть едва уловимым намёком, не полноценной
+// сменой тона.
+.catalog-menu__group.is-open .catalog-menu__group-toggle:hover::before {
+  opacity: 0.95;
+}
+
+.catalog-menu__group-toggle span {
+  position: relative;
+  flex: 1 1 0;
+}
+
+.catalog-menu__group-toggle .icon {
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+// Развёрнутая группа — тёмная шапка + шеврон смотрит вверх (та же svg
+// angle-down, просто повёрнутая, как и всюду в проекте — не тратим лишний
+// symbol на зеркальную версию иконки). Это состояние ПОСТОЯННОЕ (не hover),
+// поэтому красит текст в белый как и раньше — только сам hover-эффект выше
+// стал прозрачностью, эта часть не менялась.
+.catalog-menu__group.is-open .catalog-menu__group-toggle {
+  color: var(--color-text-button);
+}
+
+.catalog-menu__group.is-open .catalog-menu__group-toggle::before {
+  background: var(--color-brand-secondary);
+}
+
+.catalog-menu__group.is-open .catalog-menu__group-toggle .icon {
+  transform: rotate(180deg);
+}
+
+// Раскрытие подпунктов — тот же приём grid-template-rows:0fr→1fr, что и в
+// аккордеоне подвала, включая обязательную двойную обёртку (-inner без
+// собственных отступов): без неё трек не схлопывается до истинного нуля,
+// если у прямого ребёнка есть свои padding/margin (уже наступали на эти
+// грабли дважды на Footer).
+.catalog-menu__subitems {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.2s ease;
+}
+
+.catalog-menu__group.is-open .catalog-menu__subitems {
+  grid-template-rows: 1fr;
+}
+
+.catalog-menu__subitems-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+// Пункты НК теперь <button> (наведение переключает панель, ссылки убраны
+// по просьбе — только «прыжок» количества товаров, никакой навигации), а
+// пункты Мех.испытаний/Анализа металлов остались <a> (реальные ссылки на
+// catalog.html, у них нет своей панели). Общий сброс border/background/
+// width/text-align/font покрывает оба случая, для <a> ничего не меняет.
+// Граница — ТОЛЬКО border-top, и только через +-селектор (между пунктами,
+// не у первого в группе). border-top+border-bottom на каждом пункте (как
+// было раньше) давало на стыке двух пунктов ДВЕ соседние 1px-линии от двух
+// разных элементов — попиксельно проверено через CDP: две строки пикселей
+// цвета border-light подряд, реально ~2px, а не 1px, как просили. Один
+// селектор — одна строка пикселей на границу, гарантированно 1px.
+.catalog-menu__subitem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 16px;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  color: var(--color-text-primary);
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.catalog-menu__subitem + .catalog-menu__subitem {
+  border-top: 1px solid var(--color-border-light);
+}
+
+.catalog-menu__subitem span {
+  flex: 1 1 0;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+// Плавное приглушение вместо мгновенной заливки — тот же принцип, что у
+// .tab/.search-panel__tag, для всех строк без собственного «активного» фона.
+//
+// При наведении убираем границу «вокруг» самого пункта — то есть и его
+// собственную border-top (если он не первый), и border-top СЛЕДУЮЩЕГО
+// пункта (та же граница физически принадлежит соседнему элементу снизу).
+// border-color:transparent, а не display:none/width:0, чтобы соседние
+// строки не дёргались по высоте при наведении.
+.catalog-menu__subitem:hover {
+  background: var(--color-bg-footer);
+  border-top-color: transparent;
+}
+
+.catalog-menu__subitem:hover + .catalog-menu__subitem {
+  border-top-color: transparent;
+}
+
+// «Активный» (последний наведённый) пункт НК — подсвечивается синим, как в
+// Figma-макете для «Ультразвукового контроля» (там же и была единственная
+// реальная грид-панель); теперь подсветка переключается JS-ом на любой
+// наведённый пункт НК, поскольку у всех 10 есть своя (пусть и с
+// переиспользованными карточками) панель — см. initCatalogMenu.
+.catalog-menu__subitem.is-active {
+  background: var(--color-brand-primary);
+  color: var(--color-text-button);
+}
+
+.catalog-menu__subitem.is-active:hover {
+  background: var(--color-brand-primary);
+}
+
+// Правая панель — раньше держала только свою натуральную высоту (Figma:
+// items-start, без stretch), но это ломало наведение: если навести на
+// пункт ближе к низу сайдбара, а в его подкатегории мало товаров (короткий
+// грид), панель заканчивалась ВЫШЕ этого пункта по Y — при попытке провести
+// курсор вправо, к панели, он вместо этого попадал в пустой затемнённый фон
+// под ней (не элемент сайдбара и не элемент панели), что снимало hover и
+// закрывало панель, не дав до неё домышковать. Теперь height:100% (как у
+// сайдбара) — панель всегда во весь рост .catalog-menu, независимо от
+// количества карточек внутри, так что вправо от ЛЮБОГО пункта сайдбара
+// курсор гарантированно попадает на территорию панели, а не в пустоту.
+//
+// Ширина фиксирована под ровно 4 карточки в ряд (176×4 + gap 16×3 + padding
+// грида 16×2 = 784px) и не зависит от того, сколько товаров реально показано
+// — даже при одной карточке (data-count=1 у какой-то подкатегории) панель не
+// схлопывается по ширине, остаётся тем же 4-колоночным контейнером, просто с
+// пустым местом в ряду.
+//
+// Скролл живёт на ЭТОМ элементе (overflow-y:auto), а видимая белая карточка
+// (фон, border-left, фикс. ширина 784) вынесена во вложенный
+// .catalog-menu__content-inner. Ширина внешнего слоя — 784px + РЕАЛЬНАЯ
+// ширина системного скроллбара текущего браузера/ОС (--scrollbar-width,
+// измеряется один раз в JS — см. начало main.js). Обычный трек (без
+// @include thin-scrollbar — убрали по той же просьбе, что и в поиске/
+// сайдбаре) может быть от 0 (авто-скрытие, macOS по умолчанию) до ~17px
+// (Windows или macOS с «Показывать всегда») — статичный запас либо
+// оставлял щель, либо не вмещал скроллбар; измеренное значение убирает
+// и то, и другое: щели нет, но карточка не обрезается. Fallback 15px в
+// calc() — на случай если JS почему-то не успел выставить переменную.
+// Без собственного фона/бордера у самого .catalog-menu__content, так что
+// когда браузер реально рисует скроллбар (см. demo data-count=24), он
+// рисуется в этой лишней прозрачной полосе СБОКУ от белой карточки (видна
+// тёмная подложка, не сама карточка) — карточка и её грид ни на пиксель не
+// сдвигаются и не сужаются. Это и есть та часть, которую по прямой просьбе
+// оставили как было (в отличие от сайдбара/поиска, где сам факт прыжка
+// ширины не был реальной проблемой) — здесь прыжок демонстрировался на
+// реальном сценарии.
+.catalog-menu__content {
+  display: none;
+  flex-shrink: 0;
+  width: calc(784px + var(--scrollbar-width, 15px));
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden; // защитная мера, см. комментарий у .catalog-menu__sidebar
+}
+
+.catalog-menu__content.is-visible {
+  display: block;
+}
+
+.catalog-menu__content-inner {
+  width: 784px;
+  min-height: 100%;
+  padding-bottom: 48px;
+  border-left: 1px solid var(--color-border-light);
+  background: var(--color-bg-primary);
+}
+
+// Шапка+табы остаются на виду, пока скроллится грид под ними — sticky
+// именно у общей обёртки (а не у header/tabs-wrap по отдельности), чтобы не
+// высчитывать вручную второй top-отступ под высоту первого блока.
+.catalog-menu__content-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.catalog-menu__content-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background: var(--color-bg-secondary);
+}
+
+.catalog-menu__content-header span {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-text-primary);
+}
+
+// Фон нужен явно (белый, как у самой панели) — раньше блок был просто
+// прозрачным поверх .catalog-menu__content, что было незаметно без скролла
+// под ним; теперь, когда грид может скроллиться ПОД sticky-шапкой/табами,
+// без непрозрачного фона сквозь них были бы видны уезжающие карточки.
+.catalog-menu__tabs-wrap {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border-light);
+  background: var(--color-bg-primary);
+}
+
+// Переиспользуем .tabs/.tab (те же цвета/радиус/высота, что у фильтра
+// каталога на главной) — здесь только меньше шрифт (12px вместо 14,
+// Figma-масштаб body/meta), остальное 1-в-1 совпадает без переопределений.
+.catalog-menu__tabs-wrap .tab {
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.catalog-menu__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+
+// align-items:flex-start — карточки в ряду намеренно РАЗНОЙ высоты (сама
+// Figma-разметка так и показывает: 202/220/238px в одном ряду, в отличие от
+// Solutions/AboutBullets тут высоту никто не выравнивает ни JS, ни stretch).
+.catalog-menu__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.catalog-menu__card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 176px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.catalog-menu__card-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 4px;
+  background: var(--color-bg-secondary);
+  overflow: hidden;
+}
+
+.catalog-menu__card-img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.25s ease;
+}
+
+.catalog-menu__card-title {
+  display: block;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--color-text-heading);
+  transition: color 0.15s ease;
+}
+
+// Тот же лёгкий zoom, что у .category-card в каталоге на главной — только
+// scale вместо .category-card__bg висит прямо на <img> (overflow:hidden у
+// .catalog-menu__card-img её обрезает, отдельный оверскан на -6px не нужен,
+// т.к. это не background-layer с fixed inset, а обычный object-fit:cover).
+@media (hover: hover) {
+  .catalog-menu__card:hover .catalog-menu__card-img img {
+    transform: scale(1.06);
+  }
+
+  .catalog-menu__card:hover .catalog-menu__card-title {
+    color: var(--color-brand-primary);
+  }
+}

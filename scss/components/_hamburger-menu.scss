@@ -1,0 +1,290 @@
+// Гамбургер-меню (Figma 75:14223 tablet / 75:15671 mobile — закрытое,
+// 75:15948 / 75:15950 — открытый второй уровень) — мобильный/планшетный
+// аналог выпадающего каталога с сайта: тот же список категорий переиспользует
+// классы `.catalog-menu__group*`/`.catalog-menu__subitem` 1-в-1 (те же
+// data-panel/data-count, тот же аккордеон), потому что список категорий в
+// Figma идентичен пиксель-в-пиксель. Уникальны здесь только: шапка с лого,
+// пункты «Компания/База знаний/Контакты», блок контактов+кнопка, и второй
+// уровень — по явной правке заказчика открывается ОТДЕЛЬНЫМ полноэкранным
+// слоем (не рядом, как на десктопе), поэтому карточки товаров и сетка —
+// новые классы `.hamburger-menu__*`, а не `.catalog-menu__card` (там
+// фиксированная desktop-ширина 176px, тут нужна адаптивная сетка).
+//
+// Только xl-минус: триггер (`#hamburger-trigger`) сам скрыт от xl
+// (d-xl-none), так что выше xl этот оверлей просто не открыть — как и с
+// catalog-menu/search, брейкпоинтов внутри файла нет.
+.hamburger-menu {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: var(--color-surface-popup);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+}
+
+.hamburger-menu.is-open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.2s ease, visibility 0s linear 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hamburger-menu,
+  .hamburger-menu__drawer {
+    transition: none;
+  }
+}
+
+// Первый уровень — сайдбар 393px (та же ширина и тот же слайд по X, что и
+// у catalog-menu__sidebar на десктопе), высота ровно во весь экран.
+//
+// Скролл устроен так же, как у catalog-menu__content на десктопе: скролл-
+// контейнер (сам .hamburger-menu__drawer) шире видимой белой карточки на
+// величину реального скроллбара (--scrollbar-width, та же JS-измеренная
+// переменная), а видимая карточка (.hamburger-menu__drawer-inner) держит
+// фикс. 393px и свой фон. Когда контент не помещается по высоте и скроллбар
+// реально появляется, он рисуется в этой прозрачной запасной полосе СПРАВА
+// от карточки (виден тёмный задник меню, не сама карточка) — карточка и
+// её контент никогда не сужаются и не сдвигаются, есть скролл или нет.
+// max-width:100% — на узких mobile-вьюпортах (~393px) не даёт запасу под
+// скроллбар вытолкнуть дровер за пределы экрана; в этом случае запасной
+// полосе просто негде поместиться, что ожидаемо (на touch-устройствах
+// скроллбар обычно оверлейный и места не требует).
+.hamburger-menu__drawer {
+  flex-shrink: 0;
+  width: calc(393px + var(--scrollbar-width, 15px));
+  max-width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transform: translateX(-24px);
+  transition: transform 0.2s ease;
+}
+
+.hamburger-menu__drawer-inner {
+  display: flex;
+  flex-direction: column;
+  width: 393px;
+  min-height: 100%;
+  background: var(--color-bg-primary);
+}
+
+.hamburger-menu.is-open .hamburger-menu__drawer {
+  transform: translateX(0);
+}
+
+// Скрывается, когда открыт второй уровень (is-level2) — второй уровень
+// занимает уже не 393px, а всю ширину оверлея (см. Figma: контейнер второго
+// уровня на tablet — все 768px, не 393).
+.hamburger-menu.is-level2 .hamburger-menu__drawer {
+  display: none;
+}
+
+.hamburger-menu__head {
+  // Лого красится через var(--header-logo) (та же переменная, что у
+  // .header__logo-mark/-text) — тут не внутри .header, поэтому задаём
+  // значение прямо здесь: белый фон дровера — всегда «solid»-вид логотипа.
+  --header-logo: var(--color-brand-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 72px;
+  padding: 16px;
+  flex-shrink: 0;
+}
+
+// Тот же приём, что у header-solid миксина — светлый кружок-подложка вместо
+// дефолтного тёмного .icon-btn. --icon-btn-bg-hover раньше был по ошибке
+// --color-border-default (не совпадал с реальным значением header-solid),
+// из-за чего hover ощутимо отличался от остальных кнопок .header__actions в
+// белой шапке — заказчик заметил разницу; исправлено на тот же bg-light,
+// что и в самом header-solid.
+.hamburger-menu__close {
+  --icon-btn-bg: var(--color-bg-secondary);
+  --icon-btn-bg-hover: var(--color-bg-light);
+  --icon-btn-color: var(--color-text-primary);
+}
+
+// Та же лёгкая opacity-подсказка на фоне при наведении, что у кнопок
+// «Поиск»/«Сравнение» в шапке (.icon-btn[aria-label="Поиск"]:hover::before
+// и т.п. в _icon-btn.scss) — только фон-подложка притухает, иконка (крестик)
+// остаётся полностью непрозрачной.
+.hamburger-menu__close:hover::before {
+  opacity: 0.7;
+}
+
+.hamburger-menu__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.hamburger-menu__contact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 32px 16px;
+}
+
+.hamburger-menu__contact-label {
+  margin: 0;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-text-secondary);
+}
+
+.hamburger-menu__contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-text-primary);
+}
+
+.hamburger-menu__contact-list a {
+  color: inherit;
+  transition: color 0.15s ease;
+}
+
+.hamburger-menu__contact-list a:hover {
+  color: var(--color-brand-primary);
+}
+
+// Компания/База знаний/Контакты — те же три .catalog-menu__subitem, что и
+// пункты аккордеона выше, но идут ПОСЛЕ последней группы (.catalog-menu__
+// group) как самостоятельные прямые дети .hamburger-menu__list, а не внутри
+// чьего-то .catalog-menu__subitems-inner — общий `.catalog-menu__subitem +
+// .catalog-menu__subitem{border-top}` (см. _catalog-menu.scss) поэтому
+// растягивается только между «Компанией»/«Базой знаний»/«Контактами» между
+// собой (они друг другу непосредственные соседи), но не берёт верхнюю
+// границу над «Компанией» (её предыдущий сосед в DOM — .catalog-menu__group
+// «Анализ металлов», не .catalog-menu__subitem) и не даёт нижней границы под
+// «Контактами» (последний элемент, соседа снизу нет). Добавляем обе границы
+// явно, тем же цветом/приёмом (border-color вместо display, чтобы не
+// дёргалось), с тем же hover-сбросом, что и у остальных пунктов.
+.hamburger-menu__list > a.catalog-menu__subitem:first-of-type {
+  border-top: 1px solid var(--color-border-light);
+}
+
+.hamburger-menu__list > a.catalog-menu__subitem:first-of-type:hover {
+  border-top-color: transparent;
+}
+
+.hamburger-menu__list > a.catalog-menu__subitem:last-of-type {
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.hamburger-menu__list > a.catalog-menu__subitem:last-of-type:hover {
+  border-bottom-color: transparent;
+}
+
+// Второй уровень — отдельный полноэкранный слой (по правке заказчика: не
+// рядом с первым, а вместо него). Скрыт по умолчанию, занимает всё
+// доступное пространство оверлея, когда открыт (flex:1, а не фикс. 393px).
+.hamburger-menu__detail {
+  display: none;
+  flex: 1 1 auto;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--color-bg-primary);
+}
+
+.hamburger-menu.is-level2 .hamburger-menu__detail {
+  display: block;
+}
+
+.hamburger-menu__detail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 72px;
+  padding: 16px;
+}
+
+.hamburger-menu__back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  background: none;
+  padding: 0;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--color-text-primary);
+  transition: color 0.15s ease;
+}
+
+.hamburger-menu__back:hover {
+  color: var(--color-brand-primary);
+}
+
+// Адаптивная сетка карточек товаров — в отличие от десктопной
+// .catalog-menu__grid (ручные ряды по 4 фикс-ширины 176px), тут нужна
+// именно резиновая раскладка под две реальные ширины экрана: 2 колонки на
+// мобилке, 3 — с md (планшет). CSS Grid сам переносит карточки, ручного
+// деления на ряды в JS не требуется (в отличие от десктопа).
+.hamburger-menu__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 16px;
+}
+
+@include media-breakpoint-up(md) {
+  .hamburger-menu__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.hamburger-menu__card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.hamburger-menu__card-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 4px;
+  background: var(--color-bg-secondary);
+  overflow: hidden;
+}
+
+.hamburger-menu__card-img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.25s ease;
+}
+
+.hamburger-menu__card-title {
+  display: block;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--color-text-heading);
+}
+
+// Тот же zoom+синий-заголовок на hover, что и у .catalog-menu__card на
+// десктопе — для единообразия hover-языка сайта.
+@media (hover: hover) {
+  .hamburger-menu__card:hover .hamburger-menu__card-img img {
+    transform: scale(1.06);
+  }
+
+  .hamburger-menu__card:hover .hamburger-menu__card-title {
+    color: var(--color-brand-primary);
+  }
+}

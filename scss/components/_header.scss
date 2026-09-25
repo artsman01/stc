@@ -18,7 +18,7 @@
   --header-border: var(--color-border-light);
   --header-logo: var(--color-brand-primary);
   --icon-btn-bg: var(--color-bg-secondary);
-  --icon-btn-bg-hover: var(--color-border-default);
+  --icon-btn-bg-hover: var(--color-bg-light);
   --icon-btn-color: var(--color-text-primary);
   --badge-bg: var(--color-brand-secondary);
   --badge-color: var(--color-text-button);
@@ -63,6 +63,13 @@
 }
 
 .header--overlay:has(:focus-visible) {
+  @include header-solid;
+}
+
+// Пока открыт сайдбар каталога, шапка всегда белая — даже поверх hero,
+// где обычно прозрачная .header--overlay. Класс вешает/снимает JS
+// (initCatalogMenu в main.js) вместе с .is-open у самого меню.
+.header--overlay.header--menu-open {
   @include header-solid;
 }
 
@@ -160,6 +167,13 @@
 }
 
 .header__link {
+  // Сброс для «Каталог» — единственного .header__link, который на самом
+  // деле <button> (кнопка-тумблер, не ссылка); на настоящих <a> ничего не
+  // меняет, там и так нет фона/рамки/паддинга по умолчанию.
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
   color: inherit;
   white-space: nowrap;
   transition: color 0.15s ease;
@@ -189,16 +203,22 @@
 // against it — a plain --header-h offset left the target's heading touching
 // the header with no breathing room, which read as the header still
 // covering it.
-// scrollbar-gutter:stable держит место под скроллбар всегда — без этого
-// временная блокировка скролла при открытии поиска убирает скроллбар и весь
-// контент/шапка сдвигаются вправо на его ширину (заметный прыжок). Свойство
-// работает только если overflow-y не "visible" — явно ставим auto (html и
-// так фактический скролл-контейнер страницы), поэтому блокировка скролла в
-// JS тоже должна идти через html, а не body (см. initSearch в main.js).
+//
+// Раньше тут был html{overflow-y:auto; scrollbar-gutter:stable} — от него
+// отказались: побочный эффект оказался хуже пользы. scrollbar-gutter на
+// html "просачивался" в расчёт containing block для ЛЮБОГО position:fixed
+// элемента сайта (не только для body, ради которого его ставили), причём
+// по-разному в разных браузерах (в headless Chrome урезал даже 100vw, в
+// другом браузере заказчика — нет) — компенсировать это в каждом fixed-
+// оверлее отдельными формулами оказалось хрупко и один раз реально сломало
+// видимость скролла на реальном устройстве. Задача, ради которой это
+// заводили (body{position:fixed} при блокировке скролла — см. lockPageScroll
+// в main.js — не должен дёргать шапку/контент на ширину скроллбара), решена
+// проще и без сайд-эффектов: сам lockPageScroll теперь компенсирует ширину
+// НАПРЯМУЮ на body (padding-right на реально измеренную --scrollbar-width,
+// только если скроллбар и правда был), не трогая html вообще.
 html {
   scroll-padding-top: calc(var(--header-h) + 16px);
-  overflow-y: auto;
-  scrollbar-gutter: stable;
 }
 
 // Smooth-scrolls anchor jumps; skipped for people who asked for less motion.

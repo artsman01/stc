@@ -2,6 +2,19 @@
 // Colors can be overridden from a parent through --icon-btn-* / --badge-*
 // (the header does this to switch between its transparent and solid looks).
 
+// Фон вынесен в ::before отдельным слоем — чтобы opacity на hover у
+// поиска/сравнения (ниже) притухала только сам кружок-подложку, а не иконку
+// или бейдж-счётчик поверх неё (opacity на самом .icon-btn затронул бы всё
+// дерево целиком).
+//
+// ::before обязательно должен быть position:absolute (сам он и есть тот
+// самый слой), а браузер красит ПОЗИЦИОНИРОВАННЫЕ элементы ПОСЛЕ обычных
+// (в потоке) детей одного stacking context'а, ИГНОРИРУЯ порядок в DOM —
+// поэтому просто оставить .icon у как есть (не позиционирована) было
+// недостаточно: ::before рисовался поверх неё и полностью скрывал иконку.
+// Фикс — сделать саму иконку тоже "позиционированной" (position:relative,
+// без смещения), чтобы она попала в ту же группу и красилась по DOM-порядку
+// (после ::before, значит сверху), без явного z-index.
 .icon-btn {
   position: relative;
   display: flex;
@@ -13,15 +26,52 @@
   padding: 0;
   border: 0;
   border-radius: 50%;
-  background: var(--icon-btn-bg, var(--color-text-primary));
   color: var(--icon-btn-color, var(--color-text-button));
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: color 0.2s ease;
+}
+
+.icon-btn::before {
+  content: '';
+  position: absolute;
+  // -1px, не 0 — на Mac (ретина, GPU-композитинг слоя из-за transition на
+  // opacity/background-color) между этим ::before и родительским .icon-btn
+  // (у обоих border-radius:50% ровно по одной границе) виден еле заметный
+  // "ободок" — классический шов от двух идентично совпадающих по кромке
+  // скруглённых слоёв, рассинхронизированных на суб-пиксель при разных
+  // проходах растеризации. Чуть увеличенный inset убирает точное совпадение
+  // границ, шва не остаётся, а на глаз кружок не отличить от прежнего.
+  inset: -1px;
+  border-radius: 50%;
+  background: var(--icon-btn-bg, var(--color-text-primary));
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.icon-btn > .icon {
+  position: relative;
 }
 
 .icon-btn:hover,
 .icon-btn:focus-visible {
-  background: var(--icon-btn-bg-hover, var(--color-brand-secondary));
   color: var(--icon-btn-color, var(--color-text-button));
+}
+
+.icon-btn:hover::before,
+.icon-btn:focus-visible::before {
+  background: var(--icon-btn-bg-hover, var(--color-brand-secondary));
+}
+
+// Все три кнопки .header__actions (поиск/сравнение/бургер) дополнительно
+// чуть притухают фоном при наведении — та же лёгкая opacity-подсказка, что
+// уже используется у тегов поиска/табов, но только у ::before (иконка и
+// бейдж-счётчик остаются полностью непрозрачными). Раньше бургер сюда не
+// входил («не просили») — из-за этого его hover ощущался заметно плотнее
+// (opacity:1 фона) на фоне заметно светлее выглядящих поиска/сравнения;
+// заказчик обратил внимание на разницу — добавлен и бургер, для единообразия
+// всех трёх кнопок блока.
+.icon-btn[aria-label="Поиск"]:hover::before,
+.icon-btn[aria-label^="Сравнение"]:hover::before,
+.icon-btn[aria-label="Меню"]:hover::before {
+  opacity: 0.7;
 }
 
 // Counter that sits on the button's top-right corner.

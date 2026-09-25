@@ -22,3 +22,32 @@ button {
 a {
   transition: color 0.15s ease;
 }
+
+// Тонкий скроллбар для внутренних скролл-контейнеров (поиск, каталог-меню).
+// Без этого macOS с настройкой «Показывать скроллбары: всегда» рисует
+// классический широкий трек — заметно грубее плоского дизайна сайта.
+// Firefox — через scrollbar-width/scrollbar-color, Chrome/Safari — через
+// -webkit-scrollbar. Overlay-скроллбары (macOS по умолчанию, мобильные)
+// это правило не трогает — оно только переопределяет вид САМ, когда
+// браузер решает показать классический.
+@mixin thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-default) transparent;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-border-default);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--color-text-secondary);
+  }
+}

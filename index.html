@@ -26,10 +26,10 @@
           <span class="header__logo-mark" aria-hidden="true"></span>
           <span class="header__logo-text" aria-hidden="true"></span>
         </a>
-        <a class="header__link d-none d-xl-flex align-items-center gap-2" href="catalog.html">
+        <button class="header__link d-none d-xl-flex align-items-center gap-2" type="button" id="catalog-trigger" aria-expanded="false" aria-controls="catalog-menu">
           <svg class="icon"><use href="assets/icons/sprite.svg#menu"></use></svg>
           <span>Каталог</span>
-        </a>
+        </button>
       </div>
 
       <nav class="d-none d-xl-flex align-items-center gap-5" aria-label="Основное меню">
@@ -51,7 +51,7 @@
             <svg class="icon"><use href="assets/icons/sprite.svg#comparison"></use></svg>
             <span class="icon-btn__badge">3</span>
           </a>
-          <button class="icon-btn d-xl-none" type="button" aria-label="Меню">
+          <button class="icon-btn d-xl-none" type="button" id="hamburger-trigger" aria-label="Меню" aria-expanded="false" aria-controls="hamburger-menu">
             <svg class="icon"><use href="assets/icons/sprite.svg#hamburger"></use></svg>
           </button>
         </div>
@@ -831,6 +831,377 @@
         <p class="search-panel__count" hidden></p>
         <div class="search-panel__results"></div>
       </div>
+    </div>
+  </div>
+
+  <div class="catalog-menu" id="catalog-menu" aria-hidden="true">
+    <div class="catalog-menu__sidebar">
+      <div class="catalog-menu__group is-open" data-group="nk">
+        <button class="catalog-menu__group-toggle" type="button" aria-expanded="true">
+          <span>Неразрушающий контроль</span>
+          <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-down"></use></svg>
+        </button>
+        <div class="catalog-menu__subitems">
+          <div class="catalog-menu__subitems-inner">
+            <button class="catalog-menu__subitem" type="button" data-panel="speedometer" data-count="3">
+              <svg class="icon"><use href="assets/icons/sprite.svg#speedometer"></use></svg>
+              <span>Визуальный и измерительный контроль</span>
+              <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+            </button>
+            <button class="catalog-menu__subitem" type="button" data-panel="ultra-sound" data-count="7">
+              <svg class="icon"><use href="assets/icons/sprite.svg#ultra-sound"></use></svg>
+              <span>Ультразвуковой контроль</span>
+              <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+            </button>
+            <button class="catalog-menu__subitem" type="button" data-panel="radiation" data-count="24">
+              <svg class="icon"><use href="assets/icons/sprite.svg#radiation"></use></svg>
+              <span>Радиографический контроль</span>
+              <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+            </button>
+            <button class="catalog-menu__subitem" type="button" data-panel="magnet" data-count="4">
+              <svg class="icon"><use href="assets/icons/sprite.svg#magnet"></use></svg>
+              <span>Магнитный контроль</span>
+              <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+            </button>
+            <button class="catalog-menu__subitem" type="button" data-panel="vortex" data-count="6">
+              <svg class="icon"><use href="assets/icons/sprite.svg#vortex"></use></svg>
+              <span>Вихретоковый контроль</span>
+              <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+            </button>
+            <button class="catalog-menu__subitem" type="button" data-panel="spray" data-count="2">
+              <svg class="icon"><use href="assets/icons/sprite.svg#spray"></use></svg>
+              <span>Капиллярный контроль</span>
+              <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+            </button>
+            <button class="catalog-menu__subitem" type="button" data-panel="water" data-count="5">
+              <svg class="icon"><use href="assets/icons/sprite.svg#water"></use></svg>
+              <span>Течеискание</span>
+              <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+            </button>
+            <button class="catalog-menu__subitem" type="button" data-panel="waves" data-count="3">
+              <svg class="icon"><use href="assets/icons/sprite.svg#waves"></use></svg>
+              <span>Акустико-эмиссионный контроль</span>
+              <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+            </button>
+            <button class="catalog-menu__subitem" type="button" data-panel="hot" data-count="4">
+              <svg class="icon"><use href="assets/icons/sprite.svg#hot"></use></svg>
+              <span>Тепловой контроль</span>
+              <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+            </button>
+            <button class="catalog-menu__subitem" type="button" data-panel="visual" data-count="6">
+              <svg class="icon"><use href="assets/icons/sprite.svg#visual"></use></svg>
+              <span>Оптический контроль</span>
+              <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="catalog-menu__group" data-group="mi">
+        <button class="catalog-menu__group-toggle" type="button" aria-expanded="false">
+          <span>Механические испытания</span>
+          <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-down"></use></svg>
+        </button>
+        <div class="catalog-menu__subitems">
+          <div class="catalog-menu__subitems-inner">
+            <button class="catalog-menu__subitem" type="button" data-panel="hot" data-count="3">
+              <svg class="icon"><use href="assets/icons/sprite.svg#hot"></use></svg>
+              <span>Испытания металлов по Шарпи</span>
+              <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+            </button>
+            <button class="catalog-menu__subitem" type="button" data-panel="speedometer" data-count="5">
+              <svg class="icon"><use href="assets/icons/sprite.svg#speedometer"></use></svg>
+              <span>Электромеханические машины</span>
+              <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+            </button>
+            <button class="catalog-menu__subitem" type="button" data-panel="water" data-count="2">
+              <svg class="icon"><use href="assets/icons/sprite.svg#water"></use></svg>
+              <span>Гидравлические машины</span>
+              <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+            </button>
+            <button class="catalog-menu__subitem" type="button" data-panel="vortex" data-count="6">
+              <svg class="icon"><use href="assets/icons/sprite.svg#vortex"></use></svg>
+              <span>Испытания на изгиб и перегиб</span>
+              <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+            </button>
+            <button class="catalog-menu__subitem" type="button" data-panel="spray" data-count="4">
+              <svg class="icon"><use href="assets/icons/sprite.svg#spray"></use></svg>
+              <span>Специальное оборудование</span>
+              <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="catalog-menu__group" data-group="am">
+        <button class="catalog-menu__group-toggle" type="button" aria-expanded="false">
+          <span>Анализ металлов</span>
+          <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-down"></use></svg>
+        </button>
+        <div class="catalog-menu__subitems">
+          <div class="catalog-menu__subitems-inner">
+            <button class="catalog-menu__subitem" type="button" data-panel="waves" data-count="5">
+              <svg class="icon"><use href="assets/icons/sprite.svg#waves"></use></svg>
+              <span>Искровые оптико-эмиссионные спектрометры</span>
+              <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+            </button>
+            <button class="catalog-menu__subitem" type="button" data-panel="radiation" data-count="3">
+              <svg class="icon"><use href="assets/icons/sprite.svg#radiation"></use></svg>
+              <span>Оптико-эмиссионные спектрометры</span>
+              <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+            </button>
+            <button class="catalog-menu__subitem" type="button" data-panel="visual" data-count="7">
+              <svg class="icon"><use href="assets/icons/sprite.svg#visual"></use></svg>
+              <span>Портативные анализаторы металлов</span>
+              <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="catalog-menu__content">
+      <div class="catalog-menu__content-inner">
+      <div class="catalog-menu__content-sticky">
+        <div class="catalog-menu__content-header">
+          <svg class="icon"><use href="assets/icons/sprite.svg#ultra-sound"></use></svg>
+          <span>Ультразвуковой контроль</span>
+        </div>
+
+        <div class="catalog-menu__tabs-wrap">
+          <div class="tabs">
+            <button class="tab tab--active" type="button" data-filter="all">Все</button>
+            <button class="tab" type="button" data-filter="main">Основное оборудование</button>
+            <button class="tab" type="button" data-filter="consumable">Расходные материалы</button>
+            <button class="tab" type="button" data-filter="extra">Дополнительное оборудование</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="catalog-menu__grid">
+        <div class="catalog-menu__row">
+          <a class="catalog-menu__card" href="catalog.html">
+            <span class="catalog-menu__card-img"><img src="assets/catalog-menu/scanners.png" alt=""></span>
+            <span class="catalog-menu__card-title">Сканеры-дефектоскопы</span>
+          </a>
+          <a class="catalog-menu__card" href="catalog.html">
+            <span class="catalog-menu__card-img"><img src="assets/catalog-menu/thickness-gauges.png" alt=""></span>
+            <span class="catalog-menu__card-title">Ультразвуковые толщиномеры</span>
+          </a>
+          <a class="catalog-menu__card" href="catalog.html">
+            <span class="catalog-menu__card-img"><img src="assets/catalog-menu/flaw-detectors.png" alt=""></span>
+            <span class="catalog-menu__card-title">Ультразвуковые дефектоскопы</span>
+          </a>
+          <a class="catalog-menu__card" href="catalog.html">
+            <span class="catalog-menu__card-img"><img src="assets/catalog-menu/automated-lines.png" alt=""></span>
+            <span class="catalog-menu__card-title">Автоматизированные линии</span>
+          </a>
+        </div>
+        <div class="catalog-menu__row">
+          <a class="catalog-menu__card" href="catalog.html">
+            <span class="catalog-menu__card-img"><img src="assets/catalog-menu/par-sensors.png" alt=""></span>
+            <span class="catalog-menu__card-title">Роликовые датчики на фазированных решётках ФАР</span>
+          </a>
+          <a class="catalog-menu__card" href="catalog.html">
+            <span class="catalog-menu__card-img"><img src="assets/catalog-menu/gel.png" alt=""></span>
+            <span class="catalog-menu__card-title">Гель для УЗК</span>
+          </a>
+          <a class="catalog-menu__card" href="catalog.html">
+            <span class="catalog-menu__card-img"><img src="assets/catalog-menu/accessories.png" alt=""></span>
+            <span class="catalog-menu__card-title">Вспомогательные приборы и принадлежности</span>
+          </a>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hamburger-menu" id="hamburger-menu" aria-hidden="true">
+    <div class="hamburger-menu__drawer">
+     <div class="hamburger-menu__drawer-inner">
+      <div class="hamburger-menu__head">
+        <a class="header__logo" href="index.html" aria-label="СТК — Современные технологии контроля">
+          <span class="header__logo-mark" aria-hidden="true"></span>
+          <span class="header__logo-text" aria-hidden="true"></span>
+        </a>
+        <button class="icon-btn hamburger-menu__close" type="button" aria-label="Закрыть меню">
+          <svg class="icon"><use href="assets/icons/sprite.svg#cross"></use></svg>
+        </button>
+      </div>
+
+      <div class="hamburger-menu__list">
+        <div class="catalog-menu__group is-open" data-group="nk">
+          <button class="catalog-menu__group-toggle" type="button" aria-expanded="true">
+            <span>Неразрушающий контроль</span>
+            <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-down"></use></svg>
+          </button>
+          <div class="catalog-menu__subitems">
+            <div class="catalog-menu__subitems-inner">
+              <button class="catalog-menu__subitem" type="button" data-panel="speedometer" data-count="3">
+                <svg class="icon"><use href="assets/icons/sprite.svg#speedometer"></use></svg>
+                <span>Визуальный и измерительный контроль</span>
+                <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+              </button>
+              <button class="catalog-menu__subitem" type="button" data-panel="ultra-sound" data-count="7">
+                <svg class="icon"><use href="assets/icons/sprite.svg#ultra-sound"></use></svg>
+                <span>Ультразвуковой контроль</span>
+                <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+              </button>
+              <button class="catalog-menu__subitem" type="button" data-panel="radiation" data-count="5">
+                <svg class="icon"><use href="assets/icons/sprite.svg#radiation"></use></svg>
+                <span>Радиографический контроль</span>
+                <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+              </button>
+              <button class="catalog-menu__subitem" type="button" data-panel="magnet" data-count="4">
+                <svg class="icon"><use href="assets/icons/sprite.svg#magnet"></use></svg>
+                <span>Магнитный контроль</span>
+                <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+              </button>
+              <button class="catalog-menu__subitem" type="button" data-panel="vortex" data-count="6">
+                <svg class="icon"><use href="assets/icons/sprite.svg#vortex"></use></svg>
+                <span>Вихретоковый контроль</span>
+                <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+              </button>
+              <button class="catalog-menu__subitem" type="button" data-panel="spray" data-count="2">
+                <svg class="icon"><use href="assets/icons/sprite.svg#spray"></use></svg>
+                <span>Капиллярный контроль</span>
+                <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+              </button>
+              <button class="catalog-menu__subitem" type="button" data-panel="water" data-count="5">
+                <svg class="icon"><use href="assets/icons/sprite.svg#water"></use></svg>
+                <span>Течеискание</span>
+                <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+              </button>
+              <button class="catalog-menu__subitem" type="button" data-panel="waves" data-count="3">
+                <svg class="icon"><use href="assets/icons/sprite.svg#waves"></use></svg>
+                <span>Акустико-эмиссионный контроль</span>
+                <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+              </button>
+              <button class="catalog-menu__subitem" type="button" data-panel="hot" data-count="4">
+                <svg class="icon"><use href="assets/icons/sprite.svg#hot"></use></svg>
+                <span>Тепловой контроль</span>
+                <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+              </button>
+              <button class="catalog-menu__subitem" type="button" data-panel="visual" data-count="6">
+                <svg class="icon"><use href="assets/icons/sprite.svg#visual"></use></svg>
+                <span>Оптический контроль</span>
+                <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="catalog-menu__group" data-group="mi">
+          <button class="catalog-menu__group-toggle" type="button" aria-expanded="false">
+            <span>Механические испытания</span>
+            <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-down"></use></svg>
+          </button>
+          <div class="catalog-menu__subitems">
+            <div class="catalog-menu__subitems-inner">
+              <button class="catalog-menu__subitem" type="button" data-panel="hot" data-count="3">
+                <svg class="icon"><use href="assets/icons/sprite.svg#hot"></use></svg>
+                <span>Испытания металлов по Шарпи</span>
+                <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+              </button>
+              <button class="catalog-menu__subitem" type="button" data-panel="speedometer" data-count="5">
+                <svg class="icon"><use href="assets/icons/sprite.svg#speedometer"></use></svg>
+                <span>Электромеханические машины</span>
+                <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+              </button>
+              <button class="catalog-menu__subitem" type="button" data-panel="water" data-count="2">
+                <svg class="icon"><use href="assets/icons/sprite.svg#water"></use></svg>
+                <span>Гидравлические машины</span>
+                <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+              </button>
+              <button class="catalog-menu__subitem" type="button" data-panel="vortex" data-count="6">
+                <svg class="icon"><use href="assets/icons/sprite.svg#vortex"></use></svg>
+                <span>Испытания на изгиб и перегиб</span>
+                <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+              </button>
+              <button class="catalog-menu__subitem" type="button" data-panel="spray" data-count="4">
+                <svg class="icon"><use href="assets/icons/sprite.svg#spray"></use></svg>
+                <span>Специальное оборудование</span>
+                <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="catalog-menu__group" data-group="am">
+          <button class="catalog-menu__group-toggle" type="button" aria-expanded="false">
+            <span>Анализ металлов</span>
+            <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-down"></use></svg>
+          </button>
+          <div class="catalog-menu__subitems">
+            <div class="catalog-menu__subitems-inner">
+              <button class="catalog-menu__subitem" type="button" data-panel="waves" data-count="5">
+                <svg class="icon"><use href="assets/icons/sprite.svg#waves"></use></svg>
+                <span>Искровые оптико-эмиссионные спектрометры</span>
+                <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+              </button>
+              <button class="catalog-menu__subitem" type="button" data-panel="radiation" data-count="3">
+                <svg class="icon"><use href="assets/icons/sprite.svg#radiation"></use></svg>
+                <span>Оптико-эмиссионные спектрометры</span>
+                <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+              </button>
+              <button class="catalog-menu__subitem" type="button" data-panel="visual" data-count="7">
+                <svg class="icon"><use href="assets/icons/sprite.svg#visual"></use></svg>
+                <span>Портативные анализаторы металлов</span>
+                <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <a class="catalog-menu__subitem" href="#">
+          <span>Компания</span>
+        </a>
+        <a class="catalog-menu__subitem" href="#">
+          <span>База знаний</span>
+        </a>
+        <a class="catalog-menu__subitem" href="#">
+          <span>Контакты</span>
+        </a>
+      </div>
+
+      <div class="hamburger-menu__contact">
+        <p class="hamburger-menu__contact-label">Контактная информация</p>
+        <div class="hamburger-menu__contact-list">
+          <a class="fw-semibold" href="tel:88002506846">8 (800) 250-68-46</a>
+          <a href="mailto:office@stc-ndt.ru">office@stc-ndt.ru</a>
+          <span>г. Самара, ул. Партизанская 88, оф. 10</span>
+        </div>
+        <button class="btn btn-primary btn-lg" type="button">Заказать звонок</button>
+      </div>
+     </div>
+    </div>
+
+    <div class="hamburger-menu__detail" id="hamburger-detail">
+      <div class="hamburger-menu__detail-head">
+        <button class="hamburger-menu__back" type="button">
+          <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-left"></use></svg>
+          <span>Назад</span>
+        </button>
+        <button class="icon-btn hamburger-menu__close" type="button" aria-label="Закрыть меню">
+          <svg class="icon"><use href="assets/icons/sprite.svg#cross"></use></svg>
+        </button>
+      </div>
+
+      <div class="catalog-menu__content-header">
+        <svg class="icon"><use href="assets/icons/sprite.svg#ultra-sound"></use></svg>
+        <span>Ультразвуковой контроль</span>
+      </div>
+
+      <div class="catalog-menu__tabs-wrap">
+        <div class="tabs">
+          <button class="tab tab--active" type="button" data-filter="all">Все</button>
+          <button class="tab" type="button" data-filter="main">Основное оборудование</button>
+          <button class="tab" type="button" data-filter="consumable">Расходные материалы</button>
+          <button class="tab" type="button" data-filter="extra">Дополнительное оборудование</button>
+        </div>
+      </div>
+
+      <div class="hamburger-menu__grid"></div>
     </div>
   </div>
 
