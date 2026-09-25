@@ -14021,6 +14021,17 @@ textarea.input-field {
   mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent);
 }
 
+@media (max-width: 767.98px) {
+  .logos__track-wrap {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .logos__track-wrap::-webkit-scrollbar {
+    display: none;
+  }
+}
 .logos__track {
   display: flex;
   align-items: center;
@@ -14044,6 +14055,11 @@ textarea.input-field {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .logos__track {
+    animation: none;
+  }
+}
+@media (max-width: 767.98px) {
   .logos__track {
     animation: none;
   }
@@ -14993,6 +15009,7 @@ a.footer__col-legal.footer__col-legal--inline {
   display: flex;
   flex-direction: column;
   width: 393px;
+  max-width: 100%;
   min-height: 100%;
   background: var(--color-bg-primary);
 }
@@ -15103,6 +15120,13 @@ a.footer__col-legal.footer__col-legal--inline {
   padding: 16px;
 }
 
+@media (max-width: 767.98px) {
+  .hamburger-menu__head,
+  .hamburger-menu__detail-head {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+}
 .hamburger-menu__back {
   display: flex;
   align-items: center;

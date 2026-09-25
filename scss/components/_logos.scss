@@ -108,6 +108,29 @@
   mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent);
 }
 
+// На мобилке заказчик явно попросил свайп пальцем в обе стороны — сама
+// автопрокрутка (transform-анимация) и ручной scrollLeft через touch не
+// сочетаются (оба одновременно двигали бы контент по-разному, ощущалось
+// бы как рывки/борьба друг с другом), поэтому на мобилке анимация
+// выключается (см. ниже, .logos__track), а .logos__track-wrap вместо
+// overflow:hidden становится настоящим горизонтальным скролл-контейнером.
+// Разметка уже задублирована вдвое (см. index.html, для бесшовной
+// анимации) — это не мешает и ручному свайпу, просто даёт прокрутить
+// чуть дальше, до повтора набора. Скроллбар спрятан визуально (сам скролл
+// работает, просто без видимого трека — обычный приём для карточных лент).
+@include media-breakpoint-down(md) {
+  .logos__track-wrap {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
 // Дублирован в разметке ровно вдвое (см. index.html) — анимация сдвигает
 // на -50% своей собственной ширины, что равно ширине одного (не
 // продублированного) набора логотипов, и цикл получается бесшовным.
@@ -138,6 +161,14 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .logos__track {
+    animation: none;
+  }
+}
+
+// Анимация выключена на мобилке — см. комментарий у .logos__track-wrap
+// выше про конфликт transform-анимации с ручным touch-скроллом.
+@include media-breakpoint-down(md) {
   .logos__track {
     animation: none;
   }
