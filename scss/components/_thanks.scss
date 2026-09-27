@@ -1,0 +1,121 @@
+// Блок «Спасибо! Заявка принята» страницы thanks.html (Figma 43:3736
+// desktop / 44:3913 tablet / 44:4155 mobile) — заголовок+подзаголовок и
+// кнопка «Вернуться на главную» в карточке с уголками-засечками, тот же
+// приём, что у `.cta__corner`/`.callback-popup__corner`, но здесь все
+// четыре угла на месте (закрывать нечего, в отличие от попапа с крестиком).
+//
+// Только два состояния, не три, как у попапа — tablet и desktop в Figma
+// буквально идентичны (одна и та же ширина карточки 678px, один и тот же
+// паддинг/gap/отступы уголков), отличается только mobile.
+.thanks {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  background: var(--color-bg-primary);
+}
+
+@include media-breakpoint-up(md) {
+  .thanks {
+    padding: 64px 16px;
+  }
+}
+
+.thanks__container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 678px;
+  padding: 16px;
+}
+
+@include media-breakpoint-up(md) {
+  .thanks__container {
+    gap: 24px;
+    padding: 48px;
+  }
+}
+
+.thanks__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  width: 100%;
+}
+
+@include media-breakpoint-up(md) {
+  .thanks__header {
+    gap: 16px;
+  }
+}
+
+.thanks__title {
+  color: var(--color-text-primary);
+}
+
+.thanks__description {
+  max-width: 456px;
+  color: var(--color-text-secondary);
+}
+
+// На мобилке уголки прижаты вплотную к краю карточки (сама карточка там
+// не имеет 24px "воздуха" вокруг засечек — паддинг всего 16px, столько же,
+// сколько и размер уголка-квадрата, так что засечка встаёт ровно в угол).
+.thanks__corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 0 solid var(--color-border-default);
+}
+
+.thanks__corner--tl {
+  top: 0;
+  left: 0;
+  border-width: 1px 0 0 1px;
+}
+
+.thanks__corner--tr {
+  top: 0;
+  right: 0;
+  border-width: 1px 1px 0 0;
+}
+
+.thanks__corner--bl {
+  bottom: 0;
+  left: 0;
+  border-width: 0 0 1px 1px;
+}
+
+.thanks__corner--br {
+  bottom: 0;
+  right: 0;
+  border-width: 0 1px 1px 0;
+}
+
+@include media-breakpoint-up(md) {
+  .thanks__corner--tl {
+    top: 24px;
+    left: 24px;
+  }
+
+  .thanks__corner--tr {
+    top: 24px;
+    right: 24px;
+  }
+
+  .thanks__corner--bl {
+    bottom: 24px;
+    left: 24px;
+  }
+
+  .thanks__corner--br {
+    bottom: 24px;
+    right: 24px;
+  }
+}

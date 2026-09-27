@@ -1,0 +1,180 @@
+// Попап «Заказать звонок» (Figma 47:3389 desktop / 47:3756 tablet /
+// 47:3823 mobile) — открывается по клику на кнопку «Заказать звонок» в
+// блоке контактов гамбургер-меню (см. initCallbackPopup в main.js).
+//
+// Форма и её поля/чекбоксы/кнопка переиспользуют те же классы, что уже
+// есть у формы CTA на главной (`.input-field`, `.checkbox-field*`,
+// `.btn.btn-primary.btn-lg`) — в Figma это буквально те же компоненты.
+// Уголки-засечки — тот же приём, что `.cta__corner`/`.about__corner`
+// (border-трюк на 4 маленьких абсолютных квадрата), просто свой набор
+// классов, т.к. это отдельный, самостоятельный компонент, а не часть CTA.
+//
+// Блокировка скролла страницы — общие lockPageScroll()/unlockPageScroll()
+// (те же, что у поиска/catalog-menu/гамбургера) — то есть тот же самый уже
+// отлаженный механизм: скролл страницы блокируется, соседний контент не
+// дёргается вбок (компенсация ширины реального скроллбара через
+// body.style.paddingRight, включая случай прилипшей шапки), сама панель
+// скроллится обычным браузерным треком сбоку, если её контент когда-либо
+// не поместится по высоте.
+.callback-popup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  padding: 16px;
+  overflow-y: auto;
+  background: var(--color-surface-popup);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+}
+
+.callback-popup.is-open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.2s ease, visibility 0s linear 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .callback-popup {
+    transition: none;
+  }
+}
+
+// Ширина/паддинг/gap — mobile отличается от tablet/desktop (16px паддинг/
+// gap 16 против 48px/24, уголки только с tablet+) — но скругление углов
+// теперь единое на всех разрешениях по прямой просьбе заказчика (раньше
+// было только с xl, ориентируясь на то, что в Figma-экспорте у
+// tablet-контейнера не было класса rounded — но заказчик явно попросил
+// скруглять везде).
+.callback-popup__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 512px;
+  flex-shrink: 0;
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--color-bg-primary);
+}
+
+@include media-breakpoint-up(md) {
+  .callback-popup__card {
+    gap: 24px;
+    padding: 48px;
+  }
+}
+
+.callback-popup__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  padding: 0;
+  border: 0;
+  background: none;
+  // text-muted (в этом проекте это тот же цвет, что и Bootstrap-утилита
+  // .text-muted резолвит — --bs-secondary-color → --color-text-secondary),
+  // не text-primary — крестик должен быть приглушённым, не чёрным.
+  color: var(--color-text-secondary);
+}
+
+@include media-breakpoint-up(md) {
+  .callback-popup__close {
+    top: 24px;
+    right: 24px;
+  }
+}
+
+.callback-popup__header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+}
+
+@include media-breakpoint-up(md) {
+  .callback-popup__header {
+    gap: 16px;
+  }
+}
+
+// Тот же принцип, что у .cta__title — берёт text/primary, а не
+// стандартный для заголовков heading-цвет.
+.callback-popup__title {
+  color: var(--color-text-primary);
+}
+
+// Figma задаёт этому подзаголовку именно body/text (14/20), а не lead
+// (16/24) — тот же размер, что и у остального body-текста сайта; готовой
+// утилити-класс под это в проекте не заведён (typography.scss генерит
+// --text-size/--text-lh как переменные, но .text-* класса для "text" нет,
+// в отличие от lead/meta/caption), так что берём эти переменные напрямую.
+.callback-popup__description {
+  max-width: 456px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: var(--text-size);
+  line-height: var(--text-lh);
+}
+
+.callback-popup__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.callback-popup__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.callback-popup__checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+// Уголки-засечки — видны с md (tablet+desktop), как у .cta__corner; на
+// мобилке в Figma их нет вообще (плоская карточка без декора). Только
+// три угла, не четыре — в самой Figma верхнего правого уголка нет вообще,
+// потому что в том углу сидит крестик закрытия (см. .callback-popup__close).
+.callback-popup__corner {
+  display: none;
+}
+
+@include media-breakpoint-up(md) {
+  .callback-popup__corner {
+    position: absolute;
+    display: block;
+    width: 16px;
+    height: 16px;
+    border: 0 solid var(--color-border-default);
+  }
+
+  .callback-popup__corner--tl {
+    top: 24px;
+    left: 24px;
+    border-width: 1px 0 0 1px;
+  }
+
+  .callback-popup__corner--bl {
+    bottom: 24px;
+    left: 24px;
+    border-width: 0 0 1px 1px;
+  }
+
+  .callback-popup__corner--br {
+    bottom: 24px;
+    right: 24px;
+    border-width: 0 1px 1px 0;
+  }
+}

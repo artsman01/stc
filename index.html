@@ -1171,7 +1171,7 @@
           <a href="mailto:office@stc-ndt.ru">office@stc-ndt.ru</a>
           <span>г. Самара, ул. Партизанская 88, оф. 10</span>
         </div>
-        <button class="btn btn-primary btn-lg" type="button">Заказать звонок</button>
+        <button class="btn btn-primary btn-lg" type="button" id="callback-trigger">Заказать звонок</button>
       </div>
      </div>
     </div>
@@ -1203,6 +1203,47 @@
 
       <div class="hamburger-menu__grid"></div>
     </div>
+  </div>
+
+  <div class="callback-popup" id="callback-popup" aria-hidden="true">
+    <form class="callback-popup__card">
+      <div class="callback-popup__corner callback-popup__corner--tl"></div>
+      <div class="callback-popup__corner callback-popup__corner--bl"></div>
+      <div class="callback-popup__corner callback-popup__corner--br"></div>
+
+      <button class="callback-popup__close" type="button" aria-label="Закрыть">
+        <svg class="icon"><use href="assets/icons/sprite.svg#cross"></use></svg>
+      </button>
+
+      <div class="callback-popup__header">
+        <h2 class="callback-popup__title h2 m-0">Заказать звонок</h2>
+        <p class="callback-popup__description fw-medium text-body-secondary m-0">Заполните форму и мы свяжемся с Вами в ближайшее время.</p>
+      </div>
+
+      <div class="callback-popup__form">
+        <div class="callback-popup__fields">
+          <label class="visually-hidden" for="callback-name">Ваше имя</label>
+          <input class="input-field" type="text" name="name" id="callback-name" placeholder="Ваше имя" autocomplete="name">
+          <label class="visually-hidden" for="callback-phone">Ваш телефон</label>
+          <input class="input-field" type="tel" name="phone" id="callback-phone" placeholder="Ваш телефон" autocomplete="tel" required>
+          <label class="visually-hidden" for="callback-email">Ваш email</label>
+          <input class="input-field" type="email" name="email" id="callback-email" placeholder="Ваш email" autocomplete="email">
+        </div>
+
+        <div class="callback-popup__checkboxes">
+          <label class="checkbox-field">
+            <input class="checkbox-field__input" type="checkbox" name="consent-required" checked required>
+            <span class="checkbox-field__text text-meta fw-medium text-body-secondary">Я согласен с условиями <a href="#">Политики обработки персональных данных</a></span>
+          </label>
+          <label class="checkbox-field">
+            <input class="checkbox-field__input" type="checkbox" name="consent-marketing">
+            <span class="checkbox-field__text text-meta fw-medium text-body-secondary">Я подтверждаю ознакомление и даю <a href="#">Согласие</a> на обработку моих персональных данных в порядке и на условиях, указанных в <a href="#">Политике обработки персональных данных</a></span>
+          </label>
+        </div>
+
+        <button class="btn btn-primary btn-lg w-100" type="submit">Отправить заявку</button>
+      </div>
+    </form>
   </div>
 
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>

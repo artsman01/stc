@@ -870,3 +870,59 @@ function unlockPageScroll() {
     });
   });
 })();
+
+// Попап «Заказать звонок» — открывается кнопкой из блока контактов
+// гамбургер-меню (единственное место на сайте, где она сейчас есть).
+// Раз до триггера в принципе не добраться, пока не открыт гамбургер (сам
+// попап — такой же fixed;inset:0;z-index:60 слой поверх всего, что при
+// открытии перекрывает и прячет под собой гамбургер целиком), отдельная
+// логика взаимного закрытия с поиском/catalog-menu не нужна — физически
+// нет пути их одновременного открытия.
+(function () {
+  var trigger = document.getElementById('callback-trigger');
+  var popup = document.getElementById('callback-popup');
+  if (!trigger || !popup) return;
+
+  var closeBtn = popup.querySelector('.callback-popup__close');
+
+  function open() {
+    // Сам триггер живёт внутри дровера гамбургер-меню — закрываем его,
+    // чтобы под попапом не оставался второй открытый full-screen оверлей
+    // с собственным затемнением (выглядело бы как двойное затемнение).
+    var hamburgerMenu = document.getElementById('hamburger-menu');
+    if (hamburgerMenu && hamburgerMenu.classList.contains('is-open')) {
+      hamburgerMenu.classList.remove('is-open');
+      hamburgerMenu.classList.remove('is-level2');
+      hamburgerMenu.setAttribute('aria-hidden', 'true');
+      var hamburgerTrigger = document.getElementById('hamburger-trigger');
+      if (hamburgerTrigger) hamburgerTrigger.setAttribute('aria-expanded', 'false');
+      var header = document.querySelector('.header');
+      if (header) header.classList.remove('header--menu-open');
+    }
+    popup.classList.add('is-open');
+    popup.setAttribute('aria-hidden', 'false');
+    // lockPageScroll идемпотентна (см. её начало) — если гамбургер уже
+    // держал страницу заблокированной, здесь просто ничего не меняется,
+    // сохранённая scrollY-позиция не сбивается повторным вызовом.
+    lockPageScroll();
+  }
+
+  function close() {
+    popup.classList.remove('is-open');
+    popup.setAttribute('aria-hidden', 'true');
+    unlockPageScroll();
+  }
+
+  trigger.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+
+  // Клик по затемнённому фону (не по самой карточке) закрывает — тот же
+  // приём, что у поиска/catalog-menu/гамбургера.
+  popup.addEventListener('click', function (e) {
+    if (e.target === popup) close();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && popup.classList.contains('is-open')) close();
+  });
+})();

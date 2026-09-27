@@ -15203,3 +15203,241 @@ a.footer__col-legal.footer__col-legal--inline {
     color: var(--color-brand-primary);
   }
 }
+.callback-popup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  padding: 16px;
+  overflow-y: auto;
+  background: var(--color-surface-popup);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+}
+
+.callback-popup.is-open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.2s ease, visibility 0s linear 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .callback-popup {
+    transition: none;
+  }
+}
+.callback-popup__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 512px;
+  flex-shrink: 0;
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--color-bg-primary);
+}
+
+@media (min-width: 768px) {
+  .callback-popup__card {
+    gap: 24px;
+    padding: 48px;
+  }
+}
+.callback-popup__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-text-secondary);
+}
+
+@media (min-width: 768px) {
+  .callback-popup__close {
+    top: 24px;
+    right: 24px;
+  }
+}
+.callback-popup__header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .callback-popup__header {
+    gap: 16px;
+  }
+}
+.callback-popup__title {
+  color: var(--color-text-primary);
+}
+
+.callback-popup__description {
+  max-width: 456px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: var(--text-size);
+  line-height: var(--text-lh);
+}
+
+.callback-popup__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.callback-popup__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.callback-popup__checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.callback-popup__corner {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .callback-popup__corner {
+    position: absolute;
+    display: block;
+    width: 16px;
+    height: 16px;
+    border: 0 solid var(--color-border-default);
+  }
+  .callback-popup__corner--tl {
+    top: 24px;
+    left: 24px;
+    border-width: 1px 0 0 1px;
+  }
+  .callback-popup__corner--bl {
+    bottom: 24px;
+    left: 24px;
+    border-width: 0 0 1px 1px;
+  }
+  .callback-popup__corner--br {
+    bottom: 24px;
+    right: 24px;
+    border-width: 0 1px 1px 0;
+  }
+}
+.thanks {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  background: var(--color-bg-primary);
+}
+
+@media (min-width: 768px) {
+  .thanks {
+    padding: 64px 16px;
+  }
+}
+.thanks__container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 678px;
+  padding: 16px;
+}
+
+@media (min-width: 768px) {
+  .thanks__container {
+    gap: 24px;
+    padding: 48px;
+  }
+}
+.thanks__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .thanks__header {
+    gap: 16px;
+  }
+}
+.thanks__title {
+  color: var(--color-text-primary);
+}
+
+.thanks__description {
+  max-width: 456px;
+  color: var(--color-text-secondary);
+}
+
+.thanks__corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 0 solid var(--color-border-default);
+}
+
+.thanks__corner--tl {
+  top: 0;
+  left: 0;
+  border-width: 1px 0 0 1px;
+}
+
+.thanks__corner--tr {
+  top: 0;
+  right: 0;
+  border-width: 1px 1px 0 0;
+}
+
+.thanks__corner--bl {
+  bottom: 0;
+  left: 0;
+  border-width: 0 0 1px 1px;
+}
+
+.thanks__corner--br {
+  bottom: 0;
+  right: 0;
+  border-width: 0 1px 1px 0;
+}
+
+@media (min-width: 768px) {
+  .thanks__corner--tl {
+    top: 24px;
+    left: 24px;
+  }
+  .thanks__corner--tr {
+    top: 24px;
+    right: 24px;
+  }
+  .thanks__corner--bl {
+    bottom: 24px;
+    left: 24px;
+  }
+  .thanks__corner--br {
+    bottom: 24px;
+    right: 24px;
+  }
+}
