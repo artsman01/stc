@@ -102,6 +102,15 @@
   @include header-solid;
 
   position: fixed;
+  // На главной left/right:0 уже приходят от .header--overlay (обе всегда
+  // идут парой — --stuck просто переключает absolute на fixed). На
+  // страницах без фото-хиро (thanks.html/404.html) --stuck висит СРАЗУ,
+  // без --overlay — без явных left/right:0 здесь position:fixed сжимает
+  // шапку до ширины контента (shrink-to-fit), а не растягивает на весь
+  // экран. Дублируем здесь же, чтобы --stuck работала и сама по себе.
+  top: 0;
+  left: 0;
+  right: 0;
   // Clears both the hero's own z-index:3 and anything the page scrolls past.
   z-index: 50;
 }

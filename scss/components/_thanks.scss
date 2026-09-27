@@ -7,17 +7,26 @@
 // Только два состояния, не три, как у попапа — tablet и desktop в Figma
 // буквально идентичны (одна и та же ширина карточки 678px, один и тот же
 // паддинг/gap/отступы уголков), отличается только mobile.
+// padding-top учитывает --header-h (64px мобилка/планшет, 74px десктоп) —
+// на этой странице у шапки нет фото-хиро под ней, поэтому она не может
+// быть прозрачным .header--overlay (был бы белый текст на белой
+// странице); вместо этого шапка сразу солидная и сразу position:fixed
+// (.header--stuck, без scroll-JS), а этот паддинг просто резервирует
+// место, которое шапка раньше занимала в потоке — без него контент
+// прыгнул бы вверх на высоту шапки в момент, когда она "выпадает" из
+// потока.
 .thanks {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 32px 16px;
+  padding: calc(32px + var(--header-h)) 16px 32px;
   background: var(--color-bg-primary);
 }
 
 @include media-breakpoint-up(md) {
   .thanks {
-    padding: 64px 16px;
+    padding-top: calc(64px + var(--header-h));
+    padding-bottom: 64px;
   }
 }
 

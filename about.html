@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Спасибо! Заявка принята — СТК</title>
+  <title>О компании — СТК</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -11,7 +11,12 @@
 </head>
 <body>
 
-    <header class="header header--stuck">
+  <section class="about-hero">
+    <div class="about-hero__bg">
+      <img class="about-hero__img" src="assets/about-hero/bg.jpg" alt="">
+    </div>
+
+    <header class="header header--overlay">
       <div class="header__start">
         <a class="header__logo" href="index.html" aria-label="СТК — Современные технологии контроля">
           <span class="header__logo-mark" aria-hidden="true"></span>
@@ -49,20 +54,97 @@
       </div>
     </header>
 
-  <section class="thanks">
-    <div class="thanks__container">
-      <div class="thanks__corner thanks__corner--tl"></div>
-      <div class="thanks__corner thanks__corner--tr"></div>
-      <div class="thanks__corner thanks__corner--bl"></div>
-      <div class="thanks__corner thanks__corner--br"></div>
+    <div class="about-hero__content">
+      <div class="about-hero__breadcrumbs">
+        <a href="index.html">Главная</a>
+        <span class="about-hero__slash">/</span>
+        <span>О компании</span>
+      </div>
+      <h1 class="about-hero__title text-display m-0">Современные технологии промышленного контроля</h1>
+      <p class="about-hero__subtitle text-lead fw-medium m-0">Поставляем оборудование, внедряем комплексные решения и сопровождаем заказчиков на всех этапах работы</p>
+    </div>
+  </section>
 
-      <div class="thanks__header">
-        <h1 class="thanks__title h1 m-0">Спасибо! Заявка принята</h1>
-        <p class="thanks__description text-lead fw-medium m-0">Мы свяжемся с вами в ближайшее время, уточним детали задачи и поможем подобрать подходящее решение</p>
+  <div class="spacer"></div>
+
+  <section class="chess">
+    <div class="chess__media">
+      <img class="chess__img" src="assets/about/chess-1.jpg" alt="">
+    </div>
+    <div class="chess__body">
+      <div class="chess__text">
+        <h2 class="chess__title h1 m-0">Экспертиза, проверенная практикой</h2>
+        <div class="chess__separator"></div>
+        <div class="chess__description text-lead">
+          <p class="m-0">ООО «Современные Технологии Контроля» с 2017 года поставляет профессиональное оборудование и расходные материалы для неразрушающего контроля, испытаний и технической диагностики. Также мы организуем поверку приборов и оказываем консультационную поддержку по вопросам подбора и эксплуатации оборудования.</p>
+          <p class="m-0">Мы глубоко погружаемся в задачи заказчика: учитываем метод контроля, особенности исследуемого объекта, производственные условия, технические требования и бюджет проекта. Такой подход позволяет предлагать не отдельные приборы, а комплексные и практически применимые решения.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chess chess--inverse">
+    <div class="chess__media">
+      <img class="chess__img" src="assets/about/chess-2.jpg" alt="">
+    </div>
+    <div class="chess__body">
+      <div class="chess__text">
+        <h2 class="chess__title h1 m-0">Надёжные решения и прямое партнёрство</h2>
+        <div class="chess__separator"></div>
+        <div class="chess__description text-lead">
+          <p class="m-0">За годы работы мы выстроили доверительные отношения с производителями и официальными представителями российских и зарубежных заводов. Это позволяет поставлять оборудование с подтверждёнными характеристиками, необходимой документацией и профессиональным сопровождением.</p>
+          <p class="m-0">Компания является эксклюзивным дистрибьютором НПО «ОКТАНТА» по оборудованию для коррозионного мониторинга. Мы постоянно развиваем отраслевую экспертизу и расширяем ассортимент, чтобы уже сегодня решать задачи, которые появятся у наших клиентов завтра.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="spacer"></div>
+
+  <section class="cta cta--2">
+    <div class="cta__bg">
+      <img class="cta__img" src="assets/cta/cta-home-2-bg.jpg" alt="">
+      <div class="cta__pattern"></div>
+    </div>
+
+    <form class="cta__card">
+      <div class="cta__corner cta__corner--tl"></div>
+      <div class="cta__corner cta__corner--tr"></div>
+      <div class="cta__corner cta__corner--bl"></div>
+      <div class="cta__corner cta__corner--br"></div>
+
+      <div class="d-flex flex-column gap-3">
+        <h2 class="cta__title h1 m-0">Нужно подобрать оборудование?</h2>
+        <p class="cta__description text-lead fw-medium text-body-secondary m-0">Оставьте заявку — поможем выбрать оборудование и комплектацию под ваши задачи.</p>
+        <p class="fw-semibold text-body-tertiary m-0">или позвоните нам: <a href="tel:88002506846">8 (800) 250-68-46</a></p>
       </div>
 
-      <a class="btn btn-primary btn-lg" href="index.html">Вернуться на главную</a>
-    </div>
+      <div class="d-flex flex-column gap-3 w-100">
+        <div class="d-flex flex-column gap-2 w-100">
+          <div class="d-flex flex-column flex-md-row gap-2 w-100">
+            <label class="visually-hidden" for="cta2-phone">Ваш телефон</label>
+            <input class="input-field flex-md-fill" type="tel" name="phone" id="cta2-phone" placeholder="Ваш телефон" autocomplete="tel" required>
+            <label class="visually-hidden" for="cta2-email">Ваш email</label>
+            <input class="input-field flex-md-fill" type="email" name="email" id="cta2-email" placeholder="Ваш email" autocomplete="email">
+          </div>
+          <label class="visually-hidden" for="cta2-message">Укажите подробнее, что вас интересует</label>
+          <textarea class="input-field" name="message" id="cta2-message" rows="3" placeholder="Укажите подробнее, что вас интересует"></textarea>
+        </div>
+
+        <div class="d-flex flex-column gap-2 w-100">
+          <label class="checkbox-field">
+            <input class="checkbox-field__input" type="checkbox" name="consent-required" checked required>
+            <span class="checkbox-field__text text-meta fw-medium text-body-secondary">Я согласен с условиями <a href="#">Политики обработки персональных данных</a></span>
+          </label>
+          <label class="checkbox-field">
+            <input class="checkbox-field__input" type="checkbox" name="consent-marketing">
+            <span class="checkbox-field__text text-meta fw-medium text-body-secondary">Я подтверждаю ознакомление и даю <a href="#">Согласие</a> на обработку моих персональных данных в порядке и на условиях, указанных в <a href="#">Политике обработки персональных данных</a></span>
+          </label>
+        </div>
+
+        <button class="btn btn-primary btn-lg w-100" type="submit">Отправить заявку</button>
+      </div>
+    </form>
   </section>
 
   <footer class="footer">

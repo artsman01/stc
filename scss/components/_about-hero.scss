@@ -1,0 +1,125 @@
+// Хиро блока страницы about.html (Figma 91:17196 desktop / 94:18480
+// tablet / 94:18874 mobile) — тот же приём фото+тонировка+паттерн+шапка
+// внутри, что у `.hero` на главной (см. `_hero.scss`), высоты у обоих
+// компонентов даже совпадают (624 mobile / 800 tablet+desktop) — но текст
+// здесь по центру (не слева), с хлебными крошками сверху, заголовок —
+// display-стиль (не h1), поэтому решил не тянуть это в общий `.hero`, а
+// сделать отдельным компонентом, как уже сделали с `_thanks.scss`/
+// `_page-404.scss` для похожих, но не идентичных карточек.
+// min-height — тот же клампованный %-от-экрана приём, что и у `.hero`
+// на главной (см. `_hero.scss` — тот же clamp(600px, 80vh, 900px), одна
+// причина для обоих: заказчик попросил высоту хиро-блоков процентом от
+// экрана, а не фиксированным пикселем; пол потом подняли с 480 до 600
+// по отдельной просьбе).
+.about-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(600px, 80vh, 900px);
+  padding: 32px 16px;
+  overflow: hidden;
+  background: var(--color-bg-dark);
+}
+
+@include media-breakpoint-up(md) {
+  .about-hero {
+    padding: 64px 48px;
+  }
+}
+
+.about-hero__bg {
+  position: absolute;
+  inset: 0;
+}
+
+.about-hero__bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-surface-default);
+}
+
+.about-hero__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// Тот же декоративный паттерн, что у `.hero` (см. `_hero.scss`) — реально
+// тот же файл (`assets/hero/pattern.svg`), переиспользован напрямую, а не
+// скопирован под новым именем.
+.about-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("../assets/hero/pattern.svg") 50% 100% / 1600px 800px no-repeat;
+  pointer-events: none;
+}
+
+.about-hero__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+}
+
+@include media-breakpoint-up(md) {
+  .about-hero__content {
+    gap: 24px;
+  }
+}
+
+// gap:10px — раньше был 4px (flex gap) + 4px паддинга у самого слэша
+// (итого 8px на сторону), заказчик попросил "чуть больше, на 2px с
+// каждой стороны" (итого 10px) — паддинг у слэша убран, весь отступ
+// теперь на одном flex-gap, чтобы не держать два источника одного и
+// того же расстояния.
+.about-hero__breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+// Ховер — та же лёгкая opacity-подсказка, что и у остальных мелких
+// кликабельных элементов сайта (иконки шапки, теги поиска и т.п.).
+.about-hero__breadcrumbs a {
+  color: var(--color-text-button);
+  transition: opacity 0.15s ease;
+}
+
+.about-hero__breadcrumbs a:hover {
+  opacity: 0.7;
+}
+
+.about-hero__breadcrumbs span {
+  color: var(--color-text-on-img);
+}
+
+// Слэш-разделитель — в Figma это маленькая наклонная SVG-палочка, здесь
+// заменена обычным символом "/" (тот же цвет/непрозрачность) — тратить
+// отдельный ассет под декоративный разделитель не стали, как и с
+// разделительной линией внутри chess (см. `_chess.scss`).
+.about-hero__breadcrumbs .about-hero__slash {
+  color: var(--color-text-on-img);
+}
+
+.about-hero__title {
+  max-width: 752px;
+  color: var(--color-text-button);
+}
+
+.about-hero__subtitle {
+  max-width: 612px;
+  color: var(--color-text-on-img);
+}

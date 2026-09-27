@@ -1,12 +1,20 @@
 // Home hero: full-bleed photo, the header lying over it, text block centered
-// vertically. Heights come from the artboards: 800px tablet/desktop, 624px mobile.
-
+// vertically. Высота раньше была фиксированной по артбордам (624px mobile,
+// 800px tablet/desktop) — по просьбе заказчика переведена на % от экрана
+// (`80vh`), с зажимом сверху/снизу через clamp(), чтобы не схлопнуться на
+// очень низких вьюпортах (альбомная мобилка, встроенный webview) и не
+// раздуться до абсурда на сверхвысоких мониторах: 600px — пол (заказчик
+// явно попросил поднять с изначальных 480 — сам контент héro не начинает
+// налезать друг на друга даже на самых низких реалистичных вьюпортах),
+// 900px — потолок (чуть выше исходного desktop-значения 800, чтобы не
+// обрубать эффект специально, но и не позволить герою вырасти на весь
+// 4К-монитор).
 .hero {
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 624px;
+  min-height: clamp(600px, 80vh, 900px);
   padding: 32px 16px;
   overflow: hidden;
   background: var(--color-bg-dark);
@@ -14,7 +22,6 @@
 
 @include media-breakpoint-up(md) {
   .hero {
-    min-height: 800px;
     padding: 64px 48px;
   }
 }

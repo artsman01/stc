@@ -1,0 +1,114 @@
+// Блок "chess" страницы about.html (Figma 94:18418/94:18463 desktop —
+// "Экспертиза, проверенная практикой" / "Надёжные решения и прямое
+// партнёрство") — фото + текст в две колонки на десктопе, чередующиеся
+// местами (default: фото слева/текст справа, inverse: текст слева/фото
+// справа — .chess--inverse), но на mobile/tablet ОБА варианта одинаково
+// складываются в один столбец (текст сверху, фото снизу) — важно: этот
+// переход происходит на `xl` (не `md`, как большинство блоков сайта) —
+// в самой Figma и tablet-, и mobile-фреймы уже показывают вертикальную
+// раскладку (высоты секций там заметно больше desktop-варианта), только
+// planshet чуть просторнее по паддингу.
+.chess {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 24px;
+  padding: 16px;
+  background: var(--color-bg-primary);
+}
+
+@include media-breakpoint-up(md) {
+  .chess {
+    gap: 48px;
+    padding: 32px 48px;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .chess {
+    flex-direction: row;
+    gap: 0;
+  }
+}
+
+.chess--inverse {
+  @include media-breakpoint-up(xl) {
+    flex-direction: row-reverse;
+  }
+}
+
+.chess__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 40 / 30;
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+@include media-breakpoint-up(xl) {
+  .chess__media {
+    // flex-basis:50% (не 0) обязателен — с базой 0 бразуер сперва тянет
+    // высоту фото под высоту .chess__body (stretch по кросс-оси), а потом
+    // aspect-ratio пересчитывает ширину ИЗ этой высоты, отбирая у фото
+    // часть места ещё до того, как flex-grow успевает выровнять доли —
+    // на практике фото оказывалось у́же .chess__body ровно на удвоенный
+    // паддинг тела (48px×2=96px). Явные 50% как стартовая база убирают
+    // эту гонку — оба блока сразу получают половину ширины поровну.
+    flex: 1 1 50%;
+    width: auto;
+    min-width: 0;
+  }
+}
+
+.chess__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-surface-default);
+}
+
+.chess__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.chess__body {
+  width: 100%;
+}
+
+@include media-breakpoint-up(xl) {
+  .chess__body {
+    flex: 1 1 50%;
+    min-width: 0;
+    padding: 48px;
+  }
+}
+
+.chess__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  width: 100%;
+}
+
+.chess__title {
+  color: var(--color-text-primary);
+}
+
+// Разделительная линия — в Figma это SVG-картинка одного пикселя высотой,
+// по факту обычная горизонтальная линия border/light — тратить ассет под
+// неё не стали (тот же принцип, что и у слэша в хлебных крошках хиро).
+.chess__separator {
+  width: 100%;
+  border-top: 1px solid var(--color-border-light);
+}
+
+.chess__description {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  color: var(--color-text-primary);
+}

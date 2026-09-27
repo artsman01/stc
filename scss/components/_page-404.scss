@@ -1,0 +1,139 @@
+// Блок страницы 404.html (Figma 39:2115 desktop / 40:3259 tablet /
+// 40:3514 mobile) — тот же принцип, что у страницы «Спасибо» (thanks.html,
+// см. _thanks.scss): заголовок+подзаголовок+кнопка в карточке с четырьмя
+// уголками-засечками, только здесь ещё добавляется иллюстрация над
+// заголовком. Класс не может буквально называться `.404` (CSS не даёт
+// classname с цифры) — назван `.page-404`, по аналогии с `.thanks`.
+// padding-top учитывает --header-h — та же логика, что у .thanks (см.
+// _thanks.scss) — здесь тоже нет фото-хиро под шапкой, поэтому она сразу
+// солидная и сразу position:fixed (.header--stuck статично в разметке),
+// без этого паддинга контент прыгнул бы вверх на высоту шапки.
+.page-404 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(16px + var(--header-h)) 16px 16px;
+  background: var(--color-bg-primary);
+}
+
+@include media-breakpoint-up(md) {
+  .page-404 {
+    padding-top: calc(64px + var(--header-h));
+    padding-bottom: 64px;
+  }
+}
+
+.page-404__container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 678px;
+  // Верх/низ 32px и на мобилке, и на планшете (правка заказчика — в самой
+  // Figma по невнимательности стояло 16, надо было 32); лево/право не
+  // трогаем — там как было, так и остаётся 16.
+  padding: 32px 16px;
+}
+
+@include media-breakpoint-up(md) {
+  .page-404__container {
+    gap: 24px;
+    // Планшет: верх/низ те же 32px, что и на мобилке — лево/право уже
+    // 48px, как на десктопе.
+    padding: 32px 48px;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .page-404__container {
+    // Десктоп — единственный, где верх/низ остаются полными 48px.
+    padding: 48px;
+  }
+}
+
+// Технический чертёж-иллюстрация «404» — реальный размер файла 1774×887,
+// aspect-ratio держит именно эту пропорцию на любой ширине карточки.
+.page-404__image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1774 / 887;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.page-404__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  width: 100%;
+}
+
+.page-404__title {
+  color: var(--color-text-primary);
+}
+
+.page-404__description {
+  max-width: 456px;
+  color: var(--color-text-secondary);
+}
+
+// Уголки — те же 4 (закрывать здесь нечего, как и на странице «Спасибо»).
+// Мобилка: паддинг карточки 16px = размеру самого уголка, поэтому засечки
+// прижаты вплотную к краю (0), а не на 24px, как у tablet/desktop.
+.page-404__corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 0 solid var(--color-border-default);
+}
+
+.page-404__corner--tl {
+  top: 0;
+  left: 0;
+  border-width: 1px 0 0 1px;
+}
+
+.page-404__corner--tr {
+  top: 0;
+  right: 0;
+  border-width: 1px 1px 0 0;
+}
+
+.page-404__corner--bl {
+  bottom: 0;
+  left: 0;
+  border-width: 0 0 1px 1px;
+}
+
+.page-404__corner--br {
+  bottom: 0;
+  right: 0;
+  border-width: 0 1px 1px 0;
+}
+
+@include media-breakpoint-up(md) {
+  .page-404__corner--tl {
+    top: 24px;
+    left: 24px;
+  }
+
+  .page-404__corner--tr {
+    top: 24px;
+    right: 24px;
+  }
+
+  .page-404__corner--bl {
+    bottom: 24px;
+    left: 24px;
+  }
+
+  .page-404__corner--br {
+    bottom: 24px;
+    right: 24px;
+  }
+}
