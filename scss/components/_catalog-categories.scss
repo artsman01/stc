@@ -1,0 +1,363 @@
+// Каталог → конкретная категория (catalog-categories.html, Figma
+// 65:6029/66:6525/66:7088) — сайдбар (.catalog-sidebar, своя обёртка) +
+// колонка с заголовком/табами/сеткой карточек/пагинацией, плюс отдельный
+// SEO-блок ниже. Как и на catalog.html, TypicalHead здесь даёт только
+// хлебные крошки (.breadcrumbs-bar).
+
+.catalog-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 16px;
+}
+
+@include media-breakpoint-up(md) {
+  .catalog-categories {
+    gap: 32px;
+    padding: 32px 48px;
+  }
+}
+
+// 1040px, не бутстраповский xl(1200) — по прямой просьбе заказчика
+// десктопный вид (сайдбар открыт+прилипает) должен начинаться раньше,
+// см. комментарий в _catalog-sidebar.scss.
+@media (min-width: 1040px) {
+  .catalog-categories {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+.catalog-categories__content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+  width: 100%;
+}
+
+@include media-breakpoint-up(md) {
+  .catalog-categories__content {
+    gap: 32px;
+  }
+}
+
+@media (min-width: 1040px) {
+  .catalog-categories__content {
+    flex: 1 1 0;
+  }
+}
+
+.catalog-categories__head {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@include media-breakpoint-up(md) {
+  .catalog-categories__head {
+    gap: 24px;
+  }
+}
+
+.catalog-categories__separator {
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--color-border-light);
+  opacity: 1;
+}
+
+.catalog-categories__footer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+}
+
+@include media-breakpoint-up(md) {
+  .catalog-categories__footer {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+}
+
+.catalog-categories__footer-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+@include media-breakpoint-up(md) {
+  .catalog-categories__footer-meta {
+    flex: 1 1 0;
+    min-width: 0;
+    justify-content: flex-end;
+  }
+}
+
+.catalog-categories__count {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.catalog-categories__per-page {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.catalog-categories__per-page span:first-child {
+  color: var(--color-text-primary);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+// Реальная <button>, открывающая свой выпадающий список вариантов
+// «Показать по» (20/50/100) — border/background/font сброшены явно, чтобы
+// не тянуть браузерный вид кнопки по умолчанию.
+.catalog-categories__per-page-value {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--color-border-default);
+  border-radius: 6px;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+// min-width под самое широкое значение (100 — 3 цифры, реально ~25px в
+// этом шрифте/весе против ~17.5px у 20/50) — без этого смена значения
+// в дропдауне меняла ширину самой кнопки (и вместе с ней сдвигала соседние
+// «Показано N из …» левее/правее).
+.per-page-dropdown__value {
+  min-width: 26px;
+}
+
+.catalog-categories__per-page-value .icon {
+  transition: transform 0.2s ease;
+}
+
+.per-page-dropdown.is-open .catalog-categories__per-page-value .icon {
+  transform: rotate(180deg);
+}
+
+// Сама панель — тот же компонент, что у выпадающего списка «О компании» в
+// шапке Domarti (`_about-dropdown.scss`): position:relative на триггере,
+// абсолютная панель под ним, opacity+transform+visibility на открытие
+// (та же связка, что у поиска/catalog-menu — плавно, без display:none),
+// только цвета/радиусы — из палитры СТК, а не Domarti.
+.per-page-dropdown {
+  position: relative;
+}
+
+.per-page-dropdown__panel {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  min-width: 100%;
+  margin-top: 8px;
+  border: 1px solid var(--color-border-default);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--color-bg-primary);
+  box-shadow: 0 8px 24px 0 rgba(30, 34, 44, 0.16);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-8px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
+}
+
+.per-page-dropdown.is-open .per-page-dropdown__panel {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.per-page-dropdown__option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 36px;
+  padding: 0 12px;
+  border: 0;
+  border-bottom: 1px solid var(--color-border-light);
+  background: none;
+  color: var(--color-text-primary);
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.per-page-dropdown__option:last-child {
+  border-bottom: 0;
+}
+
+.per-page-dropdown__option:hover {
+  background: var(--color-bg-secondary);
+}
+
+// Активный пункт — не цветом текста, а иконкой check справа (Figma
+// 11:1057, заказчик прямо попросил заменить синюю подсветку на неё) —
+// иконка есть в разметке у КАЖДОГО пункта (чтобы JS при выборе просто
+// переключал класс .is-active, не создавая/удаляя DOM), но видна только
+// у активного.
+.per-page-dropdown__check {
+  flex-shrink: 0;
+  color: var(--color-brand-primary);
+  visibility: hidden;
+}
+
+.per-page-dropdown__option.is-active .per-page-dropdown__check {
+  visibility: visible;
+}
+
+// Декоративная пагинация (демо-данные Figma не подразумевают реальную
+// многостраничность контента этой категории — см. «Показано 7 из 7»
+// рядом) — но кнопки настоящие (<button>), с ховером и корректным
+// disabled-состоянием у стрелки «назад» (первая страница — идти некуда).
+.paginator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.paginator__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+@media (hover: hover) {
+  .paginator__btn:not(.paginator__btn--active):not(:disabled):hover {
+    background: var(--color-bg-secondary);
+  }
+}
+
+.paginator__btn--active {
+  background: var(--color-brand-primary);
+  color: var(--color-text-button);
+}
+
+// Специфичность на класс ниже, чем у бутстраповского
+// `button:not(:disabled){cursor:pointer}` (тег+:not — де-факто 2 уровня
+// против 1 у простого класса), поэтому просто `.paginator__btn--active`
+// проигрывал курсор бутстрапу. `.paginator .paginator__btn--active`
+// поднимает специфичность и переопределяет корректно.
+.paginator .paginator__btn--active {
+  cursor: default;
+}
+
+// Стрелка «назад» на первой странице — идти некуда: приглушённый цвет,
+// без ховера и без кликабельного вида (реальный атрибут disabled, не
+// просто класс — так корректно ведёт себя и с клавиатуры/скринридера).
+.paginator__btn:disabled {
+  color: var(--color-text-secondary);
+  cursor: default;
+}
+
+.paginator__ellipsis {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: var(--color-text-primary);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+// SEO-блок под сеткой карточек — заголовок и текст рядом на десктопе,
+// друг под другом на планшете/мобилке (Figma: xl — единственная ширина,
+// где это разделено на 2 колонки).
+.catalog-seo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  color: var(--color-text-primary);
+}
+
+@include media-breakpoint-up(md) {
+  .catalog-seo {
+    gap: 48px;
+    padding: 32px 48px;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .catalog-seo {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.catalog-seo__title {
+  margin: 0;
+  font-weight: 700;
+  color: var(--color-text-heading);
+}
+
+@include media-breakpoint-up(xl) {
+  .catalog-seo__title {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+}
+
+.catalog-seo__text {
+  min-width: 0;
+}
+
+@include media-breakpoint-up(xl) {
+  .catalog-seo__text {
+    flex: 1 1 0;
+  }
+}
+
+.catalog-seo__text p {
+  margin: 0 0 24px;
+}
+
+.catalog-seo__text p:last-child {
+  margin-bottom: 0;
+}

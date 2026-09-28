@@ -704,7 +704,7 @@ function unlockPageScroll() {
 
 // Гамбургер-меню — мобильный/планшетный аналог catalog-menu. Список
 // категорий (аккордеон НК/МИ/АМ) использует ТЕ ЖЕ классы и ТУ ЖЕ разметку,
-// что и catalog-menu (см. index.html) — так что аккордеон здесь не
+// что и catalog-menu (см. home.html) — так что аккордеон здесь не
 // переписан, просто ещё раз выбираем те же .catalog-menu__group внутри
 // #hamburger-menu и вешаем идентичный обработчик. Второй уровень (панель
 // товаров подкатегории) — по правке заказчика открывается ОТДЕЛЬНЫМ
@@ -924,5 +924,120 @@ function unlockPageScroll() {
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && popup.classList.contains('is-open')) close();
+  });
+})();
+
+// catalog-categories.html: сайдбар «Категории» — на планшете/мобилке
+// сворачивается в тумблер-кнопку (десктоп его вообще не рендерит видимым,
+// см. _catalog-sidebar.scss), группы НК/МИ/АМ раскрываются независимо друг
+// от друга (в отличие от .catalog-menu, где панель одна и переключается
+// наведением — здесь у каждой группы просто свой аккордеон).
+(function () {
+  var sidebar = document.querySelector('.catalog-sidebar');
+  if (!sidebar) return;
+
+  var toggle = sidebar.querySelector('.catalog-sidebar__toggle');
+  if (toggle) {
+    toggle.addEventListener('click', function () {
+      var open = sidebar.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+
+  sidebar.querySelectorAll('.catalog-sidebar__group-toggle').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var group = btn.closest('.catalog-sidebar__group');
+      var open = !group.classList.contains('is-open');
+      group.classList.toggle('is-open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+})();
+
+// catalog-categories.html: табы вида оборудования (Все / Основное
+// оборудование / …) фильтруют плоскую сетку карточек по data-filter-cat и
+// обновляют счётчик «Показано N из …» — тот же принцип, что у табов
+// home-catalog чуть выше, только там фильтруются целые группы, а здесь
+// отдельные карточки в одной сетке.
+(function () {
+  var content = document.querySelector('.catalog-categories__content');
+  if (!content) return;
+
+  var tabs = content.querySelectorAll('.catalog-categories__head .tab');
+  var cards = content.querySelectorAll('.category-grid .category-card');
+  var countEl = content.querySelector('.catalog-categories__count');
+  if (!tabs.length || !cards.length) return;
+
+  function apply(filter) {
+    var visible = 0;
+    cards.forEach(function (card) {
+      var show = filter === 'all' || card.dataset.filterCat === filter;
+      card.hidden = !show;
+      if (show) visible++;
+    });
+    tabs.forEach(function (tab) {
+      tab.classList.toggle('tab--active', tab.dataset.filter === filter);
+    });
+    if (countEl) countEl.textContent = 'Показано ' + visible + ' из ' + cards.length;
+  }
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      apply(tab.dataset.filter);
+    });
+  });
+})();
+
+// Универсальный выпадающий список (сейчас только «Показать по» на
+// catalog-categories.html, 20/50/100) — тот же приём, что у "О компании" в
+// шапке Domarti (_about-dropdown.scss/main.js): клик по триггеру
+// открывает/закрывает, клик вне панели и Escape закрывают. Класс
+// generic (.per-page-dropdown), не завязан на конкретную страницу — можно
+// переиспользовать для будущих подобных списков без нового JS.
+(function () {
+  document.querySelectorAll('.per-page-dropdown').forEach(function (dropdown) {
+    var trigger = dropdown.querySelector('.catalog-categories__per-page-value');
+    var valueEl = dropdown.querySelector('.per-page-dropdown__value');
+    var options = dropdown.querySelectorAll('.per-page-dropdown__option');
+    if (!trigger) return;
+
+    function close() {
+      dropdown.classList.remove('is-open');
+      trigger.setAttribute('aria-expanded', 'false');
+      document.removeEventListener('click', onOutsideClick);
+      document.removeEventListener('keydown', onEscape);
+    }
+
+    function onOutsideClick(e) {
+      if (!dropdown.contains(e.target)) close();
+    }
+
+    function onEscape(e) {
+      if (e.key === 'Escape') close();
+    }
+
+    trigger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (dropdown.classList.contains('is-open')) {
+        close();
+        return;
+      }
+      dropdown.classList.add('is-open');
+      trigger.setAttribute('aria-expanded', 'true');
+      document.addEventListener('click', onOutsideClick);
+      document.addEventListener('keydown', onEscape);
+    });
+
+    options.forEach(function (option) {
+      option.addEventListener('click', function () {
+        options.forEach(function (o) {
+          var active = o === option;
+          o.classList.toggle('is-active', active);
+          o.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+        if (valueEl) valueEl.textContent = option.dataset.value;
+        close();
+      });
+    });
   });
 })();

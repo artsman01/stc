@@ -1,0 +1,274 @@
+// Сайдбар «Категории» на странице конкретной категории каталога
+// (catalog-categories.html, Figma 65:6030/66:6525/66:7088) — дерево
+// НК/МИ/АМ с раскрытой активной группой и подсвеченным текущим пунктом.
+// Похож на .catalog-menu (десктопное меню-каталог в шапке), но это не тот
+// же компонент: отступы там другие (gap/padding 16, здесь везде 12 —
+// сверено по Figma заново, спутать было легко, оба выглядят почти
+// одинаково) и у пунктов здесь нет своей стрелки-шеврона справа. Ховер на
+// тумблерах (см. ниже) — тот же приём с отдельным ::before-слоем под
+// текстом/иконкой, что и в .catalog-menu__group-toggle, по прямой просьбе
+// заказчика сделать "как в каталоге всплывающем".
+//
+// Брейкпоинт разворота — 1040px, СВОЙ (не бутстраповский xl=1200): по
+// прямой просьбе заказчика десктопный вид (сайдбар открыт и прилипает)
+// должен начинаться раньше, чем на xl — на 1200 он слишком долго ещё
+// выглядел как планшет (первая версия стояла на 940, заказчик потом попросил
+// поднять до 1040 — "сворачивать сайдбар на экранах менее 1040"). Ниже
+// 1040 — тот же "планшетный" вид, что и раньше: тумблер + 2 карточки в ряд
+// (брейкпоинт сетки карточек — отдельный, свой, см. _category-card.scss,
+// с сайдбаром не связан).
+//
+// Ширина — 370px border-box (Figma-значение для десктопа), padding-right:24
+// внутри — значит реальная "полезная" ширина содержимого (где рисуются
+// тумблеры/пункты) 346px, тоже 1-в-1 по Figma. Ниже 1080 заказчик попросил
+// сузить ещё на 40px (330px border-box, содержимое 306px) — на диапазоне
+// 1040–1079 сайдбар уже развёрнут, но экран ещё довольно узкий.
+
+.catalog-sidebar {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 1040px) {
+  .catalog-sidebar {
+    width: 330px;
+    flex-shrink: 0;
+    padding-right: 24px;
+    position: sticky;
+    top: calc(var(--header-h) + 32px);
+    // Без max-height/overflow-y:auto по прямой просьбе заказчика — если все
+    // группы раскрыты и список не помещается в экран, сайдбар просто
+    // становится выше (и "отлипает" от шапки при дальнейшем скролле, когда
+    // родительский флекс-контейнер кончается), а не заводит свой скролл.
+  }
+}
+
+@media (min-width: 1080px) {
+  .catalog-sidebar {
+    width: 370px;
+  }
+}
+
+.catalog-sidebar__toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  height: 48px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--color-text-button);
+}
+
+.catalog-sidebar__toggle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  background: var(--color-brand-primary);
+  transition: opacity 0.2s ease;
+}
+
+@media (hover: hover) {
+  .catalog-sidebar__toggle:hover::before {
+    opacity: 0.85;
+  }
+}
+
+.catalog-sidebar__toggle span,
+.catalog-sidebar__toggle .icon {
+  position: relative;
+}
+
+.catalog-sidebar__toggle span {
+  flex: 1 1 0;
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.catalog-sidebar__toggle .icon {
+  transition: transform 0.2s ease;
+}
+
+.catalog-sidebar.is-open .catalog-sidebar__toggle .icon:last-child {
+  transform: rotate(180deg);
+}
+
+@media (min-width: 1040px) {
+  .catalog-sidebar__toggle {
+    display: none;
+  }
+}
+
+// Тот же приём grid-template-rows: 0fr → 1fr, что у аккордеона подвала и
+// .catalog-menu (обязательна двойная обёртка -inner без собственных
+// отступов — иначе трек не схлопывается до истинного нуля, см. комментарий
+// в _catalog-menu.scss). Отступ между тумблером и раскрытым содержимым —
+// НЕ padding/margin на самом схлопывающемся блоке (паддинг не даёт треку
+// сжаться до истинного нуля — реальный баг, пойманный на этом же приёме:
+// border-box не может стать меньше собственного padding, поэтому высота в
+// закрытом состоянии упрямо оставалась 8px вместо 0). Вместо этого —
+// gap на родителе, включается только классом .is-open.
+.catalog-sidebar.is-open {
+  gap: 8px;
+}
+
+.catalog-sidebar__content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.2s ease;
+}
+
+.catalog-sidebar.is-open .catalog-sidebar__content {
+  grid-template-rows: 1fr;
+}
+
+.catalog-sidebar__content-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+@media (min-width: 1040px) {
+  .catalog-sidebar__content {
+    display: block;
+  }
+
+  .catalog-sidebar__content-inner {
+    overflow: visible;
+  }
+}
+
+.catalog-sidebar__groups {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.catalog-sidebar__group {
+  display: flex;
+  flex-direction: column;
+}
+
+.catalog-sidebar__group.is-open {
+  gap: 8px;
+}
+
+.catalog-sidebar__group-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  height: 48px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--color-text-primary);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: left;
+}
+
+.catalog-sidebar__group-toggle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  background: var(--color-bg-secondary);
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+@media (hover: hover) {
+  .catalog-sidebar__group-toggle:hover::before {
+    opacity: 0.7;
+  }
+
+  // Раскрытая группа уже тёмная (brand-secondary) — тот же opacity:.7, что
+  // у свёрнутой, слишком заметно "срывал" её в светлую сторону; здесь
+  // ховер — едва уловимый намёк, не полноценная смена тона (тот же приём,
+  // что у .catalog-menu__group.is-open .catalog-menu__group-toggle:hover).
+  .catalog-sidebar__group.is-open .catalog-sidebar__group-toggle:hover::before {
+    opacity: 0.95;
+  }
+}
+
+.catalog-sidebar__group-toggle span,
+.catalog-sidebar__group-toggle .icon {
+  position: relative;
+}
+
+.catalog-sidebar__group-toggle span {
+  flex: 1 1 0;
+}
+
+.catalog-sidebar__group-toggle .icon {
+  transition: transform 0.2s ease;
+}
+
+.catalog-sidebar__group.is-open .catalog-sidebar__group-toggle {
+  color: var(--color-text-button);
+}
+
+.catalog-sidebar__group.is-open .catalog-sidebar__group-toggle::before {
+  background: var(--color-brand-secondary);
+}
+
+.catalog-sidebar__group.is-open .catalog-sidebar__group-toggle .icon {
+  transform: rotate(180deg);
+}
+
+.catalog-sidebar__group-items {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.2s ease;
+}
+
+.catalog-sidebar__group.is-open .catalog-sidebar__group-items {
+  grid-template-rows: 1fr;
+}
+
+.catalog-sidebar__group-items-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.catalog-sidebar__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.catalog-sidebar__item span {
+  flex: 1 1 0;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+@media (hover: hover) {
+  .catalog-sidebar__item:not(.is-active):hover {
+    background: var(--color-bg-footer);
+  }
+}
+
+.catalog-sidebar__item.is-active {
+  background: var(--color-brand-primary);
+  color: var(--color-text-button);
+}

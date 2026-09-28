@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Спасибо! Заявка принята — СТК</title>
+  <title>Ультразвуковой контроль — Каталог — СТК</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="catalog-categories-page">
 
     <header class="header header--stuck">
       <div class="header__start">
@@ -48,21 +48,286 @@
         </div>
       </div>
     </header>
+    <section class="breadcrumbs-bar">
+      <nav class="breadcrumbs" aria-label="Хлебные крошки">
+        <a href="home.html">Главная</a>
+        <span class="breadcrumbs__slash" aria-hidden="true">/</span>
+        <a href="catalog.html">Каталог</a>
+        <span class="breadcrumbs__slash" aria-hidden="true">/</span>
+        <span aria-current="page">Ультразвуковой контроль</span>
+      </nav>
+    </section>
 
-  <section class="thanks">
-    <div class="thanks__container">
-      <div class="thanks__corner thanks__corner--tl"></div>
-      <div class="thanks__corner thanks__corner--tr"></div>
-      <div class="thanks__corner thanks__corner--bl"></div>
-      <div class="thanks__corner thanks__corner--br"></div>
+    <section class="catalog-categories">
+      <aside class="catalog-sidebar" data-name="menu">
+        <button class="catalog-sidebar__toggle" type="button" aria-expanded="false" aria-controls="catalog-sidebar-content">
+          <svg class="icon"><use href="assets/icons/sprite.svg#hamburger"></use></svg>
+          <span>Категории</span>
+          <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-down"></use></svg>
+        </button>
 
-      <div class="thanks__header">
-        <h1 class="thanks__title h1 m-0">Спасибо! Заявка принята</h1>
-        <p class="thanks__description text-lead fw-medium m-0">Мы свяжемся с вами в ближайшее время, уточним детали задачи и поможем подобрать подходящее решение</p>
+        <div class="catalog-sidebar__content" id="catalog-sidebar-content">
+          <div class="catalog-sidebar__content-inner">
+            <div class="catalog-sidebar__groups">
+              <div class="catalog-sidebar__group is-open" data-group="nk">
+                <button class="catalog-sidebar__group-toggle" type="button" aria-expanded="true">
+                  <span>Неразрушающий контроль</span>
+                  <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-down"></use></svg>
+                </button>
+                <div class="catalog-sidebar__group-items">
+                  <div class="catalog-sidebar__group-items-inner">
+                    <a class="catalog-sidebar__item" href="catalog-categories.html">
+                      <svg class="icon"><use href="assets/icons/sprite.svg#speedometer"></use></svg>
+                      <span>Визуальный и измерительный контроль</span>
+                    </a>
+                    <a class="catalog-sidebar__item is-active" href="catalog-categories.html" aria-current="page">
+                      <svg class="icon"><use href="assets/icons/sprite.svg#ultra-sound"></use></svg>
+                      <span>Ультразвуковой контроль</span>
+                    </a>
+                    <a class="catalog-sidebar__item" href="catalog-categories.html">
+                      <svg class="icon"><use href="assets/icons/sprite.svg#radiation"></use></svg>
+                      <span>Радиографический контроль</span>
+                    </a>
+                    <a class="catalog-sidebar__item" href="catalog-categories.html">
+                      <svg class="icon"><use href="assets/icons/sprite.svg#magnet"></use></svg>
+                      <span>Магнитный контроль</span>
+                    </a>
+                    <a class="catalog-sidebar__item" href="catalog-categories.html">
+                      <svg class="icon"><use href="assets/icons/sprite.svg#vortex"></use></svg>
+                      <span>Вихретоковый контроль</span>
+                    </a>
+                    <a class="catalog-sidebar__item" href="catalog-categories.html">
+                      <svg class="icon"><use href="assets/icons/sprite.svg#spray"></use></svg>
+                      <span>Капиллярный контроль</span>
+                    </a>
+                    <a class="catalog-sidebar__item" href="catalog-categories.html">
+                      <svg class="icon"><use href="assets/icons/sprite.svg#water"></use></svg>
+                      <span>Течеискание</span>
+                    </a>
+                    <a class="catalog-sidebar__item" href="catalog-categories.html">
+                      <svg class="icon"><use href="assets/icons/sprite.svg#waves"></use></svg>
+                      <span>Акустико-эмиссионный контроль</span>
+                    </a>
+                    <a class="catalog-sidebar__item" href="catalog-categories.html">
+                      <svg class="icon"><use href="assets/icons/sprite.svg#hot"></use></svg>
+                      <span>Тепловой контроль</span>
+                    </a>
+                    <a class="catalog-sidebar__item" href="catalog-categories.html">
+                      <svg class="icon"><use href="assets/icons/sprite.svg#visual"></use></svg>
+                      <span>Оптический контроль</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="catalog-sidebar__group" data-group="mi">
+                <button class="catalog-sidebar__group-toggle" type="button" aria-expanded="false">
+                  <span>Механические испытания</span>
+                  <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-down"></use></svg>
+                </button>
+                <div class="catalog-sidebar__group-items">
+                  <div class="catalog-sidebar__group-items-inner">
+                    <a class="catalog-sidebar__item" href="catalog-categories.html">
+                      <svg class="icon"><use href="assets/icons/sprite.svg#hot"></use></svg>
+                      <span>Испытания металлов по Шарпи</span>
+                    </a>
+                    <a class="catalog-sidebar__item" href="catalog-categories.html">
+                      <svg class="icon"><use href="assets/icons/sprite.svg#speedometer"></use></svg>
+                      <span>Электромеханические машины</span>
+                    </a>
+                    <a class="catalog-sidebar__item" href="catalog-categories.html">
+                      <svg class="icon"><use href="assets/icons/sprite.svg#water"></use></svg>
+                      <span>Гидравлические машины</span>
+                    </a>
+                    <a class="catalog-sidebar__item" href="catalog-categories.html">
+                      <svg class="icon"><use href="assets/icons/sprite.svg#vortex"></use></svg>
+                      <span>Испытания на изгиб и перегиб</span>
+                    </a>
+                    <a class="catalog-sidebar__item" href="catalog-categories.html">
+                      <svg class="icon"><use href="assets/icons/sprite.svg#spray"></use></svg>
+                      <span>Специальное оборудование</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="catalog-sidebar__group" data-group="am">
+                <button class="catalog-sidebar__group-toggle" type="button" aria-expanded="false">
+                  <span>Анализ металлов</span>
+                  <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-down"></use></svg>
+                </button>
+                <div class="catalog-sidebar__group-items">
+                  <div class="catalog-sidebar__group-items-inner">
+                    <a class="catalog-sidebar__item" href="catalog-categories.html">
+                      <svg class="icon"><use href="assets/icons/sprite.svg#waves"></use></svg>
+                      <span>Искровые оптико-эмиссионные спектрометры</span>
+                    </a>
+                    <a class="catalog-sidebar__item" href="catalog-categories.html">
+                      <svg class="icon"><use href="assets/icons/sprite.svg#radiation"></use></svg>
+                      <span>Оптико-эмиссионные спектрометры</span>
+                    </a>
+                    <a class="catalog-sidebar__item" href="catalog-categories.html">
+                      <svg class="icon"><use href="assets/icons/sprite.svg#visual"></use></svg>
+                      <span>Портативные анализаторы металлов</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <div class="catalog-categories__content">
+        <div class="catalog-categories__head">
+          <h1 class="m-0">Ультразвуковой контроль</h1>
+          <div class="tabs">
+            <button class="tab tab--active" type="button" data-filter="all">Все</button>
+            <button class="tab" type="button" data-filter="main">Основное оборудование</button>
+            <button class="tab" type="button" data-filter="consumable">Расходные материалы</button>
+            <button class="tab" type="button" data-filter="extra">Дополнительное оборудование</button>
+          </div>
+        </div>
+
+        <hr class="catalog-categories__separator">
+
+        <div class="category-grid">
+          <a class="category-card" href="catalog-categories.html" data-filter-cat="main">
+            <span class="category-card__bg" style="background-image: url('assets/catalog-categories/scanners.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Сканеры-дефектоскопы</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+          <a class="category-card" href="catalog-categories.html" data-filter-cat="consumable">
+            <span class="category-card__bg" style="background-image: url('assets/catalog-categories/thickness-gauges.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Ультразвуковые толщиномеры</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+          <a class="category-card" href="catalog-categories.html" data-filter-cat="extra">
+            <span class="category-card__bg" style="background-image: url('assets/catalog-categories/flaw-detectors.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Ультразвуковые дефектоскопы</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+          <a class="category-card" href="catalog-categories.html" data-filter-cat="main">
+            <span class="category-card__bg" style="background-image: url('assets/catalog-categories/automated-lines.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Автоматизированные линии</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+          <a class="category-card" href="catalog-categories.html" data-filter-cat="consumable">
+            <span class="category-card__bg" style="background-image: url('assets/catalog-categories/par-sensors.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Роликовые датчики на фазированных решётках ФАР</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+          <a class="category-card" href="catalog-categories.html" data-filter-cat="extra">
+            <span class="category-card__bg" style="background-image: url('assets/catalog-categories/gel.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Гель для УЗК</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+          <a class="category-card" href="catalog-categories.html" data-filter-cat="main">
+            <span class="category-card__bg" style="background-image: url('assets/catalog-categories/accessories.jpg')"></span>
+            <span class="category-card__title text-lead fw-semibold">Вспомогательные приборы и принадлежности</span>
+            <span class="category-card__cta btn btn-primary btn-lg w-100">Перейти</span>
+          </a>
+        </div>
+
+        <div class="catalog-categories__footer">
+          <nav class="paginator" aria-label="Пагинация">
+            <button class="paginator__btn" type="button" disabled aria-label="Предыдущая страница">
+              <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-left"></use></svg>
+            </button>
+            <button class="paginator__btn paginator__btn--active" type="button" aria-current="page">1</button>
+            <button class="paginator__btn" type="button">2</button>
+            <button class="paginator__btn" type="button">3</button>
+            <span class="paginator__ellipsis" aria-hidden="true">…</span>
+            <button class="paginator__btn" type="button">6</button>
+            <button class="paginator__btn" type="button" aria-label="Следующая страница">
+              <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+            </button>
+          </nav>
+          <div class="catalog-categories__footer-meta">
+            <p class="catalog-categories__count">Показано 7 из 7</p>
+            <div class="catalog-categories__per-page">
+              <span>Показать по</span>
+              <div class="per-page-dropdown">
+                <button class="catalog-categories__per-page-value" type="button" aria-haspopup="listbox" aria-expanded="false">
+                  <span class="per-page-dropdown__value">20</span>
+                  <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-down"></use></svg>
+                </button>
+                <div class="per-page-dropdown__panel" role="listbox">
+                  <button class="per-page-dropdown__option is-active" type="button" role="option" aria-selected="true" data-value="20">
+                    <span>20</span>
+                    <svg class="icon icon--16 per-page-dropdown__check"><use href="assets/icons/sprite.svg#check"></use></svg>
+                  </button>
+                  <button class="per-page-dropdown__option" type="button" role="option" aria-selected="false" data-value="50">
+                    <span>50</span>
+                    <svg class="icon icon--16 per-page-dropdown__check"><use href="assets/icons/sprite.svg#check"></use></svg>
+                  </button>
+                  <button class="per-page-dropdown__option" type="button" role="option" aria-selected="false" data-value="100">
+                    <span>100</span>
+                    <svg class="icon icon--16 per-page-dropdown__check"><use href="assets/icons/sprite.svg#check"></use></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="catalog-seo">
+      <h2 class="catalog-seo__title h1">Оборудование для ультразвукового контроля</h2>
+      <div class="catalog-seo__text text-lead">
+        <p>Оборудование для ультразвукового контроля применяется для поиска внутренних дефектов, оценки качества сварных соединений и измерения толщины изделий без нарушения их целостности. Метод позволяет обнаруживать трещины, расслоения, непровары, поры, коррозионное истончение и другие дефекты в металлах, композитах и отдельных видах полимерных материалов.</p>
+        <p>В каталоге представлены ультразвуковые дефектоскопы и толщиномеры, сканеры, преобразователи на фазированных решётках, роликовые датчики, контактные жидкости и вспомогательные принадлежности. Оборудование подходит для контроля трубопроводов, резервуаров, металлоконструкций, деталей машин и объектов энергетической, нефтегазовой, металлургической и строительной отраслей.</p>
+        <p>Поможем подобрать комплект оборудования с учётом материала, геометрии и толщины объекта, условий эксплуатации, требуемой точности и действующих нормативов. Предоставим техническую консультацию, необходимую документацию и сопровождение оборудования после поставки.</p>
+      </div>
+    </section>
+
+    <div class="spacer"></div>
+
+  <section class="cta">
+    <div class="cta__bg">
+      <img class="cta__img" src="assets/cta/cta-home-1-bg.jpg" alt="">
+      <div class="cta__pattern"></div>
+    </div>
+
+    <form class="cta__card">
+      <div class="cta__corner cta__corner--tl"></div>
+      <div class="cta__corner cta__corner--tr"></div>
+      <div class="cta__corner cta__corner--bl"></div>
+      <div class="cta__corner cta__corner--br"></div>
+
+      <div class="d-flex flex-column gap-3">
+        <h2 class="cta__title h1 m-0">Не нашли то, что искали?</h2>
+        <p class="cta__description text-lead fw-medium text-body-secondary m-0">Оставьте заявку, чтобы мы смогли вам помочь подобрать оборудование под вашу отрасль и задачи</p>
+        <p class="fw-semibold text-body-tertiary m-0">или позвоните нам: <a href="tel:88002506846">8 (800) 250-68-46</a></p>
       </div>
 
-      <a class="btn btn-primary btn-lg" href="home.html">Вернуться на главную</a>
-    </div>
+      <div class="d-flex flex-column gap-3 w-100">
+        <div class="d-flex flex-column gap-2 w-100">
+          <div class="d-flex flex-column flex-md-row gap-2 w-100">
+            <label class="visually-hidden" for="cta-phone">Ваш телефон</label>
+            <input class="input-field flex-md-fill" type="tel" name="phone" id="cta-phone" placeholder="Ваш телефон" autocomplete="tel" required>
+            <label class="visually-hidden" for="cta-email">Ваш email</label>
+            <input class="input-field flex-md-fill" type="email" name="email" id="cta-email" placeholder="Ваш email" autocomplete="email">
+          </div>
+          <label class="visually-hidden" for="cta-message">Укажите подробнее, что вас интересует</label>
+          <textarea class="input-field" name="message" id="cta-message" rows="3" placeholder="Укажите подробнее, что вас интересует"></textarea>
+        </div>
+
+        <div class="d-flex flex-column gap-2 w-100">
+          <label class="checkbox-field">
+            <input class="checkbox-field__input" type="checkbox" name="consent-required" checked required>
+            <span class="checkbox-field__text text-meta fw-medium text-body-secondary">Я согласен с условиями <a href="#">Политики обработки персональных данных</a></span>
+          </label>
+          <label class="checkbox-field">
+            <input class="checkbox-field__input" type="checkbox" name="consent-marketing">
+            <span class="checkbox-field__text text-meta fw-medium text-body-secondary">Я подтверждаю ознакомление и даю <a href="#">Согласие</a> на обработку моих персональных данных в порядке и на условиях, указанных в <a href="#">Политике обработки персональных данных</a></span>
+          </label>
+        </div>
+
+        <button class="btn btn-primary btn-lg w-100" type="submit">Отправить заявку</button>
+      </div>
+    </form>
   </section>
 
   <footer class="footer">

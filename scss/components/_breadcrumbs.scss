@@ -1,0 +1,55 @@
+// Хлебные крошки для обычных (не hero) страниц типа catalog.html — Figma
+// называет секцию-обёртку "TypicalHead", но по прямой просьбе заказчика
+// из неё берётся только сам блок крошек, остальное (отступы шапки,
+// заголовок и т.п.) на этой странице не нужно — HomeCatalog уже несёт
+// свой заголовок.
+//
+// Тот же приём отступов/hover, что и `.about-hero__breadcrumbs` (см.
+// `_about-hero.scss`) — заказчик явно попросил совпадение: `gap:10px`
+// одним источником (без дублирующего паддинга у самого слэша), плавная
+// opacity-подсказка на кликабельную (не текущую) крошку. Цвета другие —
+// там текст поверх фото (белый/полупрозрачный), здесь обычная белая
+// секция (text/primary для ссылки, text/secondary для текущей страницы).
+.breadcrumbs-bar {
+  // padding-top учитывает --header-h — та же логика, что у `.thanks`/
+  // `.page-404` (см. `_thanks.scss`): шапка на страницах без фото-хиро
+  // сразу солидная и сразу position:fixed (`.header--stuck` статично в
+  // разметке, без scroll-JS), паддинг резервирует место, которое она
+  // раньше занимала бы в потоке.
+  padding: calc(16px + var(--header-h)) 16px 0;
+}
+
+@include media-breakpoint-up(md) {
+  .breadcrumbs-bar {
+    padding-top: calc(32px + var(--header-h));
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.breadcrumbs a {
+  color: var(--color-text-primary);
+  transition: opacity 0.15s ease;
+}
+
+.breadcrumbs a:hover {
+  opacity: 0.7;
+}
+
+.breadcrumbs span {
+  color: var(--color-text-secondary);
+}
+
+.breadcrumbs .breadcrumbs__slash {
+  color: var(--color-text-secondary);
+}
