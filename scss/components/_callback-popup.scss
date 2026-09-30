@@ -22,7 +22,10 @@
   justify-content: center;
   position: fixed;
   inset: 0;
-  z-index: 60;
+  // 65, не 60 — см. комментарий в _search.scss: выше `.mobile-actions`,
+  // чтобы плавающая кнопка не оказывалась поверх открытого попапа (тот же
+  // класс использует и попап «Купить» на product-card.html).
+  z-index: 65;
   padding: 16px;
   overflow-y: auto;
   background: var(--color-surface-popup);

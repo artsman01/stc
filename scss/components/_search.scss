@@ -67,7 +67,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 60;
+  // 65, не 60 — выше `.mobile-actions` (тоже 60), чтобы на мобилке оверлей
+  // поиска всегда перекрывал плавающую кнопку, а не наоборот (при равном
+  // z-index выигрывает то, что позже в DOM, а `.mobile-actions` вставлена
+  // ближе к концу `<body>`, чем сам оверлей).
+  z-index: 65;
   overflow-y: auto;
   overflow-x: hidden;
   background: var(--color-surface-popup);

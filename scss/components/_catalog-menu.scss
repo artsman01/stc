@@ -24,7 +24,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 60;
+  // 65, не 60 — см. комментарий в _search.scss: выше `.mobile-actions`,
+  // чтобы плавающая кнопка не оказывалась поверх открытого меню.
+  z-index: 65;
   background: var(--color-surface-popup);
   opacity: 0;
   visibility: hidden;

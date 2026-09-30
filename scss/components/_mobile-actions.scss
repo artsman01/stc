@@ -1,12 +1,18 @@
 // Плавающая кнопка быстрых действий на мобилке (Figma 224:17596 default /
-// 224:17598 active) — фикс. в левом нижнем углу (16/16), основная кнопка
-// сама по себе всегда 40×40 и на своём месте; 5 доп. кнопок над ней —
+// 224:17598 active) — фикс. в ПРАВОМ нижнем углу (16/16, по правке
+// заказчика — в Figma было слева), основная кнопка
+// сама по себе всегда 48×48 (крупнее, чем в макете, по правке заказчика) и
+// на своём месте; 5 доп. кнопок над ней —
 // абсолютно спозиционированы (НЕ в обычном flex-потоке рядом с главной),
 // иначе скрытые по умолчанию кнопки всё равно занимали бы место и сдвигали
 // саму главную кнопку вверх, даже когда список закрыт.
+// z-index:60 — выше `.cookie-banner` (55, лежит под кнопкой), но НИЖЕ всех
+// попапов/оверлеев (поиск, каталог-меню, гамбургер-меню, попап звонка/
+// покупки — у них 65), чтобы при открытии любого из них кнопка пряталась
+// под ним, а не торчала поверх.
 .mobile-actions {
   position: fixed;
-  left: 16px;
+  right: 16px;
   bottom: 16px;
   z-index: 60;
 }
@@ -19,8 +25,11 @@
 
 .mobile-actions__items {
   position: absolute;
-  left: 0;
-  bottom: 44px;
+  right: 0;
+  // 48px (высота главной кнопки) + 4px (тот же gap, что между самими
+  // кнопками) — чтобы отступ до первой выезжающей кнопки не отличался от
+  // отступа между ними самими.
+  bottom: 52px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -37,12 +46,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   border: none;
   border-radius: 50%;
-  background: var(--color-bg-secondary);
-  color: var(--color-text-primary);
+  background: var(--color-bg-dark);
+  color: var(--color-text-button);
   opacity: 0;
   transform: translateY(8px);
   pointer-events: none;
@@ -60,8 +69,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   border: none;
   border-radius: 50%;
   background: var(--color-bg-dark);
