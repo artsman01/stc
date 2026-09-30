@@ -1,0 +1,219 @@
+// Блок «Контактная информация» на странице контактов (Figma 52:3223 desktop
+// / 52:3419 tablet / 52:3746 mobile) — карта слева + тёмная карточка справа
+// на desktop (`xl`+, `flex-row`, оба self-stretch — высота карточки задаёт
+// высоту карты), ниже `xl` карточка и карта идут друг под другом
+// (`flex-column`), карточка первой (в Figma она и в DOM, и визуально всегда
+// выше карты — `order` тут не нужен).
+.contacts {
+  padding: 32px 48px;
+  background: var(--color-bg-primary);
+}
+
+@include media-breakpoint-down(md) {
+  .contacts {
+    padding: 16px;
+  }
+}
+
+.contacts__container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+@include media-breakpoint-up(xl) {
+  .contacts__container {
+    flex-direction: row;
+    align-items: stretch;
+  }
+}
+
+// DOM-порядок (карта, потом карточка) совпадает с Figma только на desktop
+// (`xl`+, строка — карта слева). Ниже `xl` Figma меняет местами: карточка
+// идёт первой, карта — под ней. Разметку не дублируем — переставляем через
+// `order`, тем же приёмом, что уже применяется для `.footer__col--contact`.
+.contacts__card {
+  order: -1;
+}
+
+@include media-breakpoint-up(xl) {
+  .contacts__card {
+    order: 0;
+  }
+}
+
+// flex-basis:0 (`flex:1 1 0`) в колоночной раскладке отключает
+// аспект-ратио-based intrinsic-высоту — карта схлопывалась в 0px, т.к.
+// `.contacts__container` без заданной высоты не даёт flex-grow чем
+// заполняться. Поэтому `flex:1 1 0` только с `xl` (там это строка и высоту
+// задаёт соседняя карточка), а ниже — `flex:none`, высоту держит
+// aspect-ratio.
+.contacts__map {
+  position: relative;
+  flex: none;
+  min-width: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+}
+
+@include media-breakpoint-up(md) {
+  .contacts__map {
+    aspect-ratio: 768 / 588;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .contacts__map {
+    flex: 1 1 0;
+    aspect-ratio: auto;
+  }
+}
+
+.contacts__map-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.contacts__map-marker {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36px;
+  height: 48px;
+  pointer-events: none;
+}
+
+// bg — brand/secondary (#373f51), тот же тёмный навy, что использует
+// `.product-card__compare.is-active`, тут отдельный токен, т.к. в Figma это
+// именно brand/secondary, а не bg/dark.
+.contacts__card {
+  position: relative;
+  flex: none;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--color-brand-secondary);
+  color: var(--color-text-button);
+}
+
+@include media-breakpoint-up(xl) {
+  .contacts__card {
+    flex: 1 1 0;
+  }
+}
+
+.contacts__separator {
+  flex-shrink: 0;
+  width: 100%;
+  height: 0;
+  margin: 0;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.contacts__info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: inherit;
+}
+
+.contacts__phone {
+  display: block;
+  font-weight: 700;
+  color: inherit;
+}
+
+.contacts__info a,
+.contacts__info span {
+  display: block;
+  color: inherit;
+}
+
+.contacts__social {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.contacts__social-link {
+  display: flex;
+  color: inherit;
+  transition: opacity 0.15s ease;
+}
+
+.contacts__social-link:hover {
+  opacity: 0.7;
+}
+
+.contacts__requisites {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+  color: var(--color-text-on-img);
+}
+
+.contacts__requisites-name {
+  margin: 0;
+  font-weight: 600;
+  color: var(--color-text-button);
+}
+
+// Белая кнопка на тёмной карточке — тот же контраст, что у CTA-кнопки на
+// фото (`.cta__card` сидит на светлом фоне поверх тёмной подложки шапки), но
+// зеркально: тут карточка тёмная, кнопка светлая.
+.contacts__requisites-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-weight: 600;
+  font-size: var(--text-size);
+  line-height: var(--text-lh);
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.contacts__requisites-btn:hover {
+  opacity: 0.85;
+}
+
+// Декоративное изображение в правом нижнем углу карточки — в Figma оно
+// последнее в DOM внутри карточки, то есть при z-index:auto легло бы поверх
+// текста и кнопки. У `.contacts__requisites` явный z-index:1 именно чтобы
+// текст и кнопка «Скачать реквизиты» оставались кликабельными и читаемыми
+// поверх картинки; pointer-events:none здесь — дополнительная подстраховка.
+.contacts__corner {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  width: 398px;
+  height: 252px;
+  object-fit: cover;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+@include media-breakpoint-down(md) {
+  .contacts__corner {
+    width: 164px;
+    height: 104px;
+  }
+}
