@@ -1,33 +1,31 @@
 // Плашка cookie-согласия (Figma 224:17689/224:17670) — на десктопе/планшете
 // (`md`+) фикс. карточка в левом нижнем углу (16/16), как в макете. На
-// мобилке — по правке заказчика — отдельная раскладка: во всю ширину
-// экрана, прижата к самому низу (bottom:0), а `.mobile-actions` лежит
-// поверх неё (z-index у кнопки — 60 против 55 здесь), а не сдвинута выше.
+// мобилке — по правке заказчика — растянута на всю ширину, но с теми же
+// 16px отступами со всех трёх сторон (слева/справа/снизу), не впритык к
+// краям экрана; `.mobile-actions` лежит поверх неё (z-index у кнопки — 60
+// против 55 здесь).
 .cookie-banner {
   position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
   z-index: 55;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  width: 100%;
+  width: auto;
   padding: 16px;
+  border-radius: 8px;
   background: var(--color-bg-primary);
-  box-shadow: 0 -2px 8px 0 rgba(0, 0, 0, 0.16);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16);
   transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
 }
 
 @include media-breakpoint-up(md) {
   .cookie-banner {
-    left: 16px;
     right: auto;
-    bottom: 16px;
     width: 256px;
     max-width: calc(100vw - 32px);
-    border-radius: 8px;
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16);
   }
 }
 
