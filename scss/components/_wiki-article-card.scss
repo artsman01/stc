@@ -1,0 +1,121 @@
+// Карточка статьи в сетке wiki.html — фото + тег/заголовок/описание/дата.
+// Не то же самое, что `.wiki-card` (тизер на главной — цветная плашка без
+// фото, см. _wiki-card.scss): структура и контекст разные (там карточка
+// сама себе фон, здесь — фото сверху на белом), поэтому отдельный
+// компонент, а не модификатор существующего.
+//
+// Изначально заголовок/описание были однострочным эллипсисом (буквально
+// по Figma-экспорту — там `overflow-hidden`+`text-ellipsis` без указания
+// на несколько строк). Заказчик поправил: заголовок вообще не должен
+// обрезаться (растёт на сколько нужно строк), а описание можно обрезать,
+// но в 2 строки — тот же line-clamp, что у `.wiki-card__description`.
+// Высота карточек в ряду теперь может отличаться (заголовки разной длины
+// дают разное число строк) — сеткой это не выравнивается специально,
+// заказчик такого не просил.
+.wiki-article-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  // min-width:0 — grid-элементы по умолчанию min-width:auto, то есть не
+  // сжимаются уже своего контента; при однострочном (white-space:nowrap)
+  // тексте без этого распирало всю колонку сетки — реальный баг, пойманный
+  // через CDP (колонки были по ~1000px на 393px-мобилке). Тег и дата
+  // по-прежнему однострочные, так что min-width:0 всё ещё нужен.
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+@include media-breakpoint-up(md) {
+  .wiki-article-card {
+    gap: 16px;
+  }
+}
+
+.wiki-article-card__image {
+  position: relative;
+  display: block;
+  aspect-ratio: 40 / 30;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--color-bg-secondary);
+}
+
+// Слой с самим фото — отдельный от контейнера (который держит рамку/обрезку
+// по border-radius), чтобы масштабировать на ховере только его, не задевая
+// тонировку/скругление. Тот же приём zoom, что у `.category-card__bg`/
+// `.catalog-menu__card-img img` (уже был в проекте — заказчик прямо
+// попросил "как на Домарти делали", это тот же самый 1.06).
+.wiki-article-card__image-bg {
+  position: absolute;
+  inset: -6px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  transition: transform 0.25s ease;
+}
+
+@media (hover: hover) {
+  .wiki-article-card:hover .wiki-article-card__image-bg {
+    transform: scale(1.06);
+  }
+}
+
+// Тонировка поверх фото — тот же токен surface/default, что уже
+// используется на фото CTA/каталог-категорий (rgba чёрного 16%). Висит на
+// ::after контейнера (не на __image-bg), поэтому не масштабируется вместе
+// с ховер-зумом.
+.wiki-article-card__image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-surface-default);
+}
+
+.wiki-article-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+@include media-breakpoint-up(md) {
+  .wiki-article-card__body {
+    gap: 12px;
+  }
+}
+
+.wiki-article-card__tag {
+  overflow: hidden;
+  color: var(--color-brand-primary);
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// margin-bottom:0 — перебивает бутстраповский `.h4` (тот применяется как
+// голый класс, не только к настоящим h1-h6 тегам, и тащит с собой
+// `margin-bottom:0.5rem` из reboot) — здесь вертикальный ритм целиком на
+// gap-е `.wiki-article-card__body`, свой отступ снизу у заголовка лишний.
+.wiki-article-card__title {
+  margin-bottom: 0;
+  color: var(--color-text-heading);
+  transition: color 0.15s ease;
+}
+
+.wiki-article-card:hover .wiki-article-card__title {
+  color: var(--color-text-secondary);
+}
+
+.wiki-article-card__description {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  color: var(--color-text-primary);
+}
+
+.wiki-article-card__date {
+  color: var(--color-text-secondary);
+}

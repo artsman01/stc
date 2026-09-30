@@ -879,9 +879,13 @@ function unlockPageScroll() {
 // логика взаимного закрытия с поиском/catalog-menu не нужна — физически
 // нет пути их одновременного открытия.
 (function () {
-  var trigger = document.getElementById('callback-trigger');
+  // Помимо кнопки в гамбургер-меню (id, как и раньше) страница статьи
+  // встраивает такую же кнопку прямо в текст статьи (.callback-trigger,
+  // класс — точек входа теперь может быть сколько угодно, id не подходит
+  // для повторного использования).
+  var triggers = document.querySelectorAll('#callback-trigger, .callback-trigger');
   var popup = document.getElementById('callback-popup');
-  if (!trigger || !popup) return;
+  if (!triggers.length || !popup) return;
 
   var closeBtn = popup.querySelector('.callback-popup__close');
 
@@ -913,7 +917,9 @@ function unlockPageScroll() {
     unlockPageScroll();
   }
 
-  trigger.addEventListener('click', open);
+  triggers.forEach(function (trigger) {
+    trigger.addEventListener('click', open);
+  });
   closeBtn.addEventListener('click', close);
 
   // Клик по затемнённому фону (не по самой карточке) закрывает — тот же
@@ -1040,4 +1046,153 @@ function unlockPageScroll() {
       });
     });
   });
+})();
+
+// wiki.html: табы рубрик (Все / Неразрушающий контроль / …) фильтруют
+// карточки статей по data-filter-cat — тот же принцип, что у табов
+// catalog-categories.html (см. выше), на плоской сетке `.wiki-article-grid`.
+(function () {
+  var grid = document.querySelector('.wiki-article-grid');
+  if (!grid) return;
+
+  var tabs = document.querySelectorAll('.typical-head .tabs .tab');
+  var cards = grid.querySelectorAll('.wiki-article-card');
+  if (!tabs.length || !cards.length) return;
+
+  function apply(filter) {
+    cards.forEach(function (card) {
+      card.hidden = filter !== 'all' && card.dataset.filterCat !== filter;
+    });
+    tabs.forEach(function (tab) {
+      tab.classList.toggle('tab--active', tab.dataset.filter === filter);
+    });
+  }
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      apply(tab.dataset.filter);
+    });
+  });
+})();
+
+// comparison.html: фильтр «Все параметры»/«Отличающиеся» (прячет строки, где
+// значения у всех товаров совпадают), удаление товара (колонки) из таблицы
+// через корзину в шапке столбца или разом кнопкой «Очистить», и
+// кнопка-подсказка горизонтального скролла на tablet/mobile — показывается,
+// только когда таблица реально не помещается по ширине, и сама прячется у
+// конца скролла (нет смысла манить пользователя листать дальше, когда
+// дальше уже нечего показывать).
+(function () {
+  var section = document.querySelector('.comparison');
+  if (!section) return;
+
+  var table = section.querySelector('.comparison-table');
+  var headRow = table.querySelector('thead tr');
+  var tbody = table.querySelector('tbody');
+  var wrap = section.querySelector('.comparison-table-wrap');
+  var scrollEl = section.querySelector('.comparison-table-scroll');
+  var hint = section.querySelector('.comparison-scroll-hint');
+  var emptyState = section.querySelector('.comparison__empty');
+  var header = section.querySelector('.comparison__header');
+  var filterInputs = section.querySelectorAll('input[name="comparison-filter"]');
+  var clearBtn = section.querySelector('.comparison__clear');
+
+  function currentFilter() {
+    var checked = section.querySelector('input[name="comparison-filter"]:checked');
+    return checked ? checked.value : 'all';
+  }
+
+  function applyFilter() {
+    var mode = currentFilter();
+    tbody.querySelectorAll('tr').forEach(function (row) {
+      if (mode !== 'diff') {
+        row.classList.remove('is-hidden-by-filter');
+        return;
+      }
+      var values = Array.prototype.slice.call(row.querySelectorAll('td')).map(function (td) {
+        return td.textContent.trim();
+      });
+      var allSame = values.every(function (v) { return v === values[0]; });
+      row.classList.toggle('is-hidden-by-filter', allSame);
+    });
+  }
+
+  function updateEmptyState() {
+    var hasProducts = headRow.querySelectorAll('th').length > 1;
+    wrap.classList.toggle('is-empty', !hasProducts);
+    if (header) header.hidden = !hasProducts;
+    emptyState.classList.toggle('is-visible', !hasProducts);
+  }
+
+  // Кнопка-подсказка спозиционирована по вертикали в центр товарной строки
+  // (её высота "плавает" из-за переноса названия на 1-3 строки, поэтому
+  // считаем через getBoundingClientRect, а не фиксируем пиксель) — видна,
+  // только когда таблица реально шире видимой области, и прячется у конца
+  // скролла.
+  function updateScrollHint() {
+    if (!hint || !scrollEl) return;
+    var overflow = scrollEl.scrollWidth > scrollEl.clientWidth + 1;
+    if (!overflow) {
+      hint.classList.remove('is-visible');
+      return;
+    }
+    var atEnd = scrollEl.scrollLeft + scrollEl.clientWidth >= scrollEl.scrollWidth - 1;
+    hint.classList.toggle('is-visible', !atEnd);
+    var rowRect = headRow.getBoundingClientRect();
+    var wrapRect = wrap.getBoundingClientRect();
+    hint.style.top = (rowRect.top - wrapRect.top + rowRect.height / 2) + 'px';
+  }
+
+  function removeColumn(index) {
+    headRow.children[index].remove();
+    tbody.querySelectorAll('tr').forEach(function (row) {
+      if (row.children[index]) row.children[index].remove();
+    });
+    updateEmptyState();
+    applyFilter();
+    updateScrollHint();
+  }
+
+  function bindRemoveButtons() {
+    headRow.querySelectorAll('.comparison-table__remove').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var th = btn.closest('th');
+        var index = Array.prototype.indexOf.call(headRow.children, th);
+        removeColumn(index);
+      });
+    });
+  }
+  bindRemoveButtons();
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', function () {
+      while (headRow.children.length > 1) {
+        headRow.children[1].remove();
+      }
+      tbody.querySelectorAll('tr').forEach(function (row) {
+        while (row.children.length > 1) {
+          row.children[1].remove();
+        }
+      });
+      updateEmptyState();
+      updateScrollHint();
+    });
+  }
+
+  filterInputs.forEach(function (input) {
+    input.addEventListener('change', function () {
+      if (input.checked) applyFilter();
+    });
+  });
+
+  if (hint && scrollEl) {
+    hint.addEventListener('click', function () {
+      scrollEl.scrollBy({ left: 256, behavior: 'smooth' });
+    });
+    scrollEl.addEventListener('scroll', updateScrollHint);
+    window.addEventListener('resize', updateScrollHint);
+    updateScrollHint();
+  }
+
+  updateEmptyState();
 })();

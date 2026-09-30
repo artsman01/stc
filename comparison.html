@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Спасибо! Заявка принята — СТК</title>
+  <title>Сравнение — СТК</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="catalog-page">
 
     <header class="header header--stuck">
       <div class="header__start">
@@ -49,22 +49,208 @@
       </div>
     </header>
 
-  <section class="thanks">
-    <div class="thanks__container">
-      <div class="thanks__corner thanks__corner--tl"></div>
-      <div class="thanks__corner thanks__corner--tr"></div>
-      <div class="thanks__corner thanks__corner--bl"></div>
-      <div class="thanks__corner thanks__corner--br"></div>
+    <div class="typical-head">
+      <nav class="breadcrumbs" aria-label="Хлебные крошки">
+        <a href="home.html">Главная</a>
+        <span class="breadcrumbs__slash" aria-hidden="true">/</span>
+        <span aria-current="page">Сравнение</span>
+      </nav>
+      <h1 class="m-0">Сравнение</h1>
+    </div>
 
-      <div class="thanks__header">
-        <h1 class="thanks__title h1 m-0">Спасибо! Заявка принята</h1>
-        <p class="thanks__description text-lead fw-medium m-0">Мы свяжемся с вами в ближайшее время, уточним детали задачи и поможем подобрать подходящее решение</p>
+    <section class="comparison">
+      <div class="comparison__header">
+        <div class="comparison__filters" role="radiogroup" aria-label="Показывать характеристики">
+          <label class="comparison__filter">
+            <input class="comparison__filter-input" type="radio" name="comparison-filter" value="all" checked>
+            <span class="comparison__filter-text">Все параметры</span>
+          </label>
+          <label class="comparison__filter">
+            <input class="comparison__filter-input" type="radio" name="comparison-filter" value="diff">
+            <span class="comparison__filter-text">Отличающиеся</span>
+          </label>
+        </div>
+        <button class="comparison__clear" type="button">Очистить</button>
       </div>
 
-      <a class="btn btn-primary btn-lg" href="home.html">Вернуться на главную</a>
-    </div>
-  </section>
+      <div class="comparison-table-wrap">
+        <div class="comparison-table-scroll">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">
+                  <div class="comparison-table__product">
+                    <a class="comparison-table__photo-link" href="catalog.html">
+                      <img class="comparison-table__photo" src="assets/comparison/usd-60.jpg" alt="Ультразвуковой дефектоскоп УСД-60">
+                    </a>
+                    <a class="comparison-table__name" href="catalog.html">Ультразвуковой дефектоскоп УСД-60</a>
+                    <button class="comparison-table__remove" type="button" aria-label="Убрать «Ультразвуковой дефектоскоп УСД-60» из сравнения">
+                      <svg class="icon"><use href="assets/icons/sprite.svg#trash"></use></svg>
+                    </button>
+                  </div>
+                </th>
+                <th scope="col">
+                  <div class="comparison-table__product">
+                    <a class="comparison-table__photo-link" href="catalog.html">
+                      <img class="comparison-table__photo" src="assets/comparison/usd-50-ips.jpg" alt="Ультразвуковой дефектоскоп УСД-50 IPS">
+                    </a>
+                    <a class="comparison-table__name" href="catalog.html">Ультразвуковой дефектоскоп УСД-50 IPS</a>
+                    <button class="comparison-table__remove" type="button" aria-label="Убрать «Ультразвуковой дефектоскоп УСД-50 IPS» из сравнения">
+                      <svg class="icon"><use href="assets/icons/sprite.svg#trash"></use></svg>
+                    </button>
+                  </div>
+                </th>
+                <th scope="col">
+                  <div class="comparison-table__product">
+                    <a class="comparison-table__photo-link" href="catalog.html">
+                      <img class="comparison-table__photo" src="assets/comparison/usd-46.jpg" alt="Ультразвуковой дефектоскоп УСД-46">
+                    </a>
+                    <a class="comparison-table__name" href="catalog.html">Ультразвуковой дефектоскоп УСД-46</a>
+                    <button class="comparison-table__remove" type="button" aria-label="Убрать «Ультразвуковой дефектоскоп УСД-46» из сравнения">
+                      <svg class="icon"><use href="assets/icons/sprite.svg#trash"></use></svg>
+                    </button>
+                  </div>
+                </th>
+                <th scope="col">
+                  <div class="comparison-table__product">
+                    <a class="comparison-table__photo-link" href="catalog.html">
+                      <img class="comparison-table__photo" src="assets/comparison/usd-60fr.jpg" alt="Ультразвуковой дефектоскоп на фазированных решетках УСД-60ФР">
+                    </a>
+                    <a class="comparison-table__name" href="catalog.html">Ультразвуковой дефектоскоп на фазированных решетках УСД-60ФР</a>
+                    <button class="comparison-table__remove" type="button" aria-label="Убрать «Ультразвуковой дефектоскоп на фазированных решетках УСД-60ФР» из сравнения">
+                      <svg class="icon"><use href="assets/icons/sprite.svg#trash"></use></svg>
+                    </button>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Производитель</th>
+                <td>Olympus</td>
+                <td>Корпус</td>
+                <td>STARMANS ELECTRONICS</td>
+                <td>STARMANS ELECTRONICS</td>
+              </tr>
+              <tr>
+                <th scope="row">Дополнительные функции</th>
+                <td>АРК (DAC), ВРЧ</td>
+                <td>А-скан, АРК (DAC), ВРЧ</td>
+                <td>А-скан, АРК (DAC), ВРЧ</td>
+                <td>АРК (DAC), ВРЧ</td>
+              </tr>
+              <tr>
+                <th scope="row">Методы контроля</th>
+                <td>TFM, TOFD метод, Классический, ФАЗИР. РЕШЕТКИ</td>
+                <td>Классический</td>
+                <td>TOFD метод, Классический, ФАЗИР. РЕШЕТКИ</td>
+                <td>TOFD метод, Классический</td>
+              </tr>
+              <tr>
+                <th scope="row">Производитель</th>
+                <td>Olympus</td>
+                <td>Корпус</td>
+                <td>STARMANS ELECTRONICS</td>
+                <td>STARMANS ELECTRONICS</td>
+              </tr>
+              <tr>
+                <th scope="row">Дополнительные функции</th>
+                <td>АРК (DAC), ВРЧ</td>
+                <td>А-скан, АРК (DAC), ВРЧ</td>
+                <td>А-скан, АРК (DAC), ВРЧ</td>
+                <td>АРК (DAC), ВРЧ</td>
+              </tr>
+              <tr>
+                <th scope="row">Методы контроля</th>
+                <td>TFM, TOFD метод, Классический, ФАЗИР. РЕШЕТКИ</td>
+                <td>Классический</td>
+                <td>TOFD метод, Классический, ФАЗИР. РЕШЕТКИ</td>
+                <td>TOFD метод, Классический</td>
+              </tr>
+              <tr>
+                <th scope="row">Производитель</th>
+                <td>Olympus</td>
+                <td>Корпус</td>
+                <td>STARMANS ELECTRONICS</td>
+                <td>STARMANS ELECTRONICS</td>
+              </tr>
+              <tr>
+                <th scope="row">Дополнительные функции</th>
+                <td>АРК (DAC), ВРЧ</td>
+                <td>А-скан, АРК (DAC), ВРЧ</td>
+                <td>А-скан, АРК (DAC), ВРЧ</td>
+                <td>АРК (DAC), ВРЧ</td>
+              </tr>
+              <tr>
+                <th scope="row">Методы контроля</th>
+                <td>TFM, TOFD метод, Классический, ФАЗИР. РЕШЕТКИ</td>
+                <td>Классический</td>
+                <td>TOFD метод, Классический, ФАЗИР. РЕШЕТКИ</td>
+                <td>TOFD метод, Классический</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button class="comparison-scroll-hint" type="button" aria-label="Прокрутить вправо">
+          <svg class="icon"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+        </button>
+      </div>
 
+      <div class="comparison__empty">
+        <p class="h4 m-0">В сравнении пока нет товаров</p>
+        <p class="comparison__empty-text m-0">Добавьте товары из каталога, чтобы сравнить их характеристики.</p>
+        <a class="btn btn-primary btn-lg" href="catalog.html">Перейти в каталог</a>
+      </div>
+    </section>
+
+    <div class="spacer"></div>
+
+  <section class="cta cta--end">
+    <div class="cta__bg">
+      <img class="cta__img" src="assets/wiki/cta-bg.jpg" alt="">
+      <div class="cta__pattern"></div>
+    </div>
+
+    <form class="cta__card">
+      <div class="cta__corner cta__corner--tl"></div>
+      <div class="cta__corner cta__corner--tr"></div>
+      <div class="cta__corner cta__corner--bl"></div>
+      <div class="cta__corner cta__corner--br"></div>
+
+      <div class="d-flex flex-column gap-3">
+        <h2 class="cta__title h1 m-0">Есть вопрос?</h2>
+        <p class="cta__description text-lead fw-medium text-body-secondary m-0">Свяжитесь с нами — мы ответим на вопросы и поможем подобрать подходящее оборудование.</p>
+        <p class="fw-semibold text-body-tertiary m-0">или позвоните нам: <a href="tel:88002506846">8 (800) 250-68-46</a></p>
+      </div>
+
+      <div class="d-flex flex-column gap-3 w-100">
+        <div class="d-flex flex-column gap-2 w-100">
+          <div class="d-flex flex-column flex-md-row gap-2 w-100">
+            <label class="visually-hidden" for="cta-phone">Ваш телефон</label>
+            <input class="input-field flex-md-fill" type="tel" name="phone" id="cta-phone" placeholder="Ваш телефон" autocomplete="tel" required>
+            <label class="visually-hidden" for="cta-email">Ваш email</label>
+            <input class="input-field flex-md-fill" type="email" name="email" id="cta-email" placeholder="Ваш email" autocomplete="email">
+          </div>
+          <label class="visually-hidden" for="cta-message">Укажите подробнее, что вас интересует</label>
+          <textarea class="input-field" name="message" id="cta-message" rows="3" placeholder="Укажите подробнее, что вас интересует"></textarea>
+        </div>
+
+        <div class="d-flex flex-column gap-2 w-100">
+          <label class="checkbox-field">
+            <input class="checkbox-field__input" type="checkbox" name="consent-required" checked required>
+            <span class="checkbox-field__text text-meta fw-medium text-body-secondary">Я согласен с условиями <a href="#">Политики обработки персональных данных</a></span>
+          </label>
+          <label class="checkbox-field">
+            <input class="checkbox-field__input" type="checkbox" name="consent-marketing">
+            <span class="checkbox-field__text text-meta fw-medium text-body-secondary">Я подтверждаю ознакомление и даю <a href="#">Согласие</a> на обработку моих персональных данных в порядке и на условиях, указанных в <a href="#">Политике обработки персональных данных</a></span>
+          </label>
+        </div>
+
+        <button class="btn btn-primary btn-lg w-100" type="submit">Отправить заявку</button>
+      </div>
+    </form>
+  </section>
   <footer class="footer">
     <div class="footer__brand">
       <a class="footer__logo" href="home.html" aria-label="СТК — Современные технологии контроля">
@@ -603,6 +789,8 @@
       </div>
     </form>
   </div>
+
+
 
   <script src="js/main.js"></script>
 </body>

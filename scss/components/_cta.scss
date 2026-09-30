@@ -15,8 +15,19 @@
 
 @include media-breakpoint-up(md) {
   .cta {
+    display: flex;
+    align-items: flex-start;
     padding: 64px 48px;
     border-bottom: 0;
+  }
+
+  // Карточка по умолчанию (и у .cta, и у .cta--2) стоит слева — .cta__card
+  // это обычный block с max-width, безо всякого flex/justify до этого
+  // места, так что она и так упирается в левый край секции. wiki.html —
+  // первая страница, где по Figma карточка должна быть у ПРАВОГО края
+  // (justify-end) — а не просто другое фото, реально другая сторона.
+  .cta--end {
+    justify-content: flex-end;
   }
 }
 

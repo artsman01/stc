@@ -1,0 +1,170 @@
+// Тело статьи (article.html, Figma 77:17046) — по сути "prose"-стили для
+// произвольного HTML-контента статьи: h1-h6 уже даёт общая шкала типографики
+// (_typography.scss), здесь только вертикальный ритм между блоками, текст
+// абзацев (body/lead), два вида списков (точки/нумерация — цвет маркера
+// через ::marker, а не руками нарисованные кружки/цифры, как в Figma-
+// экспорте: так список остаётся настоящим <ul>/<ol> — можно вставить любое
+// число пунктов без ручной вёрстки каждого) и картинки/таблица внутри
+// потока (см. отдельные секции ниже).
+.article-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 16px;
+}
+
+@include media-breakpoint-up(md) {
+  .article-content {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+
+.article-content__body {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 768px;
+  width: 100%;
+  color: var(--color-text-primary);
+}
+
+.article-content__body h1,
+.article-content__body h2,
+.article-content__body h3,
+.article-content__body h4,
+.article-content__body h5,
+.article-content__body h6 {
+  margin: 0;
+}
+
+.article-content__body p {
+  margin: 0;
+  font-size: var(--lead-size);
+  line-height: var(--lead-lh);
+}
+
+// Акцентный инлайн-текст внутри абзаца (Figma красит отдельные слова в
+// brand/primary или делает их SemiBold, не выделяя в отдельный блок) —
+// просто тег внутри обычного <p>, без обёртки в свой класс. Ховер — та же
+// лёгкая opacity-подсказка, что и у остальных мелких ссылок на сайте
+// (крошки, подвал и т.д.), не смена цвета.
+.article-content__body p a,
+.article-content__body p .text-accent {
+  color: var(--color-brand-primary);
+  transition: opacity 0.15s ease;
+}
+
+.article-content__body p a:hover {
+  opacity: 0.7;
+}
+
+// Кнопки внутри текста статьи (например «Заказать звонок» — Figma
+// показывает её просто как часть контент-секции) не должны растягиваться
+// на всю ширину колонки: `.article-content__body` — flex-column, и без
+// этого align-self кнопка (как и любой flex-item) наследовала бы
+// align-items:stretch по умолчанию и раздувалась на все 768px.
+.article-content__body .btn {
+  align-self: flex-start;
+}
+
+.article-content__list,
+.article-content__list--numbered {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding-left: 22px;
+}
+
+.article-content__list li,
+.article-content__list--numbered li {
+  font-size: var(--lead-size);
+  line-height: var(--lead-lh);
+}
+
+.article-content__list {
+  list-style: disc;
+}
+
+.article-content__list--numbered {
+  list-style: decimal;
+}
+
+.article-content__list::marker,
+.article-content__list li::marker,
+.article-content__list--numbered li::marker {
+  color: var(--color-brand-primary);
+}
+
+.article-content__list--numbered li::marker {
+  font-weight: 500;
+}
+
+// Постер — полноширинная обложка статьи сразу под шапкой (Figma: своя
+// секция Poster, max-width 940, не привязана к узкой колонке текста
+// max-width:768 — шире неё, поэтому не внутри .article-content__body).
+.article-poster {
+  display: flex;
+  justify-content: center;
+  padding: 0 16px;
+}
+
+@include media-breakpoint-up(md) {
+  .article-poster {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+
+.article-poster__media {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 940px;
+  aspect-ratio: 940 / 528;
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: var(--color-bg-secondary);
+}
+
+.article-poster__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// Второе, инлайн-изображение внутри статьи (Figma: своя рамка — светлый
+// фон bg/light, padding 16, скругление 6, картинка внутри без обрезки под
+// конкретный aspect-ratio) — визуально отличается от постера (тот
+// full-bleed, эта — в подложке), поэтому свой модификатор, не переиспользуем
+// `.article-poster__media`. Настоящий <figure>/<figcaption> — подпись
+// («Изображение» в Figma-макете жила отдельным h6-блоком ПЕРЕД картинкой,
+// из-за спейсера между ними выглядела как отдельный заголовок, а не подпись
+// к фото; заказчик поправил — переехала внутрь, под саму картинку).
+.article-content__image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 768px;
+  margin: 0;
+  padding: 16px;
+  border-radius: 6px;
+  background: var(--color-bg-light);
+}
+
+.article-content__image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.article-content__image figcaption {
+  color: var(--color-text-secondary);
+  font-size: var(--meta-size);
+  line-height: var(--meta-lh);
+}

@@ -1,0 +1,61 @@
+// wiki.html — «База знаний» целиком (Figma 53:4175 desktop / 57:5099
+// tablet / 57:5589 mobile). По прямой просьбе заказчика здесь почти всё
+// уже готовое: шапка/подвал/CTA — verbatim из home.html, хлебные крошки+
+// заголовок+табы — `.typical-head` (см. отдельный файл), пагинация —
+// `.paginator`/`.paginator__ellipsis` 1-в-1 из catalog-categories.html
+// (те же 36px круглые кнопки, тот же активный синий "1"). Единственное
+// новое — сама сетка карточек статей: НЕ карусель (в отличие от похожей на
+// вид ленты статей на главной, `.wiki`/`.wiki-card` — та тоже, кстати, не
+// слайдер, просто более простая карточка без фото), а обычная
+// оборачивающаяся сетка (`display:grid`, как `.category-grid`) — заказчик
+// прямо это подчеркнул: "здесь не карусель а карточки в ряд".
+
+.wiki-listing {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 16px;
+}
+
+@include media-breakpoint-up(md) {
+  .wiki-listing {
+    gap: 48px;
+    padding: 32px 48px;
+  }
+}
+
+// 1 колонка на мобилке, 2 с md, 4 с xl — тот же брейкпоинт-приём, что и у
+// тизера `.wiki__grid`/`.category-grid` на главной. Смешанный gap
+// (row 48/32, column 24) — точные значения из Figma, отдельным
+// row-gap/column-gap не разводили, задаём один раз через shorthand.
+.wiki-article-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+@include media-breakpoint-up(md) {
+  .wiki-article-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 48px 24px;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .wiki-article-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+// Без своего padding — в Figma PaginationSection отдельная секция верхнего
+// уровня со своими 48px, но здесь она вложена внутрь уже отступленной
+// `.wiki-listing`; собственный padding поверх родительского удваивал отступ
+// (16px секции + 48px своих = 64px с каждой стороны на мобилке) и на узких
+// экранах реально не хватало места 7 кнопкам — флекс без flex-shrink:0 на
+// самих кнопках (см. `.paginator__btn`) сплющивал круги в овалы. Раз
+// `.wiki-listing` и так уже даёт нужный боковой отступ всем своим детям
+// (сетке карточек в том числе), пагинации свой сверху не нужен.
+.wiki-listing__pagination {
+  display: flex;
+  justify-content: center;
+}

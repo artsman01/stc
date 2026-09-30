@@ -1,0 +1,28 @@
+// "TypicalHead" — хлебные крошки + заголовок h1 + табы-фильтр, все три
+// вместе (Figma называет секцию именно так). У catalog.html/
+// catalog-categories.html из этой секции забирались только хлебные крошки
+// (там своя `.breadcrumbs-bar`, см. _breadcrumbs.scss) — там заголовок не
+// нужен, у HomeCatalog/сайдбара уже есть свой. Здесь, на wiki.html, нужна
+// вся секция целиком — первая страница, где так происходит, поэтому
+// заведён отдельный компонент, а не раздут `.breadcrumbs-bar` лишними
+// детьми.
+//
+// padding-top учитывает --header-h — та же логика, что у `.breadcrumbs-bar`/
+// `.thanks`/`.page-404`: шапка на страницах без фото-хиро сразу солидная и
+// сразу position:fixed (`.header--stuck` статично в разметке), паддинг
+// резервирует место, которое она раньше занимала бы в потоке.
+.typical-head {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: calc(16px + var(--header-h)) 16px 0;
+}
+
+@include media-breakpoint-up(md) {
+  .typical-head {
+    gap: 24px;
+    padding-top: calc(32px + var(--header-h));
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}

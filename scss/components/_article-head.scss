@@ -1,0 +1,55 @@
+// Шапка страницы «Статья» (article.html, Figma 77:17474) — крошки (3
+// уровня: Главная / База знаний / <заголовок статьи>) + тег рубрики +
+// заголовок + лид + дата, всё по центру, max-width 768. Похоже на
+// `.typical-head` (тоже крошки+заголовок сверху страницы), но здесь всё
+// центрировано, есть тег/лид/дата и нет табов — другой набор полей,
+// поэтому отдельный компонент, а не модификатор.
+.article-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: calc(16px + var(--header-h)) 16px 0;
+  text-align: center;
+}
+
+@include media-breakpoint-up(md) {
+  .article-head {
+    padding-top: calc(32px + var(--header-h));
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+
+// justify-content:center только здесь, не на самом общем `.breadcrumbs` —
+// на catalog.html/catalog-categories.html/wiki.html крошки всегда в одну
+// строку и намеренно прижаты к левому краю, трогать это не нужно. Здесь же
+// заголовок статьи в крошках может быть длинным и на узких экранах уходит
+// на вторую строку — без явного center первая строка вместе с остальным
+// контентом (тег/заголовок/лид) выглядела прижатой влево, а не по центру.
+.article-head__breadcrumbs {
+  justify-content: center;
+  max-width: 768px;
+}
+
+.article-head__intro {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 768px;
+  width: 100%;
+}
+
+.article-head__tag {
+  color: var(--color-brand-primary);
+  font-weight: 600;
+}
+
+.article-head__description {
+  max-width: 768px;
+  color: var(--color-text-primary);
+}
+
+.article-head__date {
+  color: var(--color-text-secondary);
+}

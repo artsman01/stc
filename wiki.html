@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Спасибо! Заявка принята — СТК</title>
+  <title>База знаний — СТК</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="catalog-page">
 
     <header class="header header--stuck">
       <div class="header__start">
@@ -48,23 +48,176 @@
         </div>
       </div>
     </header>
+    <div class="typical-head">
+      <nav class="breadcrumbs" aria-label="Хлебные крошки">
+        <a href="home.html">Главная</a>
+        <span class="breadcrumbs__slash" aria-hidden="true">/</span>
+        <span aria-current="page">База знаний</span>
+      </nav>
+      <h1 class="m-0">База знаний</h1>
+      <div class="tabs">
+        <button class="tab tab--active" type="button" data-filter="all">Все</button>
+        <button class="tab" type="button" data-filter="ndt">Неразрушающий контроль</button>
+        <button class="tab" type="button" data-filter="calibration">Поверка оборудования</button>
+        <button class="tab" type="button" data-filter="metal-analysis">Анализ металлов</button>
+        <button class="tab" type="button" data-filter="practice">Практика контроля</button>
+      </div>
+    </div>
 
-  <section class="thanks">
-    <div class="thanks__container">
-      <div class="thanks__corner thanks__corner--tl"></div>
-      <div class="thanks__corner thanks__corner--tr"></div>
-      <div class="thanks__corner thanks__corner--bl"></div>
-      <div class="thanks__corner thanks__corner--br"></div>
-
-      <div class="thanks__header">
-        <h1 class="thanks__title h1 m-0">Спасибо! Заявка принята</h1>
-        <p class="thanks__description text-lead fw-medium m-0">Мы свяжемся с вами в ближайшее время, уточним детали задачи и поможем подобрать подходящее решение</p>
+    <section class="wiki-listing">
+      <div class="wiki-article-grid">
+        <a class="wiki-article-card" href="wiki.html" data-filter-cat="ndt">
+          <span class="wiki-article-card__image">
+            <span class="wiki-article-card__image-bg" style="background-image: url('assets/wiki/ultrasonic-thickness-gauge.jpg')"></span>
+          </span>
+          <span class="wiki-article-card__body">
+            <span class="wiki-article-card__tag">Неразрушающий контроль</span>
+            <span class="wiki-article-card__title h4 fw-bold">Как выбрать ультразвуковой толщиномер</span>
+            <span class="wiki-article-card__description">На что обратить внимание при выборе прибора, какие характеристики важны и как условия эксплуатации влияют на точность измерений</span>
+            <span class="wiki-article-card__date text-meta">20 августа, 2026</span>
+          </span>
+        </a>
+        <a class="wiki-article-card" href="wiki.html" data-filter-cat="calibration">
+          <span class="wiki-article-card__image">
+            <span class="wiki-article-card__image-bg" style="background-image: url('assets/wiki/calibration-verification.jpg')"></span>
+          </span>
+          <span class="wiki-article-card__body">
+            <span class="wiki-article-card__tag">Поверка оборудования</span>
+            <span class="wiki-article-card__title h4 fw-bold">Поверка и калибровка: в чём разница</span>
+            <span class="wiki-article-card__description">Разбираемся, чем отличаются процедуры, в каких случаях они необходимы и что важно учитывать при эксплуатации измерительного оборудования</span>
+            <span class="wiki-article-card__date text-meta">20 августа, 2026</span>
+          </span>
+        </a>
+        <a class="wiki-article-card" href="wiki.html" data-filter-cat="metal-analysis">
+          <span class="wiki-article-card__image">
+            <span class="wiki-article-card__image-bg" style="background-image: url('assets/wiki/metal-analysis.jpg')"></span>
+          </span>
+          <span class="wiki-article-card__body">
+            <span class="wiki-article-card__tag">Анализ металлов</span>
+            <span class="wiki-article-card__title h4 fw-bold">Как определить марку металла и состав сплава</span>
+            <span class="wiki-article-card__description">Обзор современных методов анализа металлов и оборудования для быстрой идентификации химического состава материалов</span>
+            <span class="wiki-article-card__date text-meta">20 августа, 2026</span>
+          </span>
+        </a>
+        <a class="wiki-article-card" href="wiki.html" data-filter-cat="practice">
+          <span class="wiki-article-card__image">
+            <span class="wiki-article-card__image-bg" style="background-image: url('assets/wiki/weld-inspection.jpg')"></span>
+          </span>
+          <span class="wiki-article-card__body">
+            <span class="wiki-article-card__tag">Практика контроля</span>
+            <span class="wiki-article-card__title h4 fw-bold">Основные методы контроля сварных соединений</span>
+            <span class="wiki-article-card__description">Какие методы применяются для обнаружения поверхностных и внутренних дефектов сварных швов и как выбрать подходящий способ контроля</span>
+            <span class="wiki-article-card__date text-meta">20 августа, 2026</span>
+          </span>
+        </a>
+        <a class="wiki-article-card" href="wiki.html" data-filter-cat="practice">
+          <span class="wiki-article-card__image">
+            <span class="wiki-article-card__image-bg" style="background-image: url('assets/wiki/weld-inspection.jpg')"></span>
+          </span>
+          <span class="wiki-article-card__body">
+            <span class="wiki-article-card__tag">Практика контроля</span>
+            <span class="wiki-article-card__title h4 fw-bold">Основные методы контроля сварных соединений</span>
+            <span class="wiki-article-card__description">Какие методы применяются для обнаружения поверхностных и внутренних дефектов сварных швов и как выбрать подходящий способ контроля</span>
+            <span class="wiki-article-card__date text-meta">20 августа, 2026</span>
+          </span>
+        </a>
+        <a class="wiki-article-card" href="wiki.html" data-filter-cat="metal-analysis">
+          <span class="wiki-article-card__image">
+            <span class="wiki-article-card__image-bg" style="background-image: url('assets/wiki/metal-analysis.jpg')"></span>
+          </span>
+          <span class="wiki-article-card__body">
+            <span class="wiki-article-card__tag">Анализ металлов</span>
+            <span class="wiki-article-card__title h4 fw-bold">Как определить марку металла и состав сплава</span>
+            <span class="wiki-article-card__description">Обзор современных методов анализа металлов и оборудования для быстрой идентификации химического состава материалов</span>
+            <span class="wiki-article-card__date text-meta">20 августа, 2026</span>
+          </span>
+        </a>
+        <a class="wiki-article-card" href="wiki.html" data-filter-cat="ndt">
+          <span class="wiki-article-card__image">
+            <span class="wiki-article-card__image-bg" style="background-image: url('assets/wiki/ultrasonic-thickness-gauge.jpg')"></span>
+          </span>
+          <span class="wiki-article-card__body">
+            <span class="wiki-article-card__tag">Неразрушающий контроль</span>
+            <span class="wiki-article-card__title h4 fw-bold">Как выбрать ультразвуковой толщиномер</span>
+            <span class="wiki-article-card__description">На что обратить внимание при выборе прибора, какие характеристики важны и как условия эксплуатации влияют на точность измерений</span>
+            <span class="wiki-article-card__date text-meta">20 августа, 2026</span>
+          </span>
+        </a>
+        <a class="wiki-article-card" href="wiki.html" data-filter-cat="calibration">
+          <span class="wiki-article-card__image">
+            <span class="wiki-article-card__image-bg" style="background-image: url('assets/wiki/calibration-verification.jpg')"></span>
+          </span>
+          <span class="wiki-article-card__body">
+            <span class="wiki-article-card__tag">Поверка оборудования</span>
+            <span class="wiki-article-card__title h4 fw-bold">Поверка и калибровка: в чём разница</span>
+            <span class="wiki-article-card__description">Разбираемся, чем отличаются процедуры, в каких случаях они необходимы и что важно учитывать при эксплуатации измерительного оборудования</span>
+            <span class="wiki-article-card__date text-meta">20 августа, 2026</span>
+          </span>
+        </a>
       </div>
 
-      <a class="btn btn-primary btn-lg" href="home.html">Вернуться на главную</a>
-    </div>
-  </section>
+      <nav class="wiki-listing__pagination paginator" aria-label="Пагинация">
+        <button class="paginator__btn" type="button" disabled aria-label="Предыдущая страница">
+          <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-left"></use></svg>
+        </button>
+        <button class="paginator__btn paginator__btn--active" type="button" aria-current="page">1</button>
+        <button class="paginator__btn" type="button">2</button>
+        <button class="paginator__btn paginator__btn--hide-narrow" type="button">3</button>
+        <span class="paginator__ellipsis" aria-hidden="true">…</span>
+        <button class="paginator__btn" type="button">6</button>
+        <button class="paginator__btn" type="button" aria-label="Следующая страница">
+          <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-right"></use></svg>
+        </button>
+      </nav>
+    </section>
 
+    <div class="spacer"></div>
+
+  <section class="cta cta--end">
+    <div class="cta__bg">
+      <img class="cta__img" src="assets/wiki/cta-bg.jpg" alt="">
+      <div class="cta__pattern"></div>
+    </div>
+
+    <form class="cta__card">
+      <div class="cta__corner cta__corner--tl"></div>
+      <div class="cta__corner cta__corner--tr"></div>
+      <div class="cta__corner cta__corner--bl"></div>
+      <div class="cta__corner cta__corner--br"></div>
+
+      <div class="d-flex flex-column gap-3">
+        <h2 class="cta__title h1 m-0">Есть вопрос?</h2>
+        <p class="cta__description text-lead fw-medium text-body-secondary m-0">Свяжитесь с нами — мы ответим на вопросы и поможем подобрать подходящее оборудование.</p>
+        <p class="fw-semibold text-body-tertiary m-0">или позвоните нам: <a href="tel:88002506846">8 (800) 250-68-46</a></p>
+      </div>
+
+      <div class="d-flex flex-column gap-3 w-100">
+        <div class="d-flex flex-column gap-2 w-100">
+          <div class="d-flex flex-column flex-md-row gap-2 w-100">
+            <label class="visually-hidden" for="cta-phone">Ваш телефон</label>
+            <input class="input-field flex-md-fill" type="tel" name="phone" id="cta-phone" placeholder="Ваш телефон" autocomplete="tel" required>
+            <label class="visually-hidden" for="cta-email">Ваш email</label>
+            <input class="input-field flex-md-fill" type="email" name="email" id="cta-email" placeholder="Ваш email" autocomplete="email">
+          </div>
+          <label class="visually-hidden" for="cta-message">Укажите подробнее, что вас интересует</label>
+          <textarea class="input-field" name="message" id="cta-message" rows="3" placeholder="Укажите подробнее, что вас интересует"></textarea>
+        </div>
+
+        <div class="d-flex flex-column gap-2 w-100">
+          <label class="checkbox-field">
+            <input class="checkbox-field__input" type="checkbox" name="consent-required" checked required>
+            <span class="checkbox-field__text text-meta fw-medium text-body-secondary">Я согласен с условиями <a href="#">Политики обработки персональных данных</a></span>
+          </label>
+          <label class="checkbox-field">
+            <input class="checkbox-field__input" type="checkbox" name="consent-marketing">
+            <span class="checkbox-field__text text-meta fw-medium text-body-secondary">Я подтверждаю ознакомление и даю <a href="#">Согласие</a> на обработку моих персональных данных в порядке и на условиях, указанных в <a href="#">Политике обработки персональных данных</a></span>
+          </label>
+        </div>
+
+        <button class="btn btn-primary btn-lg w-100" type="submit">Отправить заявку</button>
+      </div>
+    </form>
+  </section>
   <footer class="footer">
     <div class="footer__brand">
       <a class="footer__logo" href="home.html" aria-label="СТК — Современные технологии контроля">
@@ -603,6 +756,7 @@
       </div>
     </form>
   </div>
+
 
   <script src="js/main.js"></script>
 </body>

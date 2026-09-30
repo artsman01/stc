@@ -1,0 +1,86 @@
+// Таблица внутри статьи (article.html, Figma 77:17321) — в Figma это
+// набор flex-divов на ровно 4 колонки. По прямой просьбе заказчика
+// ("таблицы прям сложные могут быть — делай традиционной таблицей —
+// гибкой") реализовано НЕ так: настоящий <table>/<thead>/<tbody> вместо
+// div-сетки. Причины:
+//   - реальные таблицы в статьях почти никогда не будут ровно 4 колонки —
+//     div-грид на flex:1 расползается, как только где-то нужен colspan,
+//     разное число колонок в разных таблицах или просто много столбцов;
+//   - <table> сам умеет то, что здесь руками не переизобрести без боли:
+//     colspan/rowspan, выравнивание по колонкам, доступность (скринридеры
+//     проговаривают заголовок колонки для каждой ячейки);
+//   - обёртка с overflow-x:auto — единственный надёжный способ показать
+//     ШИРОКУЮ/сложную таблицу на телефоне без взлома вёрстки: сжимать
+//     колонки до нечитаемости здесь хуже, чем дать горизонтальный скролл.
+.article-table-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 0 16px;
+}
+
+@include media-breakpoint-up(md) {
+  .article-table-wrap {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+
+// overflow-x:auto именно на этом внутреннем блоке (не на -wrap) — тогда
+// скроллится только сама таблица, а не паддинги секции вокруг неё.
+.article-table-scroll {
+  width: 100%;
+  max-width: 940px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.article-table {
+  width: 100%;
+  min-width: 480px;
+  border-collapse: collapse;
+  font-size: var(--meta-size);
+  line-height: var(--meta-lh);
+}
+
+.article-table th,
+.article-table td {
+  padding: 12px;
+  border: 1px solid var(--color-border-default);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.article-table thead th {
+  border-color: var(--color-border-on-img);
+  background: var(--color-brand-secondary);
+  color: var(--color-text-button);
+  font-weight: 600;
+}
+
+// Зебра по строкам + первая колонка каждой строки — акцентным синим (то же,
+// что в Figma-экспорте: первая ячейка строки всегда brand/primary, дальше —
+// обычный текст).
+.article-table tbody tr:nth-child(even) {
+  background: var(--color-bg-light);
+}
+
+.article-table tbody tr:nth-child(odd) {
+  background: var(--color-bg-primary);
+}
+
+.article-table tbody td:not(:first-child) {
+  color: var(--color-text-primary);
+}
+
+// Первая ячейка каждой строки — не просто синий текст, а настоящая ссылка
+// (заказчик уточнил: "то что синим это ссылки"). Ховер — та же лёгкая
+// opacity-подсказка, что и у остальных мелких ссылок на сайте.
+.article-table tbody td:first-child a {
+  color: var(--color-brand-primary);
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.article-table tbody td:first-child a:hover {
+  opacity: 0.7;
+}

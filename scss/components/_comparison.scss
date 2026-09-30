@@ -1,0 +1,328 @@
+// Блок «Сравнение» (comparison.html, Figma 91:14813 desktop/91:15969
+// tablet/91:16591 mobile) — радио-фильтр (Все параметры/Отличающиеся) +
+// таблица характеристик выбранных товаров. Реализована настоящей <table>
+// (тот же принцип, что в article.html: заказчик уже явно просил «гибкую»
+// таблицу для похожей задачи) — так проще JS-ом снимать/добавлять колонку
+// товара (trash-кнопка) и фильтровать строки, чем на div-гриде, плюс
+// доступность (заголовок колонки/строки проговаривается на каждую ячейку).
+//
+// В Figma-экспорте всего 3 категории характеристик (Производитель/
+// Дополнительные функции/Методы контроля), но повторены подряд 3 раза (9
+// строк характеристик всего) — вёрстка сохраняет все строки 1-в-1, как в
+// макете, по прямой просьбе заказчика.
+.comparison {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 16px;
+}
+
+@include media-breakpoint-up(md) {
+  .comparison {
+    padding-top: 32px;
+    padding-bottom: 32px;
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+
+.comparison__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+// На мобилке два радио обычно переносятся друг под друга (узкий контейнер)
+// — там нужен меньший gap (12px), чем между ними же в ряд на tablet/desktop
+// (24px).
+.comparison__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+@include media-breakpoint-up(md) {
+  .comparison__filters {
+    gap: 24px;
+  }
+}
+
+.comparison__filter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+// Настоящий <input type="radio">, просто перекрашенный (как .checkbox-field)
+// — клавиатура/скринридер работают нативно, ничего декоративного.
+.comparison__filter-input {
+  flex-shrink: 0;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--color-border-default);
+  border-radius: 50%;
+  background-color: var(--color-bg-primary);
+  cursor: pointer;
+}
+
+// Внутренняя точка — inset box-shadow вместо доп. SVG-ассета: закрашиваем
+// весь круг акцентом, затем "выгрызаем" 4px-кольцо цветом фона по контуру
+// border-radius, оставляя ровно 12px заливки в центре (as в Figma).
+.comparison__filter-input:checked {
+  border-color: var(--color-brand-primary);
+  background-color: var(--color-brand-primary);
+  box-shadow: inset 0 0 0 4px var(--color-bg-primary);
+}
+
+.comparison__filter-input:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 2px;
+}
+
+.comparison__filter-text {
+  font-size: var(--text-size);
+  line-height: var(--text-lh);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+.comparison__clear {
+  border: none;
+  background: none;
+  padding: 0;
+  margin-left: auto;
+  font-size: var(--text-size);
+  line-height: var(--text-lh);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.comparison__clear:hover {
+  opacity: 0.7;
+}
+
+// -- Пустое состояние (после «Очистить» / удаления всех товаров) ---------
+
+.comparison__empty {
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 48px 0;
+}
+
+.comparison__empty.is-visible {
+  display: flex;
+}
+
+.comparison__empty-text {
+  color: var(--color-text-secondary);
+}
+
+// -- Таблица ----------------------------------------------------------------
+
+.comparison-table-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.comparison-table-wrap.is-empty {
+  display: none;
+}
+
+// overflow-x именно на этом внутреннем блоке (не на -wrap) — тот же приём,
+// что в article-table: скроллится только сама таблица, кнопка-подсказка
+// прокрутки остаётся зафиксированной поверх через position:sticky на -wrap.
+.comparison-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.comparison-table {
+  width: 100%;
+  min-width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+// В Figma бордер только ГОРИЗОНТАЛЬНЫЙ, между строками — между колонками и
+// по внешним левому/правому краям бордера нет. border-top+border-bottom на
+// каждой ячейке вместо border-collapse-схлопывания четырёх сторон: соседние
+// строки делят одну линию (border-collapse:collapse), первая/последняя
+// строка получают внешнюю линию сверху/снизу, а вертикальных линий не
+// возникает вовсе.
+.comparison-table th,
+.comparison-table td {
+  min-width: 256px;
+  width: 256px;
+  padding: 16px;
+  border-top: 1px solid var(--color-border-default);
+  border-bottom: 1px solid var(--color-border-default);
+  text-align: left;
+  vertical-align: top;
+  font-size: var(--text-size);
+  line-height: var(--text-lh);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  transition: background-color 0.15s ease;
+}
+
+.comparison-table tbody th {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+// Ховер на строку характеристик — подсветка bg/secondary с плавным переходом
+// (transition уже объявлен выше на самой ячейке). В Figma подсветка была
+// нарисована статично на одной демо-строке («Методы контроля») — заказчик
+// уточнил, что это иллюстрация ховер-состояния, а не постоянная заливка,
+// поэтому фон появляется только по наведению, на любой строке.
+.comparison-table tbody tr:hover td,
+.comparison-table tbody tr:hover th {
+  background: var(--color-bg-secondary);
+}
+
+// Фильтр «Отличающиеся» — JS добавляет/убирает этот класс построчно.
+.comparison-table tbody tr.is-hidden-by-filter {
+  display: none;
+}
+
+.comparison-table__product {
+  position: relative;
+}
+
+// Фото товара — тоже ссылка (на карточку товара): overflow:hidden на самой
+// ссылке клипует зум фото по рамке 96×96, тот же приём scale(1.06), что у
+// .category-card__bg/.wiki-article-card__image-bg.
+.comparison-table__photo-link {
+  display: block;
+  width: 96px;
+  height: 96px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--color-bg-secondary);
+  cursor: pointer;
+}
+
+.comparison-table__photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.25s ease;
+}
+
+.comparison-table__photo-link:hover .comparison-table__photo {
+  transform: scale(1.06);
+}
+
+// Название товара — тоже ссылка, лёгкая opacity на ховер (тот же приём, что
+// у остальных мелких ссылок сайта — крошки, подвал, ссылки в тексте статьи).
+.comparison-table__name {
+  display: block;
+  font-size: var(--h6-size);
+  line-height: var(--h6-lh);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  padding-right: 32px;
+  transition: opacity 0.15s ease;
+}
+
+.comparison-table__name:hover {
+  opacity: 0.7;
+}
+
+.comparison-table__remove {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.comparison-table__remove:hover {
+  color: var(--color-brand-primary);
+}
+
+.comparison-table__remove .icon {
+  width: 24px;
+  height: 24px;
+}
+
+// -- Кнопка-подсказка горизонтального скролла (только tablet/mobile, когда
+// таблица реально не помещается) — абсолютно спозиционирована ПОВЕРХ
+// скролл-контейнера (на непрокручиваемом `.comparison-table-wrap`), поэтому
+// не уезжает вместе с контентом при скролле. `top` выставляет JS — по центру
+// именно первой (товарной) строки, у неё переменная высота из-за переноса
+// названия на 1-3 строки, поэтому фикс. пиксель здесь был бы хрупким.
+// Фон и иконка ховерятся независимо: фон — отдельный ::before-слой (плавная
+// opacity на нём), иконка — обычный child поверх (свой z-index), чтобы
+// ховер приглушал только кружок-подложку, а не саму стрелку.
+.comparison-scroll-hint {
+  display: none;
+  position: absolute;
+  right: 16px;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  z-index: 1;
+}
+
+.comparison-scroll-hint::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--color-bg-secondary);
+  transition: opacity 0.15s ease;
+}
+
+.comparison-scroll-hint:hover::before {
+  opacity: 0.7;
+}
+
+.comparison-scroll-hint.is-visible {
+  display: flex;
+}
+
+.comparison-scroll-hint .icon {
+  position: relative;
+  width: 12px;
+  height: 12px;
+}
+
+@include media-breakpoint-up(xl) {
+  .comparison-scroll-hint {
+    display: none !important;
+  }
+}
