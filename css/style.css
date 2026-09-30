@@ -13055,14 +13055,14 @@ html {
   .category-card__title {
     font-size: var(--text-size);
     line-height: var(--text-lh);
-    font-weight: 700 !important;
+    font-weight: 600 !important;
   }
 }
 @media (min-width: 1040px) and (max-width: 1547.98px) {
   .category-card__title {
     font-size: var(--text-size);
     line-height: var(--text-lh);
-    font-weight: 700 !important;
+    font-weight: 600 !important;
   }
 }
 .category-card__cta {
@@ -17121,14 +17121,14 @@ a.footer__col-legal.footer__col-legal--inline {
   .product-card__title {
     font-size: var(--text-size);
     line-height: var(--text-lh);
-    font-weight: 700;
+    font-weight: 600;
   }
 }
 @media (min-width: 1040px) and (max-width: 1547.98px) {
   .product-card__title {
     font-size: var(--text-size);
     line-height: var(--text-lh);
-    font-weight: 700;
+    font-weight: 600;
   }
 }
 .product-card__compare {
