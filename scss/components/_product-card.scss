@@ -1,0 +1,181 @@
+// Карточка товара каталога (catalog-products.html, Figma 72:5366
+// desktop/73:7626 tablet/73:8372 mobile) — квадратная карточка 1:1, полностью
+// фото на весь фон (белый bg-подложка на случай прозрачных углов), заголовок
+// + кнопка «В сравнение» сверху, кнопка «Перейти» снизу — появляется по
+// ховеру (тот же приём, что `.category-card__cta`: в Figma кнопка нарисована
+// статично только на одной карточке из девяти как иллюстрация ховер-
+// состояния, реально работает на всех).
+//
+// Сетка — те же брейкпоинты, что уже подобраны для `.category-grid` на
+// catalog-categories.html (2 колонки от `md`, 3 только от `xxl` — сайдбар
+// делает 3 в ряд тесными раньше 1400px), просто отдельный класс, т.к.
+// карточка функционально другая (не `<a>` целиком — внутри реальная кнопка
+// сравнения, вложенный интерактивный элемент внутри `<a>` невалиден).
+.product-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+@include media-breakpoint-up(md) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@include media-breakpoint-up(xxl) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.product-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  aspect-ratio: 1 / 1;
+  padding: 24px;
+  overflow: hidden;
+  border: 1px solid var(--color-border-default);
+  border-radius: 8px;
+  background: var(--color-bg-primary);
+}
+
+// Фото — отдельная ссылка на товар (полностью покрывает карточку, лежит в
+// самом низу по z-index), а не обёртка всей карточки в `<a>` — заголовок и
+// кнопка «Перейти» тоже свои ссылки рядом (как `.comparison-table__photo-
+// link`/`__name` на странице сравнения), а кнопка «В сравнение» — реальная
+// `<button>`; всё это не может быть вложено друг в друга.
+.product-card__photo-link {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.product-card__bg {
+  position: absolute;
+  inset: -6px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  transition: transform 0.25s ease;
+}
+
+// Ховер в любом месте карточки (не только на самом фото) зумит фон — та же
+// логика, что у `.category-card:hover .category-card__bg`, здесь просто
+// разделённые на несколько элементов интерактивные зоны (фото-ссылка,
+// заголовок-ссылка, кнопка сравнения) вместо одной сплошной `<a>`.
+@media (hover: hover) {
+  .product-card:hover .product-card__bg {
+    transform: scale(1.06);
+  }
+}
+
+.product-card__top {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.product-card__title {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  color: var(--color-text-heading);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  transition: opacity 0.15s ease;
+}
+
+.product-card__title:hover {
+  opacity: 0.7;
+}
+
+// Кнопка «В сравнение» — реально переключаемая (не декоративная): по клику
+// плавно заливается синим и иконка становится белой (comparison-2 →
+// check-large, обе уже есть в спрайте) — состояние "добавлено" в Figma
+// нарисовано статично только на одной карточке из девяти, как демонстрация
+// второго состояния кнопки, а не постоянное отличие именно этого товара.
+//
+// Фон — отдельный ::before-слой (тот же приём, что `.icon-btn` в шапке),
+// иконка — обычный позиционированный child поверх: так ховер-притухание
+// (opacity) можно повесить только на подложку, не задевая саму иконку —
+// один в один логика ховера кнопок .header__actions (поиск/сравнение/
+// бургер), только там сравнение открывает страницу, а здесь переключает.
+.product-card__compare {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.product-card__compare::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--color-bg-light);
+  transition: background-color 0.2s ease, opacity 0.15s ease;
+}
+
+.product-card__compare .icon {
+  position: relative;
+}
+
+@media (hover: hover) {
+  .product-card__compare:hover::before {
+    opacity: 0.7;
+  }
+}
+
+.product-card__compare.is-active {
+  color: var(--color-text-button);
+}
+
+.product-card__compare.is-active::before {
+  background: var(--color-brand-primary);
+  opacity: 1;
+}
+
+.product-card__cta {
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.product-card:focus-within .product-card__cta {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+@media (hover: hover) {
+  .product-card:hover .product-card__cta {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+}

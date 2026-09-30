@@ -1196,3 +1196,24 @@ function unlockPageScroll() {
 
   updateEmptyState();
 })();
+
+// catalog-products.html: кнопка «В сравнение» на карточке товара — реально
+// переключаемая (не декоративная). В Figma состояние "добавлено" (синий фон
+// + иконка check-large) нарисовано статично только на одной карточке из
+// девяти как демонстрация второго состояния кнопки — здесь оно работает по
+// клику на любой карточке, обе иконки уже есть в общем спрайте.
+(function () {
+  var buttons = document.querySelectorAll('.product-card__compare');
+  if (!buttons.length) return;
+
+  buttons.forEach(function (btn) {
+    var use = btn.querySelector('use');
+    btn.addEventListener('click', function () {
+      var active = btn.classList.toggle('is-active');
+      btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+      use.setAttribute('href', active
+        ? 'assets/icons/sprite.svg#check-large'
+        : 'assets/icons/sprite.svg#comparison-2');
+    });
+  });
+})();
