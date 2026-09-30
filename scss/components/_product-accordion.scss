@@ -1,0 +1,196 @@
+// Тело карточки товара — аккордеон характеристик слева + «Полезные
+// материалы» справа (Figma 91:11234). Тот же приём grid-template-rows:
+// 0fr → 1fr, что у `.catalog-sidebar__group`/`.catalog-menu` (см. эти
+// файлы) — обязательна двойная обёртка `-inner` без собственных отступов,
+// иначе трек не схлопывается до истинного нуля.
+.product-body {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 16px;
+}
+
+@include media-breakpoint-up(md) {
+  .product-body {
+    gap: 32px;
+    padding: 32px 48px;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .product-body {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.product-body__main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+  width: 100%;
+}
+
+@include media-breakpoint-up(xl) {
+  .product-body__main {
+    flex: 1 1 0;
+  }
+}
+
+.product-body__title {
+  margin: 0;
+  color: var(--color-text-heading);
+}
+
+.product-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.product-accordion__toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 16px;
+  border: 1px solid var(--color-border-default);
+  border-radius: 8px;
+  background: var(--color-bg-secondary);
+  color: var(--color-text-heading);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.product-accordion__item.is-open .product-accordion__toggle {
+  background: var(--color-bg-light);
+}
+
+.product-accordion__toggle-text {
+  flex: 1 1 0;
+  min-width: 0;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 28px;
+}
+
+.product-accordion__toggle .icon {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.product-accordion__item.is-open .product-accordion__toggle .icon {
+  transform: rotate(180deg);
+}
+
+.product-accordion__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.2s ease;
+}
+
+.product-accordion__item.is-open .product-accordion__panel {
+  grid-template-rows: 1fr;
+}
+
+.product-accordion__panel-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.product-accordion__content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px 16px;
+  color: var(--color-text-primary);
+}
+
+.product-accordion__content h4,
+.product-accordion__content h5 {
+  margin: 0;
+}
+
+// Иллюстрация с подписью внутри аккордеона — тот же приём, что
+// `.article-content__image` (рамка на светлом фоне, подпись под фото).
+.product-accordion__figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin: 0;
+  padding: 16px;
+  border-radius: 6px;
+  background: var(--color-bg-light);
+}
+
+.product-accordion__figure img {
+  display: block;
+  width: 100%;
+  max-width: 665px;
+  height: auto;
+  border-radius: 4px;
+}
+
+.product-accordion__figure figcaption {
+  color: var(--color-text-secondary);
+  font-size: var(--meta-size);
+  line-height: var(--meta-lh);
+}
+
+// «Полезные материалы» — sticky-колонка справа: по прямой просьбе
+// заказчика «скроллится за нами», пока рядом длинный список аккордеона.
+// Тот же `position:sticky` приём, что у `.catalog-sidebar` на
+// catalog-categories.html, но без брейкпоинта — здесь всегда сбоку от xl.
+.product-files {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  padding: 32px;
+  border-radius: 8px;
+  background: var(--color-bg-light);
+}
+
+@include media-breakpoint-up(xl) {
+  .product-files {
+    width: 400px;
+    flex-shrink: 0;
+    position: sticky;
+    top: calc(var(--header-h) + 32px);
+  }
+}
+
+.product-files__title {
+  margin: 0;
+  color: var(--color-text-heading);
+}
+
+.product-files__list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.product-files__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-text-heading);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  transition: opacity 0.15s ease;
+}
+
+.product-files__item:hover {
+  opacity: 0.7;
+}
+
+.product-files__item .icon {
+  flex-shrink: 0;
+}

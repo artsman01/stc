@@ -159,12 +159,14 @@
   color: var(--color-text-primary);
 }
 
-.hamburger-menu__contact-list a {
+// `>` (прямой потомок) — та же причина, что у `.footer__col-list`: не
+// задевать вложенные иконки-ссылки `.footer__social-link` в `.footer__social`.
+.hamburger-menu__contact-list > a {
   color: inherit;
   transition: color 0.15s ease;
 }
 
-.hamburger-menu__contact-list a:hover {
+.hamburger-menu__contact-list > a:hover {
   color: var(--color-brand-primary);
 }
 

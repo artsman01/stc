@@ -1,0 +1,97 @@
+// Плавающая кнопка быстрых действий на мобилке (Figma 224:17596 default /
+// 224:17598 active) — фикс. в левом нижнем углу (16/16), основная кнопка
+// сама по себе всегда 40×40 и на своём месте; 5 доп. кнопок над ней —
+// абсолютно спозиционированы (НЕ в обычном flex-потоке рядом с главной),
+// иначе скрытые по умолчанию кнопки всё равно занимали бы место и сдвигали
+// саму главную кнопку вверх, даже когда список закрыт.
+.mobile-actions {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 60;
+}
+
+@include media-breakpoint-up(md) {
+  .mobile-actions {
+    display: none;
+  }
+}
+
+.mobile-actions__items {
+  position: absolute;
+  left: 0;
+  bottom: 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+// По умолчанию сдвинуты вниз на 8px и прозрачны — открытие анимирует их
+// "вверх на место", закрытие — обратно. Смещение и прозрачность переключает
+// JS точечно на каждой кнопке со своей задержкой (см. js/main.js) — именно
+// поэтому это не единый transition на родителе: порядок появления (снизу
+// вверх) и порядок исчезновения (сверху вниз) разный, обычный CSS
+// transition-delay на классе родителя не даёт двух разных направлений одним
+// правилом.
+.mobile-actions__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.mobile-actions__item.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.mobile-actions__main {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-bg-dark);
+  color: var(--color-text-button);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.mobile-actions.is-open .mobile-actions__main {
+  background: var(--color-brand-primary);
+}
+
+// Иконка и крестик — оба всегда в DOM, переключаются через opacity
+// (позиционированы друг на друге через position:absolute), а не через
+// v-if/display:none — тот же приём, что уже применялся на сайте для
+// плавной смены состояния иконки без "прыжка" разметки.
+.mobile-actions__icon,
+.mobile-actions__cross {
+  position: absolute;
+  transition: opacity 0.2s ease;
+}
+
+.mobile-actions__cross {
+  opacity: 0;
+}
+
+.mobile-actions.is-open .mobile-actions__icon {
+  opacity: 0;
+}
+
+.mobile-actions.is-open .mobile-actions__cross {
+  opacity: 1;
+}

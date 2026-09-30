@@ -1,0 +1,97 @@
+// Галерея товара (product-card.html, Figma 82:9232 desktop/91:12293
+// tablet/91:13499 mobile) — большое фото + миниатюры снизу + стрелки
+// поверх фото по бокам (используют тот же chevron-ассет, что и остальные
+// prev/next стрелки на сайте — переиспользован `angle-left`/`angle-right`
+// из спрайта, новых ассетов не понадобилось).
+.product-gallery {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 32px 0;
+  border: 1px solid var(--color-border-default);
+  border-radius: 8px;
+  background: var(--color-bg-primary);
+}
+
+.product-gallery__main {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-width: 748px;
+}
+
+.product-gallery__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.product-gallery__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+@media (hover: hover) {
+  .product-gallery__arrow:hover {
+    background: var(--color-border-default);
+  }
+}
+
+.product-gallery__arrow--prev {
+  left: 16px;
+}
+
+.product-gallery__arrow--next {
+  right: 16px;
+}
+
+.product-gallery__thumbs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0 16px;
+}
+
+.product-gallery__thumb {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: none;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.product-gallery__thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-gallery__thumb.is-active {
+  border-color: var(--color-brand-primary);
+}

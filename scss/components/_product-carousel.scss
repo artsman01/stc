@@ -1,0 +1,68 @@
+// Карусели товаров на карточке товара («С этим товаром покупают» /
+// «Аналогичные товары» + «Вы смотрели», Figma 91:10260/91:10607) — тот же
+// Swiper-приём, что у `.industries`/`.solutions` на главной (см. эти
+// файлы и js/main.js): slidesPerView:'auto' с фикс. шириной карточки ниже
+// xl, 4 карточки строго в ряд от xl. Слайды — уже готовые `.product-card`
+// (карточки товара переиспользованы 1-в-1 с catalog-products.html, включая
+// работающую кнопку сравнения), новый здесь только сам каркас карусели.
+.product-carousel {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 16px;
+}
+
+@include media-breakpoint-up(md) {
+  .product-carousel {
+    gap: 32px;
+    padding: 32px 48px;
+  }
+}
+
+.product-carousel__head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  width: 100%;
+}
+
+.product-carousel__title {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+  color: var(--color-text-heading);
+}
+
+// Второй блок вместо статичного заголовка показывает пилюльные табы
+// («Аналогичные товары» / «Вы смотрели») — переиспользован общий
+// `.tabs`/`.tab`, просто занимает место заголовка через flex:1.
+.product-carousel__head .tabs {
+  flex: 1 1 0;
+}
+
+.product-carousel__nav {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.product-carousel__slider.swiper {
+  width: 100%;
+  overflow: visible;
+}
+
+.product-carousel__track.swiper-wrapper {
+  align-items: stretch;
+}
+
+.product-carousel__track .product-card.swiper-slide {
+  width: 370px;
+  flex-shrink: 0;
+}
+
+@include media-breakpoint-up(xl) {
+  .product-carousel__track .product-card.swiper-slide {
+    width: auto;
+  }
+}

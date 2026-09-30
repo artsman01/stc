@@ -1,0 +1,55 @@
+// Плашка cookie-согласия (Figma 224:17689/224:17670) — фикс. в левом
+// нижнем углу (16/16) на каждой странице, остаётся на месте при скролле.
+// На мобилке — над `.mobile-actions` (та же fixed-точка, поэтому свой
+// z-index ниже, чтобы плавающая кнопка на мобилке была видна поверх, если
+// когда-нибудь пересекутся местами — сейчас не пересекаются, т.к. cookie
+// закрывается по клику и не показывается одновременно с активным списком
+// mobile-actions).
+.cookie-banner {
+  position: fixed;
+  left: 16px;
+  // На мобилке в том же углу висит `.mobile-actions` (40px кнопка + 16px
+  // отступ) — плашка сдвинута выше неё, чтобы не перекрываться; от `md`
+  // `.mobile-actions` скрыта, там обычные 16px.
+  bottom: 72px;
+  z-index: 55;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 256px;
+  max-width: calc(100vw - 32px);
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--color-bg-primary);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
+}
+
+@include media-breakpoint-up(md) {
+  .cookie-banner {
+    bottom: 16px;
+  }
+}
+
+.cookie-banner.is-hidden {
+  opacity: 0;
+  transform: translateY(8px);
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0s;
+}
+
+.cookie-banner__text {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: var(--meta-size);
+  line-height: var(--meta-lh);
+}
+
+.cookie-banner__highlight {
+  color: var(--color-brand-primary);
+}
+
+.cookie-banner__btn {
+  width: 100%;
+}

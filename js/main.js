@@ -1217,3 +1217,252 @@ function unlockPageScroll() {
     });
   });
 })();
+
+// product-card.html: галерея товара — клик по миниатюре меняет большое
+// фото и подсвечивает активную миниатюру, стрелки по бокам листают тот же
+// список по кругу.
+(function () {
+  var gallery = document.querySelector('.product-gallery');
+  if (!gallery) return;
+
+  var mainImg = gallery.querySelector('.product-gallery__img');
+  var thumbs = Array.prototype.slice.call(gallery.querySelectorAll('.product-gallery__thumb'));
+  if (!mainImg || !thumbs.length) return;
+
+  var activeIndex = thumbs.findIndex(function (t) { return t.classList.contains('is-active'); });
+  if (activeIndex === -1) activeIndex = 0;
+
+  function show(index) {
+    activeIndex = (index + thumbs.length) % thumbs.length;
+    thumbs.forEach(function (t, i) {
+      t.classList.toggle('is-active', i === activeIndex);
+    });
+    var src = thumbs[activeIndex].getAttribute('data-full') || thumbs[activeIndex].querySelector('img').src;
+    mainImg.src = src;
+  }
+
+  thumbs.forEach(function (t, i) {
+    t.addEventListener('click', function () { show(i); });
+  });
+
+  var prev = gallery.querySelector('.product-gallery__arrow--prev');
+  var next = gallery.querySelector('.product-gallery__arrow--next');
+  if (prev) prev.addEventListener('click', function () { show(activeIndex - 1); });
+  if (next) next.addEventListener('click', function () { show(activeIndex + 1); });
+})();
+
+// product-card.html: кнопка сравнения в шапке товара — тот же
+// переключаемый приём (фон в синий + белая иконка), что у
+// `.product-card__compare` в сетке каталога, но отдельный обработчик — эта
+// кнопка не внутри `.product-card` и не должна зависеть от разметки сетки.
+(function () {
+  var btn = document.querySelector('.product-info__compare');
+  if (!btn) return;
+  var use = btn.querySelector('use');
+  btn.addEventListener('click', function () {
+    var active = btn.classList.toggle('is-active');
+    btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    use.setAttribute('href', active
+      ? 'assets/icons/sprite.svg#check-large'
+      : 'assets/icons/sprite.svg#comparison-2');
+  });
+})();
+
+// product-card.html: аккордеон характеристик — секции независимы друг от
+// друга (тот же grid-template-rows:0fr→1fr приём, что у
+// .catalog-sidebar__group, см. этот файл), несколько секций могут быть
+// открыты одновременно (в Figma «Особенности»/«Конструкция» открыты сразу
+// обе — не аккордеон с одной активной панелью, а обычный набор
+// независимых сворачиваемых блоков).
+(function () {
+  document.querySelectorAll('.product-accordion__item').forEach(function (item) {
+    var toggle = item.querySelector('.product-accordion__toggle');
+    if (!toggle) return;
+    toggle.addEventListener('click', function () {
+      var open = !item.classList.contains('is-open');
+      item.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+})();
+
+// product-card.html: карусели товаров — тот же Swiper-приём, что у
+// .industries/.solutions на главной (см. эти инициализаторы выше), просто
+// на .product-card как слайдах вместо .industry-card/.solution-card.
+(function () {
+  function initProductCarousel(section) {
+    var swiperEl = section.querySelector('.product-carousel__slider');
+    if (!swiperEl) return;
+
+    new Swiper(swiperEl, {
+      slidesPerView: 'auto',
+      spaceBetween: 8,
+      speed: 450,
+      wrapperClass: 'product-carousel__track',
+      slideClass: 'product-card',
+      navigation: {
+        nextEl: section.querySelector('.product-carousel__nav-next'),
+        prevEl: section.querySelector('.product-carousel__nav-prev'),
+      },
+      breakpoints: {
+        1200: { slidesPerView: 4, spaceBetween: 8 },
+      },
+    });
+  }
+
+  document.querySelectorAll('.product-carousel').forEach(initProductCarousel);
+})();
+
+// product-card.html: пилюльные табы во второй карусели («Аналогичные
+// товары» / «Вы смотрели») — оба таба показывают одну и ту же демо-сетку
+// карточек (в Figma нет отдельного набора данных для «Вы смотрели»),
+// переключатель только визуальный, как и остальные декоративные табы в
+// проекте без собственного набора контента.
+(function () {
+  var tabs = document.querySelectorAll('.product-carousel__head .tabs .tab');
+  if (!tabs.length) return;
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      tabs.forEach(function (t) { t.classList.remove('tab--active'); });
+      tab.classList.add('tab--active');
+    });
+  });
+})();
+
+// product-card.html: кнопка «Купить» открывает отдельный попап заказа —
+// та же механика, что у .callback-popup (см. выше — id/class-триггеры,
+// закрытие по крестику/фону/Escape, lockPageScroll), просто свой попап с
+// другим содержимым (форма заказа, а не обратного звонка).
+(function () {
+  var triggers = document.querySelectorAll('#buy-trigger, .buy-trigger');
+  var popup = document.getElementById('buy-popup');
+  if (!triggers.length || !popup) return;
+
+  var closeBtn = popup.querySelector('.callback-popup__close');
+
+  function open() {
+    popup.classList.add('is-open');
+    popup.setAttribute('aria-hidden', 'false');
+    lockPageScroll();
+  }
+
+  function close() {
+    popup.classList.remove('is-open');
+    popup.setAttribute('aria-hidden', 'true');
+    unlockPageScroll();
+  }
+
+  triggers.forEach(function (trigger) {
+    trigger.addEventListener('click', open);
+  });
+  closeBtn.addEventListener('click', close);
+
+  popup.addEventListener('click', function (e) {
+    if (e.target === popup) close();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && popup.classList.contains('is-open')) close();
+  });
+})();
+
+// .mobile-actions — плавающая кнопка быстрых действий на мобилке (Figma
+// 224:17596/224:17598). Две независимые вещи: (1) когда список закрыт,
+// иконка на главной кнопке каждые несколько секунд плавно меняется по
+// кругу (mail → tg-outline → phone); (2) клик открывает/закрывает список
+// из 5 кнопок с ПРОТИВОПОЛОЖНЫМ порядком появления/исчезновения (открытие
+// — снизу вверх, от ближайшей к кнопке; закрытие — сверху вниз, от самой
+// дальней) — именно поэтому это не единый CSS-transition с задержкой на
+// родителе, а посекундный JS-перебор каждой кнопки в нужном порядке.
+(function () {
+  var root = document.querySelector('.mobile-actions');
+  if (!root) return;
+
+  var mainBtn = root.querySelector('.mobile-actions__main');
+  var mainIcon = root.querySelector('.mobile-actions__icon use');
+  var items = Array.prototype.slice.call(root.querySelectorAll('.mobile-actions__item'));
+  var cycle = ['mail', 'tg-outline', 'phone'];
+  var cycleIndex = 0;
+  var cycleTimer = null;
+
+  function startCycle() {
+    stopCycle();
+    cycleTimer = setInterval(function () {
+      cycleIndex = (cycleIndex + 1) % cycle.length;
+      mainIcon.parentElement.style.opacity = 0;
+      setTimeout(function () {
+        mainIcon.setAttribute('href', 'assets/icons/sprite.svg#' + cycle[cycleIndex]);
+        mainIcon.parentElement.style.opacity = '';
+      }, 200);
+    }, 3000);
+  }
+
+  function stopCycle() {
+    if (cycleTimer) clearInterval(cycleTimer);
+    cycleTimer = null;
+  }
+
+  function open() {
+    root.classList.add('is-open');
+    mainBtn.setAttribute('aria-expanded', 'true');
+    stopCycle();
+    // Снизу вверх — от последней кнопки (ближе всего к главной, «phone»)
+    // к первой («tg-outline» сверху).
+    var order = items.slice().reverse();
+    order.forEach(function (item, i) {
+      setTimeout(function () {
+        item.classList.add('is-visible');
+      }, i * 60);
+    });
+  }
+
+  function close() {
+    root.classList.remove('is-open');
+    mainBtn.setAttribute('aria-expanded', 'false');
+    // Сверху вниз — от первой кнопки («tg-outline») к последней («phone»).
+    items.forEach(function (item, i) {
+      setTimeout(function () {
+        item.classList.remove('is-visible');
+      }, i * 60);
+    });
+    setTimeout(startCycle, items.length * 60 + 200);
+  }
+
+  mainBtn.addEventListener('click', function () {
+    if (root.classList.contains('is-open')) {
+      close();
+    } else {
+      open();
+    }
+  });
+
+  startCycle();
+})();
+
+// .cookie-banner — плашка согласия на cookie (Figma 224:17689), фикс. в
+// левом нижнем углу каждой страницы. «Хорошо» закрывает и запоминает выбор
+// в localStorage, чтобы не показывать плашку повторно при следующих
+// визитах — обёрнуто в try/catch (приватный режим браузера может блокировать
+// localStorage, страница не должна из-за этого падать).
+(function () {
+  var banner = document.querySelector('.cookie-banner');
+  if (!banner) return;
+
+  var STORAGE_KEY = 'stc-cookie-accepted';
+
+  try {
+    if (localStorage.getItem(STORAGE_KEY) === '1') {
+      banner.classList.add('is-hidden');
+    }
+  } catch (e) {}
+
+  var btn = banner.querySelector('.cookie-banner__btn');
+  if (btn) {
+    btn.addEventListener('click', function () {
+      banner.classList.add('is-hidden');
+      try {
+        localStorage.setItem(STORAGE_KEY, '1');
+      } catch (e) {}
+    });
+  }
+})();

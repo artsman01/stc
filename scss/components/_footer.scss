@@ -216,13 +216,36 @@
   color: var(--color-text-primary);
 }
 
-.footer__col-list a {
+// Именно `>` (прямой потомок), не просто `.footer__col-list a` — иначе это
+// правило задевало бы и вложенные иконки-ссылки `.footer__social-link`
+// внутри `.footer__social` (тоже `<a>`, но потомок не первого уровня),
+// перекрашивая их в синий на ховере вместо нужной лёгкой прозрачности.
+.footer__col-list > a {
   color: inherit;
   transition: color 0.15s ease;
 }
 
-.footer__col-list a:hover {
+.footer__col-list > a:hover {
   color: var(--color-brand-primary);
+}
+
+// Иконки мессенджеров (WhatsApp/Telegram/MAX outline, Figma 34:1416) —
+// добавлены под адресом в блоке «Контактная информация», голые иконки без
+// подложки/рамки, тот же лёгкий opacity-ховер, что у мелких ссылок сайта.
+.footer__social {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.footer__social-link {
+  display: flex;
+  color: var(--color-text-primary);
+  transition: opacity 0.15s ease;
+}
+
+.footer__social-link:hover {
+  opacity: 0.7;
 }
 
 // «Контактная информация» на мобилке идёт последней в DOM (после трёх
