@@ -176,6 +176,12 @@
   background: var(--color-bg-light);
 }
 
+@include media-breakpoint-down(md) {
+  .product-files {
+    padding: 16px;
+  }
+}
+
 @include media-breakpoint-up(xl) {
   .product-files {
     width: 400px;

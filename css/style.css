@@ -17756,6 +17756,11 @@ a.footer__col-legal.footer__col-legal--inline {
   background: var(--color-bg-light);
 }
 
+@media (max-width: 767.98px) {
+  .product-files {
+    padding: 16px;
+  }
+}
 @media (min-width: 1200px) {
   .product-files {
     width: 400px;
