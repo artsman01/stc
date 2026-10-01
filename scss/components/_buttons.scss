@@ -1,0 +1,63 @@
+// Единое поведение всех синих кнопок (.btn-primary) — по правке заказчика:
+// (1) один и тот же фирменный цвет ховера на каждой из них, (2) эффект
+// блеска, взятый из проекта Domarti (~/Desktop/Domarti/scss/components/
+// _buttons.scss) — диагональный блик, который сам пробегает по кнопке
+// каждые 5 секунд (не по ховеру), а последние ~88% цикла просто ждёт
+// за левым краем.
+//
+// `.btn.btn-primary` (две связанные конкретные классы, не просто `.btn-
+// primary`) — чтобы увереннее перебивать более специфичные/поздние по
+// каскаду правила конкретных кнопок (тот же приём, что в Domarti).
+// transition здесь явно (не полагаемся только на дефолт Bootstrap) — у
+// `.product-card__cta`/`.category-card__cta` (кнопка «Перейти», всплывающая
+// по ховеру карточки каталога) уже есть свой `transition: opacity, transform`
+// на том же элементе; как второе объявление transition на один селектор
+// (не list, а overwrite), оно полностью ПЕРЕБИВАЛО дефолтный transition
+// Bootstrap на .btn (тот включал background-color) — отсюда резкий ховер
+// без плавности именно в карточках. `.btn.btn-primary` (специфичность
+// 0,2,0) перебивает их `0,1,0` обратно и возвращает оба набора свойств.
+.btn.btn-primary {
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+    color 0.15s ease-in-out, opacity 0.2s ease, transform 0.2s ease;
+}
+
+.btn.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  pointer-events: none;
+  animation: btn-shine 5s ease-in-out infinite;
+}
+
+@keyframes btn-shine {
+  0% {
+    left: -75%;
+  }
+
+  12% {
+    left: 125%;
+  }
+
+  100% {
+    left: 125%;
+  }
+}
+
+.btn.btn-primary:hover,
+.btn.btn-primary:focus {
+  background-color: var(--color-brand-hover);
+  border-color: var(--color-brand-hover);
+  color: var(--color-text-button);
+}

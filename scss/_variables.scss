@@ -12,6 +12,10 @@
 // (Not called $colors: Bootstrap owns that name and would emit --bs-* from it.)
 $stc-colors: (
   "brand-primary": #38afed,
+  // Ховер для всех синих кнопок (.btn-primary) — фирменный цвет чуть
+  // светлее brand-primary, тот же подход, что в Domarti (--color-brand-
+  // hover), вместо авто-затемнения Bootstrap по умолчанию.
+  "brand-hover": #57b7e9,
   "brand-secondary": #373f51,
   "brand-tertiary": #ffa503,
 

@@ -3,6 +3,12 @@
 // поверх фото по бокам (используют тот же chevron-ассет, что и остальные
 // prev/next стрелки на сайте — переиспользован `angle-left`/`angle-right`
 // из спрайта, новых ассетов не понадобилось).
+// На `xl`+(940px) высоту выставляет JS (см. main.js) — подгоняет под
+// `.product-info`, из-за чего сама галерея может стать шире, чем выше
+// (landscape-прямоугольник); квадратное фото при этом не искажается — JS
+// параллельно ограничивает max-height у `.product-gallery__main-inner`, а
+// aspect-ratio:1/1 на нём же уменьшает квадрат целиком, не растягивая.
+// overflow:hidden — подстраховка на случай погрешности в JS-расчёте.
 .product-gallery {
   position: relative;
   display: flex;
@@ -10,27 +16,45 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 32px 0;
+  padding: 16px 0;
+  overflow: hidden;
   border: 1px solid var(--color-border-default);
   border-radius: 8px;
   background: var(--color-bg-primary);
 }
 
+// `.product-gallery__main` сама на всю ширину карточки (не 748px) — рамка
+// для стрелок теперь она, а не квадрат с фото; иначе на широких экранах
+// (2000px+) фото-квадрат оставался 748px по центру, а стрелки, сидя внутри
+// него, липли к его краям вместо истинных краёв всей карточки. Сам квадрат
+// с фото вынесен в `.product-gallery__main-inner`.
 .product-gallery__main {
   position: relative;
+  width: 100%;
+}
+
+.product-gallery__main-inner {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   width: 100%;
-  aspect-ratio: 1 / 1;
   max-width: 748px;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
 }
 
+// scale(1.3) — сами исходники (assets/catalog-products/*.jpg) содержат
+// большое белое поле вокруг прибора (обычная студийная съёмка на белом
+// фоне), из-за object-fit:contain прибор выглядел мелким внутри квадрата;
+// по правке заказчика увеличено — прибор в кадре примерно до краёв белого
+// поля, само поле обрезается `overflow:hidden` у `.product-gallery`.
 .product-gallery__img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
+  transform: scale(1.3);
 }
 
 .product-gallery__arrow {
@@ -64,18 +88,26 @@
   right: 16px;
 }
 
+// nowrap — миниатюры всегда должны умещаться в одну линию, а не
+// переноситься; на узких экранах (мобилка) `flex:0 1 64px` на самих
+// миниатюрах (ниже) даёт им сжаться пропорционально вместо переноса.
 .product-gallery__thumbs {
   display: flex;
   gap: 8px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
+  width: 100%;
   padding: 0 16px;
 }
 
+// flex:0 1 64px (не flex-shrink:0 + фикс. width/height) — по умолчанию
+// 64×64, но сжимается пропорционально, если все миниатюры в ряд не
+// помещаются по ширине контейнера; aspect-ratio вместо height:64px держит
+// квадратную форму и во время сжатия.
 .product-gallery__thumb {
-  flex-shrink: 0;
-  width: 64px;
-  height: 64px;
+  flex: 0 1 64px;
+  min-width: 0;
+  aspect-ratio: 1 / 1;
   padding: 0;
   border: 1px solid transparent;
   border-radius: 8px;
@@ -94,4 +126,43 @@
 
 .product-gallery__thumb.is-active {
   border-color: var(--color-brand-primary);
+}
+
+// На мобилке вся карточка галереи (фото + миниатюры + паддинги) должна
+// остаться квадратной 1:1 (по правке заказчика) — раньше миниатюры снизу
+// делали карточку выше, чем шире. Раз общая высота теперь фиксирована,
+// самому фото не хватает места под собственный квадрат — `.product-gallery
+// __main` берёт оставшееся место через `flex:1 1 auto` (после вычета
+// миниатюр), а `-main-inner` подстраивается под НЕГО (`height:100%` вместо
+// своего aspect-ratio:1/1), так что фото становится слегка landscape-
+// прямоугольным. `object-fit:cover` (не `contain`) обрезает фото по этому
+// прямоугольнику вместо леттербоксинга — по прямой правке заказчика лучше
+// небольшая обрезка по высоте, чем более мелкое фото или миниатюры поверх
+// него. Прежний `transform:scale(1.3)` (компенсация белого поля вокруг
+// прибора на фото для contain) тут не нужен — cover сам обрезает лишнее.
+@include media-breakpoint-down(md) {
+  .product-gallery {
+    aspect-ratio: 1 / 1;
+  }
+
+  .product-gallery__main {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  .product-gallery__main-inner {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    aspect-ratio: auto;
+  }
+
+  .product-gallery__img {
+    object-fit: cover;
+    transform: none;
+  }
+
+  .product-gallery__thumbs {
+    flex-shrink: 0;
+  }
 }

@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <title>Контакты — СТК</title>
   <meta property="og:type" content="website">
   <meta property="og:title" content="Контакты — СТК">
@@ -70,8 +73,7 @@
     <section class="contacts">
       <div class="contacts__container">
         <div class="contacts__map">
-          <img class="contacts__map-img" src="assets/contacts/map.jpg" alt="Карта — г. Самара, ул. Партизанская 88, оф. 10">
-          <img class="contacts__map-marker" src="assets/contacts/marker.svg" alt="">
+          <div class="contacts__map-canvas" data-map-canvas data-lat="53.190149" data-lon="50.170504" data-zoom="16" role="img" aria-label="Карта — г. Самара, ул. Партизанская 88, оф. 10"></div>
         </div>
 
         <div class="contacts__card">
@@ -101,7 +103,9 @@
             <a class="contacts__requisites-btn" href="#">Скачать реквизиты</a>
           </div>
 
-          <img class="contacts__corner" src="assets/contacts/corner.jpg" alt="">
+          <button class="contacts__callback btn btn-primary btn-lg callback-trigger" type="button">Заказать звонок</button>
+
+          <img class="contacts__corner" src="assets/contacts/corner.png" alt="">
         </div>
       </div>
     </section>
@@ -733,6 +737,10 @@
     <button class="cookie-banner__btn btn btn-primary" type="button">Хорошо</button>
   </div>
 
+  <!-- Ключ Yandex Maps JS API — бесплатный, свой под домен сайта:
+       developer.tech.yandex.ru → создать проект → включить "JavaScript API
+       и HTTP Геокодер" → скопировать ключ сюда вместо YOUR_YANDEX_MAPS_KEY. -->
+  <script src="https://api-maps.yandex.ru/2.1/?apikey=YOUR_YANDEX_MAPS_KEY&lang=ru_RU"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

@@ -47,9 +47,13 @@
   flex-shrink: 0;
 }
 
+// overflow:hidden (не visible) — с visible слайды шире вьюпорта на узких
+// экранах вылезали за пределы `.product-carousel__slider` и создавали
+// горизонтальный скролл всей страницы; тот же приём, что у `.industries`/
+// `.solutions` на главной (см. эти файлы).
 .product-carousel__slider.swiper {
   width: 100%;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .product-carousel__track.swiper-wrapper {
@@ -61,7 +65,12 @@
   flex-shrink: 0;
 }
 
-@include media-breakpoint-up(xl) {
+// 370px здесь — фолбэк-ширина только на планшете (768-991, slidesPerView:
+// 'auto' в JS, см. main.js) до инициализации Swiper: на мобилке (<768,
+// slidesPerView:1) и от 992 (2/3/4 по числу карточек, брейкпоинты 992/
+// 1080/1400 — те же, что в JS) Swiper сам считает ширину слайда и
+// выставляет её инлайн-стилем, так что фикс. 370px там не используется.
+@media (min-width: 992px) {
   .product-carousel__track .product-card.swiper-slide {
     width: auto;
   }

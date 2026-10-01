@@ -69,6 +69,15 @@
   background: var(--color-bg-light);
 }
 
+// Ховер — только у ЗАКРЫТОГО пункта (тот же плавный переход к bg-light, в
+// который открытый пункт и так уже покрашен статично); у открытого своего
+// ховер-эффекта нет — селектор ниже явно его исключает.
+@media (hover: hover) {
+  .product-accordion__item:not(.is-open) .product-accordion__toggle:hover {
+    background: var(--color-bg-light);
+  }
+}
+
 .product-accordion__toggle-text {
   flex: 1 1 0;
   min-width: 0;
@@ -105,8 +114,18 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding: 24px 16px;
+  padding: 24px 0;
   color: var(--color-text-primary);
+}
+
+// Таблица характеристик переиспользует `.article-table-scroll`
+// (_article-table.scss), у которого своя `max-width:940px` — рассчитана на
+// article.html, где таблица сидит в узкой текстовой колонке. Здесь
+// `.product-accordion__content` занимает всю ширину колонки аккордеона —
+// снимаем ограничение, чтобы таблица показывалась во всю доступную
+// ширину, а не обрезалась/сжималась раньше времени.
+.product-accordion__content .article-table-scroll {
+  max-width: none;
 }
 
 .product-accordion__content h4,
@@ -130,9 +149,10 @@
 
 .product-accordion__figure img {
   display: block;
-  width: 100%;
-  max-width: 665px;
+  width: auto;
   height: auto;
+  max-width: 100%;
+  max-height: 412px;
   border-radius: 4px;
 }
 

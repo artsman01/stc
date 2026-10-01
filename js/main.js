@@ -1251,6 +1251,105 @@ function unlockPageScroll() {
   if (next) next.addEventListener('click', function () { show(activeIndex + 1); });
 })();
 
+// product-card.html: ниже 980px `.product-gallery` физически переносится
+// внутрь `.product-info`, сразу под заголовком — по правке заказчика фото
+// должно идти прямо под названием товара, а не отдельным блоком перед
+// остальным контентом колонки (кнопки/контакты/описание). От 980px —
+// переносится обратно первым ребёнком `.product-main` (классическая
+// раскладка "галерея слева, колонка текста справа").
+//
+// Высота `.product-gallery` фиксируется на 656px, но только от 1080px —
+// между 980 и 1080 (уже в ряд, см. выше, но колонка `.product-info` там
+// узкая) 656px давал пустые поля сверху/снизу вокруг фото+миниатюр; по
+// правке заказчика в этом промежутке высота — просто по контенту (инлайн
+// `height` не выставляется вовсе, решает сам браузер). От 1080px высота —
+// константа 656px, не зависящая от текста рядом. Квадратное фото при этом
+// может стать шире, чем выше (заказчик подтвердил ещё на этапе подгонки
+// под текст — "не страшно"): у самого `<img>` object-fit:contain, так что
+// фото не искажается, просто вписывается в более низкий прямоугольник
+// вместо квадрата.
+(function () {
+  var main = document.querySelector('.product-main');
+  var gallery = document.querySelector('.product-gallery');
+  var info = document.querySelector('.product-info');
+  var title = document.querySelector('.product-info__title');
+  var inner = document.querySelector('.product-gallery__main-inner');
+  if (!main || !gallery || !info || !title || !inner) return;
+
+  var FIXED_HEIGHT = 656;
+  var SYNC_MIN_WIDTH = 980;
+  var FIXED_HEIGHT_MIN_WIDTH = 1080;
+
+  function applyLayout() {
+    if (window.innerWidth < SYNC_MIN_WIDTH) {
+      if (gallery.parentElement !== info) {
+        title.insertAdjacentElement('afterend', gallery);
+      }
+    } else if (gallery.parentElement !== main) {
+      main.insertBefore(gallery, main.firstChild);
+    }
+  }
+
+  function sync() {
+    applyLayout();
+
+    if (window.innerWidth < FIXED_HEIGHT_MIN_WIDTH) {
+      gallery.style.height = '';
+      inner.style.maxHeight = '';
+      return;
+    }
+
+    gallery.style.height = FIXED_HEIGHT + 'px';
+
+    // Место, доступное самому квадрату фото — высота галереи минус её
+    // собственные вертикальные паддинги, минус ряд миниатюр, минус gap
+    // между фото и миниатюрами (измеряем реальные значения, а не дублируем
+    // числа из SCSS).
+    var galleryStyles = getComputedStyle(gallery);
+    var paddingTop = parseFloat(galleryStyles.paddingTop) || 0;
+    var paddingBottom = parseFloat(galleryStyles.paddingBottom) || 0;
+    var gap = parseFloat(galleryStyles.rowGap || galleryStyles.gap) || 0;
+    var thumbs = gallery.querySelector('.product-gallery__thumbs');
+    var thumbsH = thumbs ? thumbs.getBoundingClientRect().height : 0;
+    var availableH = FIXED_HEIGHT - paddingTop - paddingBottom - gap - thumbsH;
+
+    inner.style.maxHeight = Math.max(availableH, 120) + 'px';
+  }
+
+  sync();
+  window.addEventListener('resize', sync);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(sync);
+  }
+})();
+
+// product-card.html: ниже 1400px хлебные крошки переносятся из
+// `.product-info` в отдельный `.breadcrumbs-bar` НАД `.product-main` (по
+// правке заказчика — крошки должны быть отдельной строкой сверху слева, а
+// не первой строкой внутри текстовой колонки). От 1400px — возвращаются
+// обратно первым ребёнком `.product-info`. `.breadcrumbs-bar:empty`
+// схлопывается в CSS сам (см. _product-info.scss), отдельный класс на JS
+// для этого не нужен.
+(function () {
+  var bar = document.getElementById('product-breadcrumbs-bar');
+  var info = document.querySelector('.product-info');
+  var crumbs = document.querySelector('.product-info .breadcrumbs, #product-breadcrumbs-bar .breadcrumbs');
+  if (!bar || !info || !crumbs) return;
+
+  var BAR_MAX_WIDTH = 1400;
+
+  function sync() {
+    if (window.innerWidth < BAR_MAX_WIDTH) {
+      if (crumbs.parentElement !== bar) bar.appendChild(crumbs);
+    } else if (crumbs.parentElement !== info) {
+      info.insertBefore(crumbs, info.firstChild);
+    }
+  }
+
+  sync();
+  window.addEventListener('resize', sync);
+})();
+
 // product-card.html: кнопка сравнения в шапке товара — тот же
 // переключаемый приём (фон в синий + белая иконка), что у
 // `.product-card__compare` в сетке каталога, но отдельный обработчик — эта
@@ -1295,7 +1394,12 @@ function unlockPageScroll() {
     if (!swiperEl) return;
 
     new Swiper(swiperEl, {
-      slidesPerView: 'auto',
+      // По умолчанию (мобилка, < md) — ровно 1 карточка на весь экран
+      // (slidesPerView:1, не 'auto'): Swiper сам растягивает её по ширине
+      // контейнера инлайн-стилем, в отличие от 'auto' (тот требует
+      // фикс. ширины из CSS и на мобилке давал "подглядывание" следующей
+      // карточки, а не растяжение на весь экран).
+      slidesPerView: 1,
       spaceBetween: 8,
       speed: 450,
       wrapperClass: 'product-carousel__track',
@@ -1305,7 +1409,10 @@ function unlockPageScroll() {
         prevEl: section.querySelector('.product-carousel__nav-prev'),
       },
       breakpoints: {
-        1200: { slidesPerView: 4, spaceBetween: 8 },
+        768: { slidesPerView: 'auto', spaceBetween: 8 },
+        992: { slidesPerView: 2, spaceBetween: 8 },
+        1080: { slidesPerView: 3, spaceBetween: 8 },
+        1400: { slidesPerView: 4, spaceBetween: 8 },
       },
     });
   }
@@ -1464,5 +1571,80 @@ function unlockPageScroll() {
         localStorage.setItem(STORAGE_KEY, '1');
       } catch (e) {}
     });
+  }
+})();
+
+// contacts.html: настоящая карта Yandex Maps JS API (см. <script src=
+// "https://api-maps.yandex.ru/..."> в head) со своей синей меткой
+// (assets/contacts/marker.svg — тот же ассет, что раньше лежал поверх
+// статичной картинки-скриншота карты), вместо прежней статичной,
+// некликабельной картинки — тот же приём, что на странице контактов в Domarti
+// (~/Desktop/Domarti/js/main.js). scrollZoom выключен по умолчанию,
+// чтобы прокрутка страницы мимо карты не проваливалась в зум — включаем
+// только пока курсор реально наведён на карту.
+(function () {
+  function initContactMap(canvas) {
+    if (typeof ymaps === 'undefined') return;
+
+    ymaps.ready(function () {
+      var center = [parseFloat(canvas.dataset.lat), parseFloat(canvas.dataset.lon)];
+      var zoom = parseInt(canvas.dataset.zoom, 10) || 16;
+
+      var map = new ymaps.Map(canvas, {
+        center: center,
+        zoom: zoom,
+        controls: ['zoomControl'],
+      });
+
+      map.behaviors.disable('scrollZoom');
+
+      canvas.addEventListener('click', function () {
+        map.behaviors.enable('scrollZoom');
+      });
+      canvas.addEventListener('mouseleave', function () {
+        map.behaviors.disable('scrollZoom');
+      });
+
+      var placemark = new ymaps.Placemark(center, {}, {
+        iconLayout: 'default#image',
+        iconImageHref: 'assets/contacts/marker.svg',
+        iconImageSize: [36, 48],
+        iconImageOffset: [-18, -48],
+      });
+
+      map.geoObjects.add(placemark);
+    });
+  }
+
+  document.querySelectorAll('[data-map-canvas]').forEach(initContactMap);
+})();
+
+// contacts.html: на планшете (768-1199px — колонкой, `.contacts__card`
+// идёт первой, карта под ней) высота карты подгоняется под реальную высоту
+// карточки (по правке заказчика), а не держится своим aspect-ratio — тот
+// же приём JS-синхронизации высоты, что у `.product-gallery` на
+// product-card.html. Ниже 768px и от 1200px — свои собственные CSS-правила
+// (aspect-ratio на мобилке, фикс. 570px от xl), здесь инлайн-стиль
+// сбрасывается, чтобы им не мешать.
+(function () {
+  var map = document.querySelector('.contacts__map');
+  var card = document.querySelector('.contacts__card');
+  if (!map || !card) return;
+
+  var MIN_WIDTH = 768;
+  var MAX_WIDTH = 1199.98;
+
+  function sync() {
+    if (window.innerWidth < MIN_WIDTH || window.innerWidth > MAX_WIDTH) {
+      map.style.height = '';
+      return;
+    }
+    map.style.height = card.getBoundingClientRect().height + 'px';
+  }
+
+  sync();
+  window.addEventListener('resize', sync);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(sync);
   }
 })();

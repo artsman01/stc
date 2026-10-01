@@ -67,25 +67,15 @@
   .contacts__map {
     flex: 1 1 0;
     aspect-ratio: auto;
+    height: 570px;
   }
 }
 
-.contacts__map-img {
-  position: absolute;
-  inset: 0;
+// Рендерится Yandex Maps JS API (см. js/main.js) — ширина/высота на 100%
+// родителя, сам API сам подгоняет canvas под размер `.contacts__map`.
+.contacts__map-canvas {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-}
-
-.contacts__map-marker {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 36px;
-  height: 48px;
-  pointer-events: none;
 }
 
 // bg — brand/secondary (#373f51), тот же тёмный навy, что использует
@@ -108,7 +98,16 @@
 @include media-breakpoint-up(xl) {
   .contacts__card {
     flex: 1 1 0;
+    height: 570px;
   }
+}
+
+// Явно задаём цвет — Bootstrap навешивает `$headings-color` (тёмный) прямо
+// на элемент `<h2>` (не через наследование, которое дало бы белый от
+// `.contacts__card`), и это прямое правило на том же элементе всегда
+// выигрывает у унаследованного, независимо от специфичности.
+.contacts__title {
+  color: var(--color-text-button);
 }
 
 .contacts__separator {
@@ -172,18 +171,12 @@
   color: var(--color-text-button);
 }
 
-// Белая кнопка на тёмной карточке — тот же контраст, что у CTA-кнопки на
-// фото (`.cta__card` сидит на светлом фоне поверх тёмной подложки шапки), но
-// зеркально: тут карточка тёмная, кнопка светлая.
+// Обычная ссылка (по правке заказчика — не кнопка), без подчёркивания,
+// белая на тёмной карточке; тот же лёгкий opacity-ховер, что у остальных
+// ссылок этого блока (`.contacts__social-link`).
 .contacts__requisites-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 20px;
-  border: 0;
-  border-radius: 8px;
-  background: var(--color-bg-primary);
-  color: var(--color-text-primary);
+  display: inline-block;
+  color: var(--color-text-button);
   font-weight: 600;
   font-size: var(--text-size);
   line-height: var(--text-lh);
@@ -192,7 +185,19 @@
 }
 
 .contacts__requisites-btn:hover {
-  opacity: 0.85;
+  opacity: 0.7;
+}
+
+// «Заказать звонок» — прижата к низу карточки (`margin-top:auto` в
+// flex-column), та же синяя фирменная кнопка (`.btn-primary`, со
+// сквозным ховером/блеском из `_buttons.scss`), что и везде на сайте.
+// position:relative + z-index:1 — чтобы декоративная картинка в углу
+// (ниже в DOM, но position:absolute) не перекрывала кнопку кликом.
+.contacts__callback {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+  align-self: flex-start;
 }
 
 // Декоративное изображение в правом нижнем углу карточки — в Figma оно

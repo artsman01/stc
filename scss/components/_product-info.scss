@@ -1,26 +1,66 @@
 // Верхний блок страницы товара — галерея слева + инфоколонка справа на
-// десктопе, друг под другом на планшете/мобилке (в Figma это разделение
-// только на широком холсте 1600; переключатель на `xl`(1200) — тот же
-// порядок величины, что и у других двухколоночных десктоп-раскладок сайта,
-// где обе колонки нуждаются в ~750px каждая).
+// десктопе, от 980px (`SYNC_MIN_WIDTH` в main.js — та же точка). Ниже
+// 980 колонки не просто идут друг под другом: `.product-gallery`
+// переносится JS-ом ВНУТРЬ `.product-info`, сразу под заголовком (см.
+// main.js) — по правке заказчика фото должно быть сразу под названием
+// товара, а не отдельным блоком перед всем остальным контентом колонки.
+//
+// padding-top учитывает --header-h (шапка на этой странице всегда
+// `.header--stuck`, то есть `position:fixed` — без этой добавки первые
+// 64-74px `.product-main` уезжали ПОД шапку, а не под её нижний край, и
+// реальный отступ от шапки до контента был меньше заданных 32px).
 .product-main {
   display: flex;
   flex-direction: column;
   gap: 16px;
   padding: 16px;
+  padding-top: calc(16px + var(--header-h));
 }
 
 @include media-breakpoint-up(md) {
   .product-main {
     gap: 24px;
     padding: 32px 48px;
+    padding-top: calc(32px + var(--header-h));
   }
 }
 
-@include media-breakpoint-up(xl) {
+// Ниже 1400px хлебные крошки переносятся JS-ом (см. main.js) из
+// `.product-info` в отдельный `#product-breadcrumbs-bar` НАД `.product-main`
+// (переиспользует готовый `.breadcrumbs-bar`, см. _breadcrumbs.scss — те же
+// 16px/48px по бокам, что просил заказчик). `:empty` — бар невидим и не
+// занимает места, пока JS ничего в него не переложил (то есть на 1400px+,
+// где крошки остаются внутри `.product-info`).
+.breadcrumbs-bar:empty {
+  display: none;
+}
+
+// Раз бар сам берёт на себя отступ под фикс. шапку (`--header-h`, та же
+// формула, что у него на других страницах), `.product-main` рядом с
+// непустым баром не должен резервировать его ещё раз — иначе выходит
+// двойной зазор. Селектор `:not(:empty) +` — чисто CSS-переключение, без
+// отдельного JS-класса: работает from того же факта, что и `:empty` выше.
+.breadcrumbs-bar:not(:empty) + .product-main {
+  padding-top: 16px;
+}
+
+@include media-breakpoint-up(md) {
+  .breadcrumbs-bar:not(:empty) + .product-main {
+    padding-top: 32px;
+  }
+}
+
+// align-items:center (не stretch) — высота `.product-gallery` на 980px+
+// зафиксирована JS-ом на 656px (см. main.js, `FIXED_HEIGHT`), а
+// `.product-info` — своей естественной высоты по контенту (переменной
+// длины текст). Раньше пробовали растягивать их друг под друга — оставляло
+// пустое место в более короткой колонке; center вместо этого просто
+// балансирует получившиеся разные высоты по вертикали, а не прижимает к
+// верху.
+@media (min-width: 980px) {
   .product-main {
     flex-direction: row;
-    align-items: stretch;
+    align-items: center;
   }
 
   .product-main > .product-gallery,
@@ -32,20 +72,34 @@
 
 // Информационная колонка карточки товара — заголовок, кнопки «Купить»/
 // «Задать вопрос»/сравнение, блок контактов, описание (Figma 82:9232).
+// Без рамки/скругления по правке заказчика (в первой версии по ошибке
+// скопировали оформление `.product-gallery`, в Figma у этой колонки его
+// нет).
 .product-info {
   display: flex;
   flex-direction: column;
   gap: 24px;
   width: 100%;
   padding: 32px;
-  border: 1px solid var(--color-border-default);
-  border-radius: 8px;
   background: var(--color-bg-primary);
 }
 
 @include media-breakpoint-up(md) {
   .product-info {
     padding: 48px;
+  }
+}
+
+// Ниже 1400px паддинги `.product-info` убраны целиком (по правке
+// заказчика) — хватает внешнего паддинга `.product-main`. Заодно ниже
+// 980px `.product-gallery` физически живёт ВНУТРИ `.product-info` (см.
+// main.js): без этого нулевого паддинга она получала бы двойной отступ
+// (внешний от `.product-main` + внутренний от `.product-info`) и была бы
+// заметно уже, чем раньше (сиблингом `.product-main`, без внутреннего
+// паддинга вовсе).
+@media (max-width: 1399.98px) {
+  .product-info {
+    padding: 0;
   }
 }
 
@@ -61,16 +115,58 @@
   width: 100%;
 }
 
-.product-info__actions .btn {
-  flex: 1 1 200px;
+// flex-basis 174px — подобрано так, чтобы группа (2 кнопки + кнопка
+// сравнения) переставала переноситься на отдельные строки ровно с 508px по
+// ширине экрана (было ~438px при 160px — по прямой правке заказчика перенос
+// должен додерживаться дольше, до 508).
+//
+// Кнопка сравнения раньше была отдельным (третьим) flex-item в
+// `.product-info__actions` — между ~403 и 459px это давало некрасивое
+// промежуточное состояние: «Купить»+«Задать вопрос» уже помещались в один
+// ряд, а сравнение одна переносилась на отдельную строку. По правке
+// заказчика «Задать вопрос» и сравнение теперь всегда вместе — обёрнуты в
+// `.product-info__actions-group`, который сам ведёт себя как ОДИН
+// flex-item наравне с «Купить» (тот же flex-basis 174px), так что либо вся
+// группа помещается рядом с «Купить», либо переносится целиком — кнопка
+// сравнения никогда не остаётся одна.
+// min-width (не 0) на все три — корень найденного бага: с `min-width:0`
+// flex-shrink сжимал кнопки уже ПОСЛЕ точки, где текст внутри ещё
+// помещался в одну строку, и «Задать вопрос» переносился на вторую
+// строку ВНУТРИ самой кнопки — высота кнопки скакала 48→68px («гигантские»
+// кнопки на 403-499px и повторно на 980-1041px, где `.product-main`
+// переходит в ряд и `.product-info` у́же). min-width держит кнопки не уже,
+// чем нужно их собственному тексту в одну строку — вместо сжатия в этих
+// диапазонах теперь честно срабатывает перенос всей группы на новую
+// строку (flex-wrap у `.product-info__actions`).
+.product-info__actions > .btn,
+.product-info__actions-group {
+  flex: 1 1 174px;
+  min-width: 174px;
 }
 
-// Кнопка сравнения в шапке товара — та же логика переключения, что у
-// `.product-card__compare` в сетке каталога (свой JS-обработчик, см.
-// js/main.js — не завязан на тот же селектор, чтобы не задеть карточки),
-// тот же приём с фоном в ::before, чтобы ховер не тушил иконку.
+.product-info__actions-group {
+  display: flex;
+  gap: 8px;
+  // 174px (текст «Задать вопрос» в одну строку) + 8px gap + 48px кнопка
+  // сравнения — группа не может быть у́же, не сжимая кнопку текста ниже
+  // этого порога.
+  min-width: 230px;
+}
+
+.product-info__actions-group .btn {
+  flex: 1 1 0;
+  min-width: 174px;
+}
+
+// Кнопка сравнения в шапке товара — та же логика переключения и тот же
+// ::before-приём с фоном, что у `.product-card__compare` в сетке каталога
+// (см. _product-card.scss): фон живёт в ::before, а не на самой кнопке,
+// поэтому ховер (лёгкая прозрачность подложки) не гасит иконку. Свой
+// JS-обработчик (см. js/main.js) — не завязан на тот же селектор, чтобы не
+// задеть карточки каталога.
 .product-info__compare {
   position: relative;
+  z-index: 1;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -80,15 +176,38 @@
   padding: 0;
   border: none;
   border-radius: 50%;
-  background: var(--color-bg-secondary);
+  background: none;
   color: var(--color-text-primary);
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: color 0.15s ease;
+}
+
+.product-info__compare::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--color-bg-secondary);
+  transition: background-color 0.2s ease, opacity 0.15s ease;
+}
+
+.product-info__compare .icon {
+  position: relative;
+}
+
+@media (hover: hover) {
+  .product-info__compare:hover::before {
+    opacity: 0.7;
+  }
 }
 
 .product-info__compare.is-active {
-  background: var(--color-brand-primary);
   color: var(--color-text-button);
+}
+
+.product-info__compare.is-active::before {
+  background: var(--color-brand-primary);
+  opacity: 1;
 }
 
 .product-info__contact {
@@ -109,14 +228,26 @@
   min-width: 0;
 }
 
-.product-info__phone {
+// Оба — теперь настоящие `tel:`/`mailto:` ссылки (были обычным текстом),
+// с тем же лёгким opacity-ховером, что у `.product-info__social-link`.
+.product-info__phone,
+.product-info__email {
+  display: block;
   margin: 0;
+  transition: opacity 0.15s ease;
+}
+
+.product-info__phone {
   color: var(--color-text-primary);
 }
 
 .product-info__email {
-  margin: 0;
   color: var(--color-text-secondary);
+}
+
+.product-info__phone:hover,
+.product-info__email:hover {
+  opacity: 0.7;
 }
 
 .product-info__social {

@@ -37,6 +37,35 @@
   line-height: 20px;
 }
 
+// На мобилке — по правке заказчика — крошки не переносятся на новую
+// строку, а едут в одну линию со свайпом (первая крошка всегда видна слева,
+// остальные уезжают за правый край и обрезаются, но доступны скроллом);
+// сам скролл-бар при этом невидим — `scrollbar-width`/`-ms-overflow-style`
+// для Firefox/IE, `::-webkit-scrollbar{display:none}` для Chrome/Safari
+// (тот же самодостаточный набор свойств, что и у прочих горизонтальных
+// скроллов сайта, см. `.article-table-scroll`/`.comparison-table-scroll`,
+// только там скролл-бар оставлен видимым намеренно — здесь просил скрыть).
+@include media-breakpoint-down(md) {
+  .breadcrumbs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .breadcrumbs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .breadcrumbs a,
+  .breadcrumbs span,
+  .breadcrumbs .breadcrumbs__slash {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}
+
 .breadcrumbs a {
   color: var(--color-text-primary);
   transition: opacity 0.15s ease;

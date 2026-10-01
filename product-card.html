@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <title>Ультразвуковой дефектоскоп на фазированных решетках УСД-60ФР — СТК</title>
   <meta property="og:type" content="website">
   <meta property="og:title" content="Ультразвуковой дефектоскоп на фазированных решетках УСД-60ФР — СТК">
@@ -60,10 +63,14 @@
       </div>
     </header>
 
+    <div class="breadcrumbs-bar" id="product-breadcrumbs-bar"></div>
+
     <div class="product-main">
       <div class="product-gallery">
         <div class="product-gallery__main">
-          <img class="product-gallery__img" src="assets/catalog-products/usd-60fr.jpg" alt="Ультразвуковой дефектоскоп на фазированных решетках УСД-60ФР">
+          <div class="product-gallery__main-inner">
+            <img class="product-gallery__img" src="assets/catalog-products/usd-60fr.jpg" alt="Ультразвуковой дефектоскоп на фазированных решетках УСД-60ФР">
+          </div>
           <button class="product-gallery__arrow product-gallery__arrow--prev" type="button" aria-label="Предыдущее фото">
             <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-left"></use></svg>
           </button>
@@ -75,16 +82,7 @@
           <button class="product-gallery__thumb is-active" type="button" data-full="assets/catalog-products/usd-60fr.jpg" aria-label="Фото 1">
             <img src="assets/catalog-products/usd-60fr.jpg" alt="">
           </button>
-          <button class="product-gallery__thumb" type="button" data-full="assets/product/construction.jpg" aria-label="Фото 2">
-            <img src="assets/product/construction.jpg" alt="">
-          </button>
-          <button class="product-gallery__thumb" type="button" data-full="assets/product/working-principle.jpg" aria-label="Фото 3">
-            <img src="assets/product/working-principle.jpg" alt="">
-          </button>
-          <button class="product-gallery__thumb" type="button" data-full="assets/product/phased-array.jpg" aria-label="Фото 4">
-            <img src="assets/product/phased-array.jpg" alt="">
-          </button>
-          <button class="product-gallery__thumb" type="button" data-full="assets/catalog-products/usd-60.jpg" aria-label="Фото 5">
+          <button class="product-gallery__thumb" type="button" data-full="assets/catalog-products/usd-60.jpg" aria-label="Фото 2">
             <img src="assets/catalog-products/usd-60.jpg" alt="">
           </button>
         </div>
@@ -105,16 +103,18 @@
 
         <div class="product-info__actions">
           <button class="btn btn-primary btn-lg buy-trigger" type="button">Купить</button>
-          <button class="btn btn-outline-primary btn-lg callback-trigger" type="button">Задать вопрос</button>
-          <button class="product-info__compare" type="button" aria-pressed="false" aria-label="Добавить в сравнение">
-            <svg class="icon"><use href="assets/icons/sprite.svg#comparison-2"></use></svg>
-          </button>
+          <div class="product-info__actions-group">
+            <button class="btn btn-outline-primary btn-lg callback-trigger" type="button">Задать вопрос</button>
+            <button class="product-info__compare" type="button" aria-pressed="false" aria-label="Добавить в сравнение">
+              <svg class="icon"><use href="assets/icons/sprite.svg#comparison-2"></use></svg>
+            </button>
+          </div>
         </div>
 
         <div class="product-info__contact">
           <div class="product-info__contact-text">
-            <p class="product-info__phone h3 m-0">8 (800) 250-68-46</p>
-            <p class="product-info__email text-meta m-0">office@stc-ndt.ru</p>
+            <a class="product-info__phone h3 m-0" href="tel:88002506846">8 (800) 250-68-46</a>
+            <a class="product-info__email text-meta m-0" href="mailto:office@stc-ndt.ru">office@stc-ndt.ru</a>
           </div>
           <div class="product-info__social">
             <a class="product-info__social-link" href="#" aria-label="Telegram">
@@ -141,8 +141,8 @@
         <h2 class="product-body__title h2 m-0">Описание</h2>
 
         <div class="product-accordion">
-          <div class="product-accordion__item is-open">
-            <button class="product-accordion__toggle" type="button" aria-expanded="true">
+          <div class="product-accordion__item">
+            <button class="product-accordion__toggle" type="button" aria-expanded="false">
               <span class="product-accordion__toggle-text">Особенности дефектоскопа УСД-60ФР</span>
               <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-down"></use></svg>
             </button>
@@ -185,8 +185,8 @@
             </div>
           </div>
 
-          <div class="product-accordion__item is-open">
-            <button class="product-accordion__toggle" type="button" aria-expanded="true">
+          <div class="product-accordion__item">
+            <button class="product-accordion__toggle" type="button" aria-expanded="false">
               <span class="product-accordion__toggle-text">Конструкция</span>
               <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-down"></use></svg>
             </button>
@@ -251,8 +251,8 @@
             </div>
           </div>
 
-          <div class="product-accordion__item is-open">
-            <button class="product-accordion__toggle" type="button" aria-expanded="true">
+          <div class="product-accordion__item">
+            <button class="product-accordion__toggle" type="button" aria-expanded="false">
               <span class="product-accordion__toggle-text">Технические характеристики</span>
               <svg class="icon icon--12"><use href="assets/icons/sprite.svg#angle-down"></use></svg>
             </button>
@@ -270,6 +270,51 @@
                           </tr>
                         </thead>
                         <tbody>
+                          <tr>
+                            <td>Тип используемых ФАР</td>
+                            <td>любые 16-ти канальные</td>
+                            <td>1 шт</td>
+                          </tr>
+                          <tr>
+                            <td>Регулировка рабочей апертуры</td>
+                            <td>4, 8 и 16 одновременно работающих элементов</td>
+                            <td>1 шт</td>
+                          </tr>
+                          <tr>
+                            <td>Регулировка шага сканирования по углу</td>
+                            <td>от 0,3 до 2 град</td>
+                            <td>1 шт</td>
+                          </tr>
+                          <tr>
+                            <td>Тип используемых ФАР</td>
+                            <td>любые 16-ти канальные</td>
+                            <td>1 шт</td>
+                          </tr>
+                          <tr>
+                            <td>Регулировка рабочей апертуры</td>
+                            <td>4, 8 и 16 одновременно работающих элементов</td>
+                            <td>1 шт</td>
+                          </tr>
+                          <tr>
+                            <td>Регулировка шага сканирования по углу</td>
+                            <td>от 0,3 до 2 град</td>
+                            <td>1 шт</td>
+                          </tr>
+                          <tr>
+                            <td>Тип используемых ФАР</td>
+                            <td>любые 16-ти канальные</td>
+                            <td>1 шт</td>
+                          </tr>
+                          <tr>
+                            <td>Регулировка рабочей апертуры</td>
+                            <td>4, 8 и 16 одновременно работающих элементов</td>
+                            <td>1 шт</td>
+                          </tr>
+                          <tr>
+                            <td>Регулировка шага сканирования по углу</td>
+                            <td>от 0,3 до 2 град</td>
+                            <td>1 шт</td>
+                          </tr>
                           <tr>
                             <td>Тип используемых ФАР</td>
                             <td>любые 16-ти канальные</td>
@@ -397,6 +442,54 @@
             </div>
             <a class="product-card__cta btn btn-primary btn-lg w-100" href="product-card.html">Перейти</a>
           </div>
+          <div class="product-card swiper-slide">
+            <a class="product-card__photo-link" href="product-card.html" aria-label="Ультразвуковой дефектоскоп А1214 EXPERT">
+              <span class="product-card__bg" style="background-image: url('assets/catalog-products/a1214-expert.jpg')"></span>
+            </a>
+            <div class="product-card__top">
+              <a class="product-card__title" href="product-card.html">Ультразвуковой дефектоскоп А1214 EXPERT</a>
+              <button class="product-card__compare" type="button" aria-pressed="false" aria-label="Добавить «Ультразвуковой дефектоскоп А1214 EXPERT» в сравнение">
+                <svg class="icon"><use href="assets/icons/sprite.svg#comparison-2"></use></svg>
+              </button>
+            </div>
+            <a class="product-card__cta btn btn-primary btn-lg w-100" href="product-card.html">Перейти</a>
+          </div>
+          <div class="product-card swiper-slide">
+            <a class="product-card__photo-link" href="product-card.html" aria-label="Миниатюрный ультразвуковой дефектоскоп А1211 Mini">
+              <span class="product-card__bg" style="background-image: url('assets/catalog-products/a1211-mini.jpg')"></span>
+            </a>
+            <div class="product-card__top">
+              <a class="product-card__title" href="product-card.html">Миниатюрный ультразвуковой дефектоскоп А1211 Mini</a>
+              <button class="product-card__compare" type="button" aria-pressed="false" aria-label="Добавить «Миниатюрный ультразвуковой дефектоскоп А1211 Mini» в сравнение">
+                <svg class="icon"><use href="assets/icons/sprite.svg#comparison-2"></use></svg>
+              </button>
+            </div>
+            <a class="product-card__cta btn btn-primary btn-lg w-100" href="product-card.html">Перейти</a>
+          </div>
+          <div class="product-card swiper-slide">
+            <a class="product-card__photo-link" href="product-card.html" aria-label="Многоканальный УЗК дефектоскоп АВГУР-ТФ с поддержкой TOFD и ФР">
+              <span class="product-card__bg" style="background-image: url('assets/catalog-products/avgur-tf.jpg')"></span>
+            </a>
+            <div class="product-card__top">
+              <a class="product-card__title" href="product-card.html">Многоканальный УЗК дефектоскоп АВГУР-ТФ с поддержкой TOFD и ФР</a>
+              <button class="product-card__compare" type="button" aria-pressed="false" aria-label="Добавить «Многоканальный УЗК дефектоскоп АВГУР-ТФ с поддержкой TOFD и ФР» в сравнение">
+                <svg class="icon"><use href="assets/icons/sprite.svg#comparison-2"></use></svg>
+              </button>
+            </div>
+            <a class="product-card__cta btn btn-primary btn-lg w-100" href="product-card.html">Перейти</a>
+          </div>
+          <div class="product-card swiper-slide">
+            <a class="product-card__photo-link" href="product-card.html" aria-label="Ультразвуковой дефектоскоп УСД-50 IPS">
+              <span class="product-card__bg" style="background-image: url('assets/catalog-products/usd-50-ips.jpg')"></span>
+            </a>
+            <div class="product-card__top">
+              <a class="product-card__title" href="product-card.html">Ультразвуковой дефектоскоп УСД-50 IPS</a>
+              <button class="product-card__compare" type="button" aria-pressed="false" aria-label="Добавить «Ультразвуковой дефектоскоп УСД-50 IPS» в сравнение">
+                <svg class="icon"><use href="assets/icons/sprite.svg#comparison-2"></use></svg>
+              </button>
+            </div>
+            <a class="product-card__cta btn btn-primary btn-lg w-100" href="product-card.html">Перейти</a>
+          </div>
         </div>
       </div>
     </section>
@@ -461,6 +554,54 @@
             <div class="product-card__top">
               <a class="product-card__title" href="product-card.html">Ультразвуковой дефектоскоп УСД-50 IPS</a>
               <button class="product-card__compare" type="button" aria-pressed="false" aria-label="Добавить «Ультразвуковой дефектоскоп УСД-50 IPS» в сравнение">
+                <svg class="icon"><use href="assets/icons/sprite.svg#comparison-2"></use></svg>
+              </button>
+            </div>
+            <a class="product-card__cta btn btn-primary btn-lg w-100" href="product-card.html">Перейти</a>
+          </div>
+          <div class="product-card swiper-slide">
+            <a class="product-card__photo-link" href="product-card.html" aria-label="Ультразвуковой дефектоскоп УСД-60">
+              <span class="product-card__bg" style="background-image: url('assets/catalog-products/usd-60.jpg')"></span>
+            </a>
+            <div class="product-card__top">
+              <a class="product-card__title" href="product-card.html">Ультразвуковой дефектоскоп УСД-60</a>
+              <button class="product-card__compare" type="button" aria-pressed="false" aria-label="Добавить «Ультразвуковой дефектоскоп УСД-60» в сравнение">
+                <svg class="icon"><use href="assets/icons/sprite.svg#comparison-2"></use></svg>
+              </button>
+            </div>
+            <a class="product-card__cta btn btn-primary btn-lg w-100" href="product-card.html">Перейти</a>
+          </div>
+          <div class="product-card swiper-slide">
+            <a class="product-card__photo-link" href="product-card.html" aria-label="Ультразвуковой дефектоскоп УСД-46">
+              <span class="product-card__bg" style="background-image: url('assets/catalog-products/usd-46.jpg')"></span>
+            </a>
+            <div class="product-card__top">
+              <a class="product-card__title" href="product-card.html">Ультразвуковой дефектоскоп УСД-46</a>
+              <button class="product-card__compare" type="button" aria-pressed="false" aria-label="Добавить «Ультразвуковой дефектоскоп УСД-46» в сравнение">
+                <svg class="icon"><use href="assets/icons/sprite.svg#comparison-2"></use></svg>
+              </button>
+            </div>
+            <a class="product-card__cta btn btn-primary btn-lg w-100" href="product-card.html">Перейти</a>
+          </div>
+          <div class="product-card swiper-slide">
+            <a class="product-card__photo-link" href="product-card.html" aria-label="Ультразвуковой томограф А1550 IntroVisor">
+              <span class="product-card__bg" style="background-image: url('assets/catalog-products/a1550-introvisor.jpg')"></span>
+            </a>
+            <div class="product-card__top">
+              <a class="product-card__title" href="product-card.html">Ультразвуковой томограф А1550 IntroVisor</a>
+              <button class="product-card__compare" type="button" aria-pressed="false" aria-label="Добавить «Ультразвуковой томограф А1550 IntroVisor» в сравнение">
+                <svg class="icon"><use href="assets/icons/sprite.svg#comparison-2"></use></svg>
+              </button>
+            </div>
+            <a class="product-card__cta btn btn-primary btn-lg w-100" href="product-card.html">Перейти</a>
+          </div>
+          <div class="product-card swiper-slide">
+            <a class="product-card__photo-link" href="product-card.html" aria-label="Ультразвуковой дефектоскоп А1212 MASTER">
+              <span class="product-card__bg" style="background-image: url('assets/catalog-products/a1212-master.jpg')"></span>
+            </a>
+            <div class="product-card__top">
+              <a class="product-card__title" href="product-card.html">Ультразвуковой дефектоскоп А1212 MASTER</a>
+              <button class="product-card__compare" type="button" aria-pressed="false" aria-label="Добавить «Ультразвуковой дефектоскоп А1212 MASTER» в сравнение">
                 <svg class="icon"><use href="assets/icons/sprite.svg#comparison-2"></use></svg>
               </button>
             </div>
@@ -1037,7 +1178,7 @@
       </button>
 
       <div class="callback-popup__header">
-        <h2 class="callback-popup__title h2 m-0">Заказать звонок</h2>
+        <h2 class="callback-popup__title h2 m-0">Задать вопрос о товаре <span class="callback-popup__title-highlight">Ультразвуковой дефектоскоп на фазированных решетках УСД-60ФР</span></h2>
         <p class="callback-popup__description fw-medium text-body-secondary m-0">Заполните форму и мы свяжемся с Вами в ближайшее время.</p>
       </div>
 
@@ -1078,8 +1219,8 @@
       </button>
 
       <div class="callback-popup__header">
-        <h2 class="callback-popup__title h2 m-0">Оформить заказ</h2>
-        <p class="callback-popup__description fw-medium text-body-secondary m-0">Ультразвуковой дефектоскоп на фазированных решетках УСД-60ФР. Оставьте контакты — менеджер свяжется с Вами для подтверждения заказа.</p>
+        <h2 class="callback-popup__title h2 m-0">Оформить заказ на <span class="callback-popup__title-highlight">Ультразвуковой дефектоскоп на фазированных решетках УСД-60ФР</span></h2>
+        <p class="callback-popup__description fw-medium text-body-secondary m-0">Оставьте контакты — менеджер свяжется с Вами для подтверждения заказа.</p>
       </div>
 
       <div class="callback-popup__form">
